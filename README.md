@@ -17,5 +17,5 @@ The code will be imported soon, as well as a complete README file containing det
 Authors
 -------
 
-* [Giulio Ermanno Pibiri](http://pages.di.unipi.it/pibiri/) <giulio.pibiri@di.unipi.it>
-* [Rossano Venturini](http://pages.di.unipi.it/rossano/) <rossano.venturini@unipi.it>
+* [Giulio Ermanno Pibiri](http://pages.di.unipi.it/pibiri/), <giulio.pibiri@di.unipi.it>
+* [Rossano Venturini](http://pages.di.unipi.it/rossano/), <rossano.venturini@unipi.it>
