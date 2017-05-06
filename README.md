@@ -38,7 +38,7 @@ To build the code on Unix systems (see file `CMakeLists.txt` for the used compil
     $ cmake .. -DCMAKE_BUILD_TYPE=Release
     $ make -j[number of processes]
 
-Setting `[number of processes]` is recommended, e.g., `make -j4`.
+Setting `[number of processes]` is recommended, e.g., `make -j4`. For best of performace use also `-DTONGRAMS_USE_POPCNT=ON`, i.e., `cmake .. -DTONGRAMS_USE_POPCNT=ON -DCMAKE_BUILD_TYPE=Release`.
 
 Unless otherwise specified, for the rest of this guide we assume that we type the terminal commands of the following examples from the created directory `build`.
 
