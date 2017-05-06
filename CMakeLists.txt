@@ -27,13 +27,8 @@ if (UNIX)
    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DNDEBUG")
    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
 
-   # Include debug info
    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ggdb")
-
-   # For hardware popcount and other special instructions
    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native")
-
-   # Extensive warnings
    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wno-missing-braces")
 
 endif()
