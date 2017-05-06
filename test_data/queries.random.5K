@@ -1,0 +1,5000 @@
+(less than 65
+spot. Use
+storage.
+well. The reason is
+measures
+Func ()
+r in Sum2 and
+not alias anything by using
+c + b + a;
+conditions in a
+take advantage
+statement occupies
+int BigArray[1024]; // Windows
+software programmers to some of
+-a >
+to calculate the value of
+appendix at www.agner.org/optimize/cppexamples.zip for how
+appropriate here. It reveals a
+has a particular
+position-independent, makes a
+often more
+afterwards.
+value 0
+n; #if defined(__unix__) || defined(__GNUC__)
+- x-xx----x x-xxxxxx- x-xxxx-x-
+and only if the program
+is a very useful way
+Library. The
+Conversion from floating point
+or 32 bytes).
+information can be left
+143 if (u.i
+9.6
+example, if we
+<< and | operations than
+of an object It is
+---xx---x
+splitting
+simply predicted to go
+the entire
+Nevertheless,
+1)sign 2exponent 1023
+can calculate a vector
+always true/false Loopunrolling
+constants, array
+chains can be very
+issue, as you can read
+model and then
+needs
+is typically loaded at a
+14.15a
+Explain
+important. An important
+of n!
+is the case then
+Pointers, references,
+specific order but are
+given in advance. The disadvantages
+numbers:
+Increment
+variables.
+advance which of
+16 bits of the 32-bit
+modify
+many different cases for
+use single precision
+for the link pointers and
+history,
+&& to &
+good for the
+objects declared
+1.fffff, where
+e.g. Intel
+set:
+use #if instead of if.
+defined. The cost of
+object of a class,
+check the order of
+146 14.12 Position-independent code..................................................................................
+to test this
+reference
+It is recommended to make
+connections
+are inlined so that
+SelectAddMul_AVX2, SelectAddMul_dispatch; //
+internally as (int)&matrix[0][0]
+the shared object, then
+sizeof(float)).
+type conversion generates
+pointers, and
+data caching less efficient.
+for holding the pointer.
+has three conditions
+functions have names that
+current array element. Rather than
+simultaneously. This processor has four
+individual
+2004.
+floating point to integer.
+return
+Open source.
+leaks. It
+a program. The
+processor appears on
+analyze all
+a cache is
+advised
+way:
+SVML and LIBM
+T & operator[]
+by a single &
+spent in the program
+is inefficient because
+to the critical stride,
+and executables.
+16.2 above,
+that you should look at
+after executing a critical
+a vector goes
+a short vector library, you
+cores
+real-time
+single precision variables in the
+vector size then add
+superior
+roll out a big loop
+pow(x,n) As we
+spent in
+= 1.23456,
+nagging
+constants.
+tools,
+make the induction variable
+is split between several execution
+Gnu compiler mechanism because
+so-called symbol
+be vectorized if the
+affinity
+is definitely the preferred
+optimizing compiler can see
+integer parameters
+data sequentially
+have AND'ed b with
+optimal.
+that work on all
+Example 12.9b. Taylor
+much space in
+economy,
+to x?" or "how many
+have been lost at
+considerably.
+loop counter.
+Good
+against overflow is
+only 64-bit execution
+memory page size (4096).
+of the code and
+compiler inserts extra
+typically uses
+double precision or eight
+function for register storage. The
+not,
+(byte
+0);
+Vec2q
+necessary to do experiments in
+a reduced number of
+in the same time that
+a[0],
+register state. This penalty should
+used. Dynamic
+divisions can be
+later in the
+is acceptable.
+There is an even
+OneOrTwo5[b
+chapter. Using
+avoided by replacing an
+regardless of scope or namespaces.
+follow
+time-
+vector, bits Vector
+start and stop the
+...............................................................................................
+interpreter for
+Use macro as inline function
+for register variables are
+performance during the
+take advantage of this
+taken into account when choosing
+Arrays An array is implemented
+for speed-critical functions by using
+so-called
+contrary, each thread may
+PathScale compilers. Intel C++ compiler
+beware of the pitfalls here:
+8.8b double x, y;
+Func 87 used cache line
+but unfortunately there is no
+^=
+int level =
+files or accessing
+Dependency chains Modern microprocessors can
+(0);
+// Example 7.43a. Runtime polymorphism
+lines follow the
+using &
+Iu8vec8 16
+on an interpreter
+want to check whether
+~a&~b=~(a|b) --xxxx--- a &
+toggle
+very few restrictions on alignment
+reliable and reproducible
+another array. The
+a specific CPU model and
+advantage in using the larger
+a lot of CPU
+that it fits
+so that the if condition
+and Windows 3.x. These
+giving it some heavy
+The loop would
+a/1=a xxxxxxxxx
+depends on the processor.
+This is the reason
+reorganized in
+x *= x; n >>=
+processors).
+it would be obvious to
+by the requirements of
+bookkeeping is
+jump tables, and
+to swap
+also be used with
+more iterations
+space for the parameters
+and using the integer
+list[i]; This has a
+when swapping
+?Func2@@YAXQAHAAH@Z ENDP
+independent of the loop
+The compiler sometimes uses 32-bit
+= x2*x2;
+runtime
+needed before
+it is not optimal to
+Strings Text strings typically have
+complete code
+pointer aliasing is to
+a loop count
+illustrated by
+Example 7.45 // Portability
+likelihood that certain parts
+Define
+Unix-like platforms.
+The simplest case is a
+example using Agner's
+does not solve all the
+is faster than
+examples on page
+calculate
+if the list
+or class
+(called
+time, but expensive
+working software users. In some
+overlap the call and return
+reasons:
+int unsigned
+128.
+0/a
+reasonable solution is
+written.
+microprocessors is split
+get reliable
+others are
+to assembly:
+Example 14.15b if (a
+well, others are not. Supports
+>= 11) { //
+In fact,
+int a[1000]; float b[1000];
+__restrict
+another source
+73 Without optimization, the
+93.
+table lookup operations slow down
+on the stack. A static
+Example 8.11b int SomeFunction (int
+algebraic reductions explicitly in
+takes typically 0 -
+24, 120, 720,
+be fast in
+the grandparent class: class
+not overlap or if they
+audio
+define matrix
+quite certain
+label
+a typical software
+--xxxx--- a
+hand-held devices are becoming
+Neither is it unusual that
+// x^n // sum, initialize
+code because of a change
+scheduler. This can
+than loops, etc.
+Intel/x86-compatible
+are four kinds of
+55 In
+intended
+There are intrinsic instructions for
+long delay. See
+function opens a file
+handle its own block
+modulo calculations: //
+maintenance There
+of identifier names.
+SSE3 horizontal
+to the modulo operator
+x64 141
+only 2-3 clock
+{ if (i % 2
+same space
+in C++ so you need
+nmmintrin.h
+a common programming error. The
+__restrict__,
+64-bit CPUs and operating systems.
+clock cycles later
+handling.
+optimally.
+test in
+itself
+public: int c; }; Replace
+unlimited
+address plus
+languages. www.yeppp.info
+complex, that there
+well optimized software
+int)(i
+below.
+a switch in your
+conversion from float or double
+= {1.0f, 2.5f};
+execution core of modern microprocessors
+page 107). The
+in array ;
+core. Unfortunately,
+area
+only run
+// Portability note: This example
+makers assume that floating point
+its variables
+condition clause. Comparing an integer
+fast that what is brand
+(u.i * 2 >
+bear
+number of elements to store
+cannot do must be done
+we can help the compiler
+0x3FFF unsigned
+Instrumentation:
+16.2
+parameter. In other words, you
+with
+just-in-time compilation may be a
+have to set the
+enum,
+high and decreased
+a-(-b)=a+b a-a =
+uses
+This makes the code
+bit are
+x^n }
+The first processors
+Unfortunately,
+of the program that runs
+number (e.g.
+disadvantage
+happy to receive
+inline
+that is measured in this
+sure everything that is
+you can get very expensive
+below. Devirtualization
+functions are optimized well, others
+0.22
+to ignore
+(Scalar
+instead of a macro. If
+string[100],
+solution is to use inline
+recommended that
+account
+function or otherwise optimize
+geometry
+1000.
+mitigated
+microprocessor can execute the
+aware that there is often
+slower,
+used and searching for vacant
+Mac operating system running in
+are various function libraries for
+64 MMX int
+that the background
+fraction 2 23
+standard user
+the storage order is opposite).
+address of the variable
+that make up
+is hardly ever used, though.
+This has hardly
+of occupying a
+works,
+so expensive
+An array using
+to use the same memory
+we don't need
+cache cannot
+significant effect on older
+on Pentium
+metaprogramming, but this
+or graphics accelerator
+higher level of optimization
+the same regardless of precision
+is very time
+software can
+1; You cannot
+data", where
+have been tested only
+microprocessor can predict the loop
+9.4
+15.1c,
+QueryPerformanceCounter functions for millisecond resolution.
+will make all dynamic libraries
+(Integrated
+iteration.
+Two threads running
+multi-core CPUs, as described
+DWORD
+more
+On many
+at an arbitrary
+a software module for correctness
+< SIZE; r1 +=
+the integer in the
+much faster. There
+operation is performed on multiple
+service routines
+renamed instances of
+i, a[100], temp;
+defining
+Intel C++ compiler (parallel composer)
+needs them.
+reduced to: // Example
+11.2b was an odd number
+perfectly on a Pentium
+116 // Set
+is large then it
+dummy[4]; volatile int DontSkip;
+etc.). Older
+so that only
+Agner's vector class library can
+4 256 AVX2
+the dispatch on every call
+highest instruction
+counter ahead
+at random times and make
+Open files
+much space in the
+AVX-512
+the syntax is fully standardized
+8.24
+and attempts
+Can be reduced to:
+compilers use the software implementation
+const & a, T const
+141
+OneOrTwo5[b!=0]
+Linear
+The two summation
+prediction. A Pentium
+multiple threads must be declared
+Use large
+obscure possibility of overflow.
+non-polymorphic
+>= (unsigned
+||, ! and the corresponding
+to 99
+utilizing
+Not optimized
+the bit
+operators. Make a C++
+bitwise
+CPU cores. A process
+the error code may
+expressed as an 8-bit
+bottleneck.
+complete
+slow down a program
+Remember, therefore, always
+by replacing an integer variable
+function. This will
+& 0x7FFFFF)
+test situations to avoid that
+for the same resources.
+frame function,
+in a separate module,
+149
+pieces of a suitable duration.
+rather than dynamic linking are:
+is easier to write 2.0/3.0
+used for temporary storage.
+by checking
+CPU core). The counters will
+mentioned below.
+is compiling.
+vector or the loop unroll
+using exception handling then
+declaration "static" or
+<= n <
+do manually. It
+traffic and a
+use a console
+64-bit Linux is more efficient
+consumption was
+possible in
+obstacle
+performance. It
+than if
+and VIA CPUs:
+Calculate polynomial with
+== EXCEPTION_FLT_OVERFLOW ? EXCEPTION_EXECUTE_HANDLER
+constructor for
+a1/b1
+a lot of irrelevant
+called. The disadvantage of compiling
+impacts
+by another thread.
+Optimization in embedded systems
+x----
+for programs
+then follow
+development work as
+3.6
+mask =
+2 gigabytes of data.
+i); // result =
+needed. Even
+will start garbage collection when
+of information
+usually share the same
+y1,
+Microprocessor documentation Intel: "IA-32 Intel
+a common denominator: //
+x8*x2;
+before p is incremented.
+member.
+become fragmented when objects of
+several functions that are
+__declspec(align(16))
+all compilers. Some
+value of A
+also see emulated processors and
+bits (YMM),
+approximate comparison of doubles
+function type
+direct hardware access. Available
+tell how many times
+b*2.0/3.0
+overlap.
+dynamically when the
+that destroys
+be able to evaluate
+is accessed most
+of a linked list
+(SVML). This
+each object. A little-known
+general literature on algorithms
+free. These
+&list[0];
+speed here
+sin(x); z = y +
+the many people who have
+that it can be represented
+deleted by another function and
+after the
+linker extracts the functions
+You may replace
+be overwritten,
+query
+of the matrix is a
+order to avoid that
+larger memory footprint
+vector size. Unpredictable
+jobs and 10
+of objects is high
+Monday = 2, Tuesday =
+exception handling even in the
+hand, does
+handling for
+is certainly
+line size may possibly
+response from a hard disk
+below, on page 15.
+vector
+overlapping
+int a, b, c,
+framework should
+absvalue, largest_abs =
+quite substantial.
+7.28
+one that saves time
+been identified, then
+vector registers (XMM
+are.
+64-bit device
+reading
+iterator in some cases, but
+sticks may not
+optimize the code and
+same register. Everything
+hash map. Do
+special
+faster,
+function name Instruction set
+be shared
+Iu8vec16 Vec16uc 16
+people
+routines, system core and
+or 1.
+(y) { F1(a); } else
+make aligned
+issue, as you can
+2 int64_t 128
+limit
+several seconds to access the
+D language allows
+because the offset
+Enums
+dispatcher changes
+from doing multiple
+actually adds 16
+available
+stored on the stack in
+temp.
+< 1000;
+covered
+derived class is implemented in
+80.9 512 512 378.7
+the area of
+is no difference
+therefore more safe than the
+each version void
+consuming, especially
+high-level
+a constructor, an
+machines? Possible
+a program then
+entire cache line to be
+is a standard for specifying
+how many times an
+load.
+On most
+7.13
+(n) { case 0: printf("Alpha");
+integer, then
+16, 32, 64,
+processor may have a
+condition inside the loop does
+miss on
+!= INVALID_HANDLE_VALUE &&
+not. There are
+variable:
+141 #include
+The dispatcher
+See page 43 for
+"Beta",
+CPU-intensive code,
+look
+is no clear
+and map are
+much more resources than the
+etc.) inside the loop.
+generality of the STL
+loop does not cost anything
+executable
+Greek[4]
+on large data sets
+more template instances will
+a variable which is known
+and classes. The object oriented
+and destructors
+the dispatcher function and replaces
+a name.
+28.
+the eight-element
+Lowest
+136 ... for (i
+time it was programmed.
+libraries do not always work
+return statement: // Example
+and direct
+bool a, b; b =
+operations are not used).
+with a password. The
+InstructionSet().The following example shows
+C++0x support.
+return from functions that
+errors
+data. A complete
+from string functions.
+and another
+parameters Function parameters are
+stride,
+dimension may preferably be a
+You can divide
+linking.
+pipelined, as explained above, so
+what you are doing. See
+relocation. All
+1,
+r + i/2; } }
+recovering from error
+up then it must return
+printf("Alpha");
+expression -(-a)
+the counters when you
+optimize/#vectorclass
+the vector. The other STL
+This behaviour
+to a function in
+is a structure
+difference between a
+in 32-bit mode, for reasons
+allocation. This method also
+127
+library). The D language
+reproducible
+implementation is best. These
+Loading data
+rarely enough
+each process.
+{ sum
+= 2;
+what
+handling option in
+96 9.9
+page 107). Agner's
+PathScale compilers can in most
+to around 1980 where RAM
+waste
+platform __GNUC__ and not not
+at compile-
+times 24 dramatically for
+mode
+bits. The method
+it takes to execute the
+different integer
+Sometimes it is
+153 spends
+has i
+code. The second
+of Java and C# and
+(a&&c)
+high price,
+ways. Example:
+(YMM)
+auto_ptr. Smart pointers can be
+u.f and
+processes running
+number of vectors. 12.10
+a[], int * p) {
+Wednesday = 8, Thursday
+a sorted
+is no guarantee that all
+with pointers. The
+CPU.............................................................................81
+cumbersome
+following methods may be
+needs them. Pure functions A
+2n
+The advice of making
+..................................................................................................................... 38
+When considering whether
+AMD:
+and string manipulation Mathematical
+reuse the same
+16 16 32 8 32
+is used by exception handlers
+128
+table 8.1 below.
+particular integer
+comes
+optimization features of
+and the throughput of
+compression
+extra time if
+.......................................................................................
+new version without the need
+biggest vectors: for
+another thread
+this important new update or
+(0, 2, 4, etc.). Older
+expression
+8.1.
+seconds; // incremented every second
+a+b=b+a, a*b=b*a x
+{1.1,
+independent
+disk if
+once.
+processing, data
+has the feature that there
+the alignment requirements are
+static. Example: // Example 7.1
+line by line when it
+is possible to give each
+by making the full
+100 floats for
+// Define size of squares:
+safe if multiple
+the same cache, at least
+that was unknown
+Exceptions
+make the division
+with Intel processors. A
+of the Gnu
+"Hello ";
+v.i
+Third
+a branch into the
+array is implemented simply
+corresponding instruction
+eliminates
+negative. The last
+is not allowed to change
+solved
+be useful in some
+improved by
+optimized code will
+CGrandParent { public:
+the use of <<
+is worthwhile
+handling cleanup
+longjmp
+Windows are fully compatible on
+option)
+also relevant
+is certain that a
+Sometimes it takes hours to
+void
+the fastest first. However, you
+size cannot be
+period and by the
+part of a program, especially
+computer,
+Example 8.19. Devirtualization class
+newest processors. Supports all
+worst-
+aligned,
+Debugging.
+or micro-op cache.
+pointer has been loaded. This
+then transferred as
+and the speed
+functions are not compatible across
+Intel compilers.
+-msse3
+space has become too
+processing unit for other
+is used for storing
+permissible if the
+developed a test tool for
+can also be eliminated if
+sums
+compiler can also use
+return addresses (i.e. where the
+the linker.
+the computer is restarted
+keyword far
+The algorithms used
+are making
+Some application programs
+(a !=
+one iteration to the next.
+Studio 2005).
+the cache lines follow the
+is known at compile time
+reciprocal:
+is faster if the number
+to and you can do
+Vec4f polynomial (Vec4f const &
+if the condition is
+may improve the performance somewhat.
+functionality without polymorphism
+x-xxxx--x
+so a
+for multiple purposes. Floating
+ebx
+// Catch exceptions in
+will take 1000 * 100
+if the loop counter
+to call. I
+distance in memory
+we assume that b
+likely be
+How
+If the compiler doesn't have
+-fno-strict-overflow. You
+not be safe to
+be loaded
+scanf.
+At
+-msse2 /arch:SSE2
+important
+...................................................................................................................... 33 7.5
+c2
+Address
+the appropriate instruction
+course. A
+// Example 7.1 float
+a*1=a (-a)*(-b)=a*b a/a=1
+arrays and where the
+interface,
+different integer types Unfortunately, the
+to 15.
+flow. However,
+__m128i c =
+other languages that do have
+but read one
+the program will be unable
+(SIZE
+matrix using example
+precision if
+code is likely to execute
+load
+by type-casting i to
+% 3; }
+Calculating
+some types of expressions and
+The size should
+d, e, f, x, y;
+functions or when accessing an
+to metaprogramming
+more efficient than if
+inlined.
+It is not a
+are indeed
+b and c are
+8.6a
+element in list,
+not an issue because an
+compromise when
+frequent if the time slices
+case of overflow and
+temp2. Modern
+for-loop: i++; } }
+market is developing
+a simple index. A good
+class. Which
+relying on
+f=i;
+destination both have addresses
+if only
+very often
+always available
+that it takes 40%
+Testing
+most cases the microprocessor is
+Unfortunately, this method doesn't
+All dynamic memory allocation using
+accessing container elements
+hardware platform has become
+a line
+optimized software
+Similarly,
+programs written in Java,
+is nothing to clean
+pointers).
+i++
+on an interpreter which
+returns
+read from 0x4700. Reading
+to cover
+loading a
+alternately
+various options to
+it might be possible
+(live
+same resources. But it
+are too large
+to store objects
+supported by some very
+don't
++ c) The creation
+remains
+take installation time and
+= 2; } The loop
+64 32 16.4 65
+normally. There
+unfortunate because
+between a
+they are uninitialized or
+long clock; __cpuid(dummy, 0);
+utilized
+|| (a&&b&&c) = a&&(b||c) (a&&!b)
+(XMM) if the
+A complex digital
+/vms Fastcall functions /Gr
+80.8
+of making sure that one
+justifies the relatively small
+separate function library. The
+that the system code is
+throw()specification
+GB. When considering
+.NET
+quadratic matrix, i.e. each
+must install
+be very useful to
+using example 9.5a on a
+table that is
+to work for
+Newest
+single instruction. The
+assignment
+backwards.
+Compilers cannot make floating
+then tell
+8.12a
+libraries............................................................................
+1. Optimizing
+one of the elements in
+workstations
+in table 9.1 show
+is possible.
+there are no big arrays,
+modification if implemented
+optimize register
+performance for vector intrinsics. Digital
+Aligning dynamically allocated memory
+fast math and
+unrelated
+representation of the
+is freed when
+capability
+address)
+generally possible on
+a higher-priority
+/ 1.2345;
+optimizations. Most
+transpose(double a[SIZE][SIZE]) {
+are of
+than 2-20,
+manipulations
+requires a division, which
+thread are smaller.
+I think that it is
+scheduler. This can be accomplished
+spaced by
+Vec8us
+and floating point calculations as
+as floppy disks and USB
+the compiler. Some
+evict the
+checking how well the
+not fit
+allocation. Do
+pow The method used in
+the SSE2 or later instruction
+optimizing compilers will
+file and compiled
+storing strings in character
+2015
+will invalidate each other's
+18.2.
+kb /
+loader.
+the Intel compiler
+in the code itself
+users.
+the structure y into
+such as copying
+the creation
+program will
+higher resolution
+parenthesis
+there are various
+this method is extremely
+'this'.
+run any code branch for
+Intel,
++= 1.0f; } The two
+on all sizes of matrices.
+out if
+AVX512 float
+table takes
+working software
+b can be
+common excuse that "we
+mouse
+any cost in
+Table 9.2. Cache control
+"memory"
+* (columns
+all allocated objects are
+approach
+chooses
+Enums ...................................................................................................................... 33 7.5
+i to
+the 61 function
+Induction; ; a[i+1] = Induction;
+Example: // Example 14.12a int
+them. Some important
+instruction set specified. Insert
+accessible from compilers
+that processor model N
+shows.
+will have more references
+unacceptable
+data cache is 8
+a pointer to another
+page 38). Is the
+infinity or NAN. Avoiding
+better than its reputation.
+memory. This may be faster
+cause a cache miss. But
+is delayed
+s2 = 0,
+entries.
+min &&
+use exception handling even
+if it had
+files need to be converted
+brand.
+in other threads
+$B2$2 ; Induction++;
+avoided by calling
+{return
+documentation for detailed
+r is re-loaded from memory
+than floating point
+construction
++ d.x; a.y = b.y
+waiting
+sets...........................
+Namespaces
+question
+Unfortunately, table lookup is often
+originally
+(cc[i]
+instructions for fast access to
+the inefficient
+tools to be available, we
+GOT.
+or class that is
+// Example 7.2 a =
+/arch:SSE3 -mssse3
+if an exception
+several times
+a.x,
+After first call it will
+threads write
+The keyword static, when applied
+discriminates
+42
+The object that looses
+declared inside the
+object owns. A
+a generic version
+each set. If the cache
+binding definitely
+platform-independent and compact. The biggest
+of which optimizations
+/O2
+pure function.
+distributed
+half the
+cannot be shared. You can't
+be shared. Any
+two (three on
+debugger.
+doing whole program 81
+ISO/IEC
+.R. for AVX. These
+purpose, or you may use
+on complicated
+executes three
+Assuming that the values
+etc.).
+((C & 3)
+zero.
+end user gets
+version int CriticalFunction_386(int
+the function could
+elements. Example: //
+S1 { double b; //
+that we
+debugging
+0.6
+the output of
+Enums are exactly as
+longer used and searching
+3-dimensional
+4.5.2, July
+0x3FFF
+jobs simultaneously.
+for all suitable
+Table // Loop counter //=2*A
+X, 32-bit and
+not modified. Unlike
+Library functions are typically
+I64vec2 Vec2q 64 2
+-parallel -openmp
+Generic version CriticalFunction
+exceptions: while (i <
+of the Boolean operands because
+(a+b)+c
+called, while the Gnu
+doubled.
+function libraries have
+whenever a smart pointer
+write instructions (MOVNT) are designed
+polymorphism with
+request for inlining
+should avoid making any
+F64vec2
+reference is valid only
+platform and
+hackers.
+The first count is usually
+the constructor itself.
+The logic
+make the number of columns
+* x2; // x^4 //
+is certainly something that can
+every second by another
+a union, as in
+unit intended for calculating the
+running a program you want
+push
+Simple member pointers /vms Fastcall
+size as vector register. Factors
+integer, or
+interprocedural
+for mixing single and double
+the following way: // Example
+both the CPU and the
+under the worst-
+preferably 32 for
+prefetch
+/ 16; // This
+a collection of example container
+be declared in
+in an import table
+of precision. Let's repeat
+pre-calculated table.
+algorithm The
+Replacing a function with a
+code. The library has preprocessing
+ABC 123
+compiler and it understands only
+an inlined 15.1b
+the loop counter.
+solution is using one
+from the leftmost column
+chosen as the
+pointers may be replaced
+............................................................................. 84 9 Optimizing
+of longjmp if
+(Embarcadero/CodeGear/Borland
+a global variable means that
+may be only
+the registers eax, ecx and
+then you can have
+force
+unable
+a biased
+"assume
+the compiler, and the library
+of counters in
+My example is
+resource,
+data. The code goes
+line at a
+efficiency is obtained when
+using a 64-bit
+} // Approximate
+AVX _mm256_permutevar_ps 4 4 bytes
+Each
+addresses. Especially the use of
+the function is called. Lazy
+you cannot swap
+of different integer
+Intel-based Mac OS X
+library can be called from
+abort(),
+errors in cases where they
+with the same precision
+20 3.7 File access................................................................................................................ 20
+code further
+162
+processors that support it.
+the memory block
+points with the
+in the majority of
+biased allows
+14.7
+14,
+from integer to
+example 7.43b is
+breaking out of
+as integers: // Example 14.27
+12) are more useful
+understand
+maintain. Most
+techniques of
+Many function libraries are
+changed freely.
+page 105. Floating point
+is equally efficient. Simple function
+return &CriticalFunction_SSE2; } //
+by writing: __declspec(align(64))
+Intel and one
+infinity
+__INTEL_COMPILER 161 32 bit
+www.gnu.org/copyleft/fdl.html.
+is indeed
+column-wise
+first operand
+must always
+shows first the runtime
+very stupid. Some
+code goes through the following
+register, add the
+are double
+constant
+sizeof(b)); 47 Most
+as a function library
+bypassing the so-called
+or class objects.
+satisfactory.
+squares
+templates instead
+assembly language. See page 141
+systems).
+applying the
+functions. Alternatively, you
+graphics
+compilers has
+the behavior of static libraries.
+repeat count is odd and
+overdetermined Boolean
++ b)
+example. The only
+only slightly
+called. The safe way
+more efficiently. It
+unused
+for char pointers). An optimizing
+operations. All
+x 74 x
+these. The CodeGear,
+glibc
+libraries without the need to
+Example 14.3b
+what r points to ;
+single step
+details. Use function libraries
+%1
+and not negative
+the cases described
+the correct
+and page 87
+for exception handling
+with the last index changing
+tasks like
+Func(int); const int size =
+techniques in the present
+Float to integer conversion Conversion
+it makes
+to start
+d.y;
+a thread-like scheduling in an
+1.0f; } The two
+starts.
+type of parameters
+parallel. Modern
+speeding
+first processors with
+flexibility,
+semicolons in a loop
+system, not by
+string constants, array
+microcontrollers have
+#pragma vector always Optimize
+2006
+constructors. A class doesn't
+options for the
+16 4 64 MMX
+the object pointed to. For
+64-bit integer, signed
+A positive
+without using the normal
+because a float uses 32
+xor mov $B1$2: mov
+Should
+checks whether
+type such as
+calculations. The code
+will get time slices of
+const double log2 = log(2.0);
+plug-in
+of CriticalFunction
+that a compiler generates to
+pointer is then de-referenced in
+has only one CPU core
+The Clang compiler combined
+3.10
+cannot be controlled. Small
+add_elements(s);
+x) { return x*x +
+to the different versions
+you may of
+thenaandbcannot use the
+/arch:SSE2
+than short
+are one byte longer in
+independently of
+rarely justifies the
+page 93). All
+they are used. It
+or array coincides with the
+disassembly
+way: There are two
+many users. Firewalls, virus scanners
+very large runtime framework
+coefficients double Table[100]; int x;
+int Size()
+it calls.
+therefore not possible
+from main through an imported
+8.1. Comparison
+than comparing i
+instruction set is available then
+Linux and 32-bit Windows
+primitive,
+predict with
+is obtained by using a
+value, n. But
+have tested
+Intel CPU detection
+Example 8.7
+contains
+12.4d. Same
+same memory areas.
+interfere
+maintain.
+pool,
+be so many
+pointer. It is recommended
+explanation of this option. Use
+run. Both the executable file
+integer.
+case and
+in a simple test setup
+the offset as a
+and C#
+in the interval from 0
+return _mm_cvtsd_si32(_mm_load_sd(&x));} The
+the operating system has support
+There is a lot to
+using an Intel compiler, then
+// Non-polymorphic functions go
+undocumented
+complicated cases cannot be vectorized
+serious limitations to
+Intrinsic
+functionality.
+one for AVX2
+environment block.
+39 matrix[i][j] += x; This
+(e.g. an
+pointer or reference parameters). The
+bit,
+note:
+Running
+memory allocation
+dynamic
+= 128. These lines are
+overflow: //
+next two instructions
+be improved in the
+go away in the future
+on variables
+vectors,
+the C-style type-casting. It is
+of c+b will
+elements then this
+controversies
+register if its address is
+is called square
+friendly.
+system, the more important it
+principles in order
+limited in
+treats non-Intel
+extra code. Example: // Example
+which is likely
+in C, C++
+_mm_i64gather_pd
+should not include any
+reached
+implement a queue as
+be modified by the program,
+your code is
+other hardware-related
+64 Is8vec8
+and Linux, 32-bit
+excessive
+tell the compiler to vectorize,
+Day; if (Day ==
+answer questions from
+and optimized function libraries. C++
+are useful for vectorizing mathematical
+seen in 64
+Using the nontemporal
+// 32-bit Linux, Gnu/AT&T
+is an arithmetic
+D language. D has
+Enterprise
+will catch
+the next higher instruction
+memory block and copy
+the nontemporal
+handling information. Each function
+if both
+cheap if they are predicted
+an integer can be
+s(0.f,
+a long delay. See page
+of convenience - there is
+compiler-specific.
+smart pointer (see
+of an error; and make
+exception is caught by
+number generators.
+works is of course a
+need an
+best possible version of
+stack and
+All non-static variables and objects
+generators.
+follow the track
+Func1(double)
+Open files and
+or inttypes.h is available then
+3.7 File access................................................................................................................ 20
+saved
+is a penalty for mixing
+intervals.
+the order of functions
+have a niche
+&Object1; p->NotPolymorphic(); p->Hello();
+this to i and shifts
+same object. There
+(b1 *
+its child class.
+safely assume
+used for branch
+case a
+values,
+256-bit read operations
+indexed
+needed
+effect is much more dramatic
+x4 = x2 *
+instruction was certain
+sorting
+is slow, then the microprocessor
+may take 3 - 5
+the cache will be
+with First-In-First-Out or First-In-Last-Out
+hardware.
+where operands have
+Beginners
+can not only improve
+List[i]++;
+induction variable as
+big enough for a specific
+not optimized. Jumps between CPU
+integer value of
+Assume pointer
+constant. //
+produced regularly.
+SVML.
+type-casting its address:
+can do and what it
+write configuration files
+member functions. A
+here is
+lazy binding is that
+Reset floating
+and 32-bit
+initialization
+to make a multiplication
+can therefore suffer
+Comparing two pointers requires only
+|| b; This
+The following methods
+resources. This time is
+elements:
+in the MKL
+follows: struct
+a ^0 =
+program that calls
+Instruction set needed _mm_shuffle_epi8
+// INSTRSET ==
+significant improvements. Making too many
+r1;
+embedded systems.
+size with a line
+13 Asmlib Gnu 64 bit
+multiplication } // ipow faster
+predicted
+containing many
+vector data.
+8 below. This manual
+power of 2 in
+performs well.
+bus
+(FILO)
+(MS) x86intrin.h (Gnu) Table 12.2.
+to 128-bit XMM and
+violate
+library (STL)
+monitor counters in
+Add 2 to
+positive or the negative
+processor that you optimized
+function through function pointer a
+innermost
+processor has hyperthreading. If so,
+119
+Optimizing less critical
+added to p
+Integer size
+forces
+preferences
+rely on
++= 2;} //
+a1, a2,
+linked together in the second
+OK, however, to
+transfer of a
+general.
+{ seconds
+is mispredicted only one time
+stronger
+these categories: File input/output
+describe
+subexpression occurs more than
+is interpreted as an
+one other function. A
+the other way three
+different memory areas,
+the while loop because nothing
+data sequentially A cache
+compares
+(XMM)
+automatically.
+first object to the vector.
+compactness,
+(b[i]
+storage.............................................................................
+though less user friendly.
+ReadTSC() { int
+i < 2;
+calls to a pure function
+vector processing
+% 0x20
+K8 0.24
+goes from the
+laws
+multiple CPUs or
+arrays by well-tested
+current operating systems need better
+0x20,
+b2, y1, y2,
+64-bit Windows
+example to
+time to call a function
+generate a bit-mask: __m128i
+; parameter 1: 4
+therefore preferably have a balanced
+Alignd(X) X __attribute__((aligned(16))) #endif const
+34. In
+of this polynomial
+r; c++) { // loop
+is a sum of
+relevant when
+warn
+If n
+initializes
+be vectorized,
+fine-tuning,
+calculated much
+programming language and development
+and only one, auto_ptr
+possible version
+Fortran are based on compilers.
+of transferring
+else if else if else
+modules. This makes inlining more
+imprecise
+a[100]; float
+Induction; Induction++; }
+protocols and standardized
+can be added to a
+for doing two
+point calculations and the loop
+In such
+8.18
+goto CFALSE; } }
+Some 64-bit compilers
+flip-flops,
+frequency dynamically depending on the
+systems also have
+10 elements
+algorithm (e.g.
+options are incompatible
+anyway. You may preferably avoid
+CriticalFunctionType(int
+unfortunately the unit-test does not
+users and much
+reciprocal_divisor; reciprocal_divisor
+Some applications spend most of
+2 when multiplying
+generation class (CParent<>)
+with different set
+c1+TILESIZE;
+timingtest.h
+well thought-through approach to error
+then you cannot rely
+is fastest. The typical
+"Inner Loops: A sourcebook for
+b different so that they
+a/a=1 --------x a/1=a x-xxx-x-- 0/a=0
+shuffling can sometimes
+problem is likely to
+Total size of vector,
+5 } }
+absolute
+member pointer refers to.
+member functions are less
+The Pentium 4 (NetBurst)
+efficient than frame functions for
+DelayFiveSeconds() { seconds
+a.store(aa+i);
+later in the program flow.
+increasing the
+viable
+past the
+Currently
+rows/columns in matrix 96
+video
+14.8
+(IDE) supports multiple programming
+compiler can look like and
+to modify a double
+handler,
++ log(c[i]);. This would
+Linux also applies
+fast if the table
+unsigned You can take
+operations are useful
+when shared
+second generation class
+bits 32-62.
+to all class objects
+want
+through a pointer to one
+segmented
+now contains
+μs
+instruction sets include
+and c __m128i bc
+a variable until the
+c2 =
+can't be reached with
+studying
+cases where it makes sense
+can force
+independent of the value
+of integer
+eliminated if the target
+received data in
++= list[i+1];} sum1 += sum2;
+suffer
+a programmer may prefer
+<float.h> #include <math.h> #define EXCEPTION_FLT_OVERFLOW
+than the table lookup.
+manuals
+4 int
+Consider the
+1./720.,
+hope
+a branch that chooses
+(~a&c)
+exceptions. The
+user settings
+dispatcher should not look at
+one version
+Unfortunately, the CPU detection mechanism
+them off or
+64-bit addresses
+signifying one
+1./6.,
+#define directives
+possible and by
+((C
+anywhere
+list[300];
+C/C++ standard specifies truncation so
+= 0; i
+address is in edx, to
+7 program
+c = d
+loop counter. Any
+the solution
+loop is inside another
+= 1; }
+contains well-tested libraries for many
+and operators ...................................................................... 32 7.4
+not part of a
+with many different
+kinds of operations
+compiler with
+sources of frustration and waste
+Sutter: A Pragmatic
+detail
+call to
+which happens
+test sign bit
+operator[]
+to solve this problem is
+test,
+endian storage (e.g.
+an intermediate code
+for even the smallest
+data structures for
+153
+C++". Addison-Wesley. Third
+Yeppp.
+and discovered
+Table 18.1.
+The undocumented Intel library function
+rely on compiler optimization
+2 32 8 64 4
+as explained in example
+generate the
+use a set of special
+obtain most of
+powers
+it is faster
+program optimization.
+need to link
+multiplication can be replaced
+trivial programming work automatically. The
+the conversion takes 50 -
+are also included. Combining the
+versions alternatingly several times in
+Example 9.6b. #include
+at what happens inside
+capabilities for 32-bit and
+the 145 SSE2
+well-tested container classes. The standard
+calls.
+// Dispatcher
+may prefer to use the
+properly. Many
+results or fail completely because
+accessed from any function. Global
+optimal to do so (i.e.
+while loop in example
+An inline function is
+compiler to predict with
+// Floating point overflow
+decide to do some measurements
+a signed integer if
+available, we
+operations slow
+unaligned reads and
+less precise floating
+code mixes float and double
+once,
+cannot assume that an
+common denominator can even be
+cause fatal
+examples in these
+Function pointers ...................................................................................................... 37 7.8
+buffer and read
+execution considerably.
+through a linear array.
+xx-xx--x-
+Another possibility
+*= i; return f; }
+alloca was
+a loop if
+= (a1*b2 + a2*b1) /
+Writes to a
+Those who are satisfied
+store intermediate data and local
+& a) { return vector(x
+constructor sets all
+using templates. Ready made
+p is therefore
+had in fact only
+shortly. The following examples explain
+table with two entries.
+The use of structures (without
+popped
+hardware-related details depend on
+can be quite inefficient if
+malloc.
+for double precision.
+most
+interface calls.
+on CPUs with a
+structures in the
+is advisable to make it
+account in the software.
+programming. The CPU
+to 15.1c,
+test feature
+have no native
+only the time spent in
+other resources. There are
+incremented, while in the former
+different compilers succeeded
+intrinsics.
+at compile time. Are
+that my
+becomes invalid
+aligned arrays with vector access.
+11.1b
+case then
+B1 { public: B2
+in each core.
+by a blend
+satisfied with
+9.3 shows,
+can bypass
+parameter comes first when
+assembly
+caching. This problem
+or two. Often, it
+Specifies that pointer aliasing
+line 29.
+has been deallocated. Failure
+is optimized
+unknown CPU based on its
+other exceptions: __except
+while loop, the if statement
+of memory called the heap
+"Macro loops"
+hand, it is
+cleanup before
+hot spots, but for
+Calculate
+collection,
+be so high
+the line that covered
+example, all
+space is occupied
+generality and flexibility of the
+(level >= 4) {
+a Boolean NOT on a
+- preferably
+= ((x2) 2) 2 a+a+a+a=a*4
+or key press. 19
+counters, etc. In
+size Time per
+an Intel compiler,
+a power of 2, so
+the execution
+109
+to zero: // Example
+green. It takes
+Henry S.
+equally efficient because,
+12.1a,
+counters. A
+163 20
+assumption is that the variables
+forums
+signed variable produces a
+be inlined for improved
+of a particular brand
+compute
+several examples of suitable
+the updates
+detects
+Vol. 11, Iss.
+problems. The
+vector operations. You
+function because
+no function or method
+operand is
+Security. The
+vacant
+support in
+Likewise, it
+Example 14.18a
+consult the
+different source files for
+problems. Avoid
+} u; u.i ^=
+C++, it is often
+executing instructions out
+the difference between two
+better on very small
+code and how
+that the numbers
+Keywords that work on
+In 32-bit
+a<<(b+c) - n.a. - -
+change during
+functions is
+not evaluated,
+nearest element to x?" or
+= divide
+branch. See the preceding
+returned pointer or reference
+develop
+the other then
+vector size (16 or
+Accessibility
+activate a particular part
+truth depends
+a narrow range then
+free) causes
+in list, the compiler must
+used intrinsic functions. It is
+static,
+calling method in
+{ list[i].a = 1.0; list[i].b
+should include
+set). We can shift out
+buffer or send data from
+and data caching less efficient.
+use integer operations for incrementing
+stages
+of the STL containers
+the available options for the
+each. The critical
+= a*4 - n.a. -(-a)
+12.4a where
+/Fa
+64 bit mode, we
+object is copied by assignment,
+s0,
+x); // x^1, x^2,
+time than other
+21
+size; i++) { ab[i].b
+for big objects that take
+to the appropriate function
+coprocessor
+between threads becomes faster and
+mode program is
+simple function with
+be saved either
+above code will fail
+the other compilers). The best
+(c+d) before
+automatically by the compiler.
+("CriticalFunction");
+Graphics and sound
+here.
+present in the old
+Contentions in the level-1
+thread-local
+are described
+y = d
+legitimate
+Useful
+cache as
+nontemporal write instructions are
+higher address which can't be
+// Compare each element
+tasks that
+Constructor-style type casting //
+with widely
+IA-32 Architectures
+They sometimes
+(iset >=
+= (s0+s1)+(s2+s3); Now s0,
+the same type to
+There is a higher
+expressions Induction
+modifying only
+any
+size often have execution units,
+code cache. The register
+identification adds
+has been brutally
+void SelectAddMul(short
+are generated
+compilers). The best performance
+by the following
+for (r2 =
+y2,
+taken. A const
+table should
+supporting multi-threaded software are available
+This effect can be illustrated
+the same data
+m;} template <int m>
+is known which
+39916800, 479001600}; ...
+99
+can store the values in
+invest more
+most cases, but
+induction variable (eax)
+SSE. Several
+then we will
+this number of iterations. The
+a Gauss
+when the loop
+by selecting optimize performance
+to define
+to be slower
+79 Floating point induction
+a[i].
+representation of float,
+|| b)
+15.0)
+database in Windows. It is
+both 16-bit,
+have no check for
+notion of a "function". Multiple
+dispatch to virtual member
+write 2.0/3.0
+pre-increment is
+8.26b compiled to assembly:
+results in meaningless event
+expects
+thread-safe function should never
+preferably with contiguous
+Effective
+has nothing
+simplest expressions and
+time intervals are
+*.so)
+and compatibility
+for (x
+a = Func1(2); ...
+is other
+calls another function, etc.,
+of elements Total size of
+the | operator which otherwise
+// of function
+desired program structure. It is
+the final result will
+write instructions becomes noticeable. The
+weigh the advantages
+objects without
+row + column; Do not
+73). Current compilers are
+includes the
+division
+contain the
+ordinary
+access. 12 Using vector
+8.6
+it is independent of
+performance,
+is added to p
+completely. For example: // Example
+is a disadvantage when the
+the message loop of a
+example 7.35 page
+eliminated if the condition
+file level. My recommendation for
+thread void
+Table 9.1. Time for transposition
+= 4
+any expression,
+typeof(CriticalFunction)
+doing arithmetic operations. The
+has been incremented,
+table increases the
+set where the number
+:1;//signbit
+vary dynamically and
++ 4.; }; // Make
+function pointer is the
+variables is approximately
+that the operating system has
+recommendation was the
+elimination A
+FuncRow(int); int
+the least recently
+has changed
+cache works most efficiently
+and other data
+(Examples
+contention.
+more safe to do the
+inappropriate
+15.1c. Calculate
+performed with a realistic
+member pointer. This
+using dynamic memory allocation.
+remedies
+patterns.
+and sixteen
+several standard PC's in a
+Microsoft,
+and floating point constants are
+of functions A macro declared
+and compare it
+to 3-dimensional geometry and
+the rules
+under test but also the
+9.5b
+more efficient to use
+0) { c = 1;
+Mathcad (v. 15.0)
+post-increment.
+can cause overflow. For example,
+drivers may
+2009).
+that are particularly important on
+currently only
+One
+unroll option in the compiler.
+the standard PC platform
+have tried. The Microsoft,
+data as
+Avoiding
+when testing
+files while less than 1%
+other details that make function
+program. This requires no
+to use exception handling even
+as required, but
+{ c = 1; }
+wrong type. References are
+(there is one set of
+unreliable.
+optimizing library functions
+constant references accept
+mirror the entire file
+into vector b: Is16vec8 b
+dynamic library can be called
++ (vector
+prototypes for each
+n.a. a*1 = a -
+commercial compiler
+{ const
+Microsoft Table 2.1.
+Glibc
+coefficients double Table[100]; int
+that can be predicted depends
+87
+should automatically
+applications,
+queue
+} }; // Index out
+it does not, and
+memory allocation with new
+function. Using
+in the level- 1
+allowed. The code
+_mm_andnot_si128(mask, bc); // OR the
+void Func ()
+this every time a new
+you can avoid virtual functions
+loop is predicted well. A
+A few
+Any expression that is
+43 about branch
+memory footprint is
+asa
+error message when
+crash
+I don't think
+Some early
+Multiple calls to
+on Intel/x86-compatible microprocessors. The
+certain modification
+not appropriate
+or class declaration and the
+to facilitate
+case" values.
+induction variables to calculate the
+which platforms and operating
+34.
+in case of mispredictions (see
+method. 7.29
+Remove right-most 1-bit
+are less likely to be
+optimization manuals.
+frame makes
+and a template
+message and stop
+anything else being initialized.
+platforms or multiple configurations
+network resources, databases, etc.
+possibly be compiled as
+cycle on most microprocessors. Multiplication
+unfortunate method
+data for analysis. If the
+A hash map can be
+check. It
+int a; double
+the number of clock pulses
+processors is better.
+to the most used
+alternative
+penalty for mixing single and
+type conversion // C-style
+statements,
+should definitely be avoided.
+Live
+fragmentation.
+13.7
+no reasonable upper limit
+execution units. If any of
+This is the function
+access. 3.10 Graphics
+future. 12.3 Automatic
+no extra overhead in the
+vector function
+mainly on my study of
+are a
+Neither
+_endthread()
+microcontrollers:
+256-bit integer
+pre-calculated
+#pragma novector to tell
+Automatic vectorization Devirtualization ---x----- x
+big structures by
+as 8-bit
+that calls it. A
+bigger software
+GNU
+allocated object, and ownership
+the CPU which can
+for how to make this
+variables global if
+not be worth
+stack. These registers have long
+combined by some
+used, then there
+possible. The AVX instructions have
+unroll factor. For example,
+implementation may look like this:
+calculated once,
+optimally, or
+sum. The trick
+last element outside the loop
+gets the new
+array index.
+or inttypes.h is
+versus unsigned integers In
+Database queries can often be
+See page 61.
+= B; x.c =
+expected to be available
+of cores or logical processors
+error has
+sure the information is
+"Hacker's
+makefile.
+compiler)
+parameters. In 64-bit
+may remove the memset
+reserving
+Access
+blocking for
+memory. It will not use
+and then calls exit. Calling
+while high-level
+eax, ecx and edx
+little-endian
+to problems of overflow
+program. The use of structures
+14.7b
+Math Kernel Library.
+No link pointer
+page 96.
+easier to understand when
+processing, and
+Itanium
+two 64-bit operations
+files to be installed.
+worst- case
+Wednesday
+-parallel
+own error handling system instead
+If hyperthreading
+have extern
+not need relocation
+cycle on
+unless the SSE4.1
+function called
+pragmas
+testing, verifying and maintaining a
+whether
+renaming mechanism
+and integers ................................... 141
+above the diagonal. The
+hardware identification.
+that N1 =
+bits
+connect
+that they are.
+aligning dynamically
+y = cos(x);
+modulo.
+the compiler to predict with
+test data
+b) >>
+different. 64-bit Windows allows only
+template<> class
+lrintf (float const x)
+operator is used for converting
+neverthe-
+long 64 8 512
+exceptions
+fast as accessing
+F2(float
+consult
+some other functions that
+Dispatch on every call. A
+negligible when
+of container
+Time- consuming library
+system code
+in this column. Number
+diagnose. It is the responsibility
+reasons why object oriented
+subtask
+0; } The indirect function
+It is important to note
+require a
+processor the user expects
+not. The Intel
+calls the critical function ten
+manuals. Please
+m is replaced by its
+same processor core
+actual clock frequency that the
+a lot of modifications to
+select the best
+amount of RAM, a lot
+efficiently.
+not. There are various
+odd number
+own memory block and a
+integer is converted
+run most of its time
+No
+import table and possibly
+and the destructor
+without restrictions. A GNU Free
+been reduced
+variables and objects
+options
+install a large runtime
+latencies, throughputs and micro-operation breakdowns
+system devices and
+Position-independent code..................................................................................
+that you analyze all
+function for each different
+float. The
+function, but it has
+looses ownership of the memory
+of an exception
+and compact. The biggest
+constants in the entire program
+40 i
+/ unsigned
+its API. In some cases,
+for matrix a:
+the many rules of
+summing
+program under
+calculations,
+the code to a
+big endian storage
+catch an
+Vec16s Vec16us
+loaded,
+statements, as explained on page
+the 64-bit extension
+page 107.
+container. Can
+*(p++) |=
+is important. An
+// AVX supported return
+and non-constant
+// Calculate polynomial The
+what kind
+exceptions can
+are needed, but only
+Supports parallel processing, OpenMP and
+more time. Single
+hardware often requires that
+of the data block
+leak.
+through a hidden pointer. The
+sign bit so that the
+linkage table (PLT) that
+a technological point of view.
+automatically but only
+pivot
+2;}
+only when activated by the
+the more
+struct Sdouble
+Initialize
+is ambiguous and may produce
+convert these types to
+: 63; // fractional part
+y?"
+array is not
+down and
+<<
+disk space were
+re-allocation is needed.
+with the option -mveclibabi=acml. Agner's
+4 floats exp function of
+7.1
+Implementation The
+predefined
+is intended for
+take special
+the const restriction from a
+| 0
+kb.
+the latter function also has
+most. The opposite of register
+reductions: a+b=b+a,
+innermost loop of a
+/FA
+a[size], b[size]; // ...
+best on processor X?" rather
+regularly. Intel: "Intel® C++
+sometimes have unacceptably long response
+class is less
+// Function prototype CriticalFunctionType
+which would be an
+unrolling Some compilers will unroll
+compiler is mostly compatible with
+each. The critical stride
+= b ? 1.5f
+reinstalled and user settings are
+to pressing
+costs. The time it
+Example 14.18a float a,
+5
+moved.
+for discussions. Turn
+that can be divided into
+AVX
+result can be
+copy that
+an integer is within a
+number of clock pulses since
+lookup process is
+sequence
+register to
+but none of
+footprint
+be advantageous
+performance somewhat.
+has a table of
+combined.
+100000001.23456.
+(properties)
+calculations.
+or #pragma novector
+;eax=addressofa
+two comparisons i < 0
+constant,
+branch mispredictions. Test the whole
+Example 9.1a
+other platforms as
+i <= max)
+x-xxx----
+from example 16.1
+frame- pointer
+size)
+generations
+web
+{...} // AVX
+stress the importance of
+__attribute__((aligned(16)))
+The advantage of using ready
+{ return _mm_cvtss_si32(_mm_load_ss(&x));}
+Nothing
+to be transferred in
+needs. 9.8
+parameters then make
+object. It is possible
+cache line. Some compilers will
+many bit manipulation
+4 processor. Extra
+a bitfield by the use
+"C" declaration and the
+i = 0 that r
+main,
+file access or
+Many
+new. The purpose of
+oriented programming without paying the
+dedicated physics processor for calculating
+questions
+value depends on
+to be reloaded eight times
+vectors requires
+i+1;
+hardware circuits consisting of
+nontemporal
+full 64-bit
+esp
+determine
+case of an
+x; x *= x; n
+_mm_i32gather_epi32
+16 clock cycles, depending
+where the data are
+v. 9.0
+can be an advantage because
+makes sure that no overflow
+c*x +
+instruction
+list
+DWORD PTR[ecx+eax*4],ebx eax,
+languages.
+until the next time
+always keep up
+if),
+Remove
+certain kinds of code
+bb into vector
+CGrandParent
+well-defined
+objects are accessed in
+the program. The advantage
+restores
+branch depends on the calculations
+pattern, while Pentium
+The number of branches and
+(b1*b2);
+(*SelectAddMul_pointer)(aa, bb, cc); }
+Loops......................................................................................................................
+physics processing unit intended
+the condition
+modular.
+a zigzag
+you to
+be expected.
+double b[SIZE][SIZE])
+-1 (a&~b)|(~a&b)=a^b ---------
+60 The
+// Roll
+x^4 // x^8 //
+= Func(ab[i].a);
+in the best cases.
+other address
+Intel's Math Kernel Library, available
+rely heavily
+WhateverFunction(i);
+Agner's vector class library exp
+of a and
+data members within
+various
+today,
+(PLT).
+source,
+In some cases, the Intel
+example 13.1, Requires binutils version
+core library contains
+advantages of C++
+the code size or data
+integers, as long as you
+size. In other words,
+[esp+8] DWORD
+table
+24 6 Development process......................................................................................................
+Pentium CPUs which
+The AVX2 instruction set
+below. Cannot
+class. The
+b.
+p1->Hello();
+offset of b is
+(Windows: /Gy, Linux:
+(a+b).
+understand when
+a hot
+keyword is used
+* 32
+correct
+Technical
+polynomial:
+a reliable decision.
+while you can only
+about in my
+overview
+because they cannot
+shuffling,
+8 bit and 32
+make more efficient
+memory pool. See www.agner.org/optimize/cppexamples.zip.
+d; //
+the compiler .......................................................................................... 66 8.1
+1.0E8, c = 1.23456,
+no side-effects and its
+Func1(list,
+information about pointer alignment and
+parallel calculations on vectors of
+of structure or class objects.
+libraries use dynamic memory
+efficient alternatives
+allocation. There is no
+replacing a function call
+matter
+function is called through
+line, because the threads
+SSE4.1
+evicted.
+---x----- x -
+implementations. 7.22 Inheritance
+Function addresses are obscured
+A static member
+whether r is
+minute
+past the end of an
+memory. If
+different sizes of the
+"Gnu
+level-2 cache of 256
+input
+is unstable or if
+these directives are compiler-specific. You
+operator + (vector const
+b[1],
+non-Intel processors can be
+several years before
+artificially
+(columns
+different type by type-casting its
+optimized,
+data and make
+it is accessed through a
+accessible
+const keyword tells
+2.0 This
+for several iterations of
+reads.
+likely case that the
+spots Before
+fact accessed
+profitable to use
+1024/4
+error in the oldest
+an entire cache
+following features: The code
+stride is 8192 /
+anyway. Pure function. __attribute__((const))
+instead. The Gnu libraries
+this block:
+overdetermined in
+the vector class library, SSE4.1
+The latter is
+has been doubled. Thin clients
+Intel math function library with
+Single-Instruction-Multiple-Data
+because the stack unwinding information
+processors, as explained on
+database integration, web application
+nonzero floating point numbers can
+positive number when converted
+different instructions sets.
+Conversions
+LoadVector(void
+capabilities.
+code carefully to
+0; column < NUMCOLUMNS;
+0 264-1 uint64_t Table
+ja
+unroll by two then
+dependency chains, especially
+This worked
+hasn't thought about the possibility
+functions (i.e. Microsoft, Intel and
+the specified instruction set.
+by another thread void
+task is often determined by
+33
+in a hardware definition language
+matrix // call transpose
+they don't need
+integers as Boolean vectors, and
+to replace arrays
+Example 8.10b
+public data object: (1)
+matrix[r][c]
+speed. A
+until the previous link
+address.
+known to be an annoying
+because of a very obscure
+may reduce this to:
+but i*12, because the size
+.NET,
+are called. The program is
+structures in the end when
+atomic.
+where a vector implementation is
+key
+ahead. It
+never be negative
+row-wise,
+instructions,
+provided as an example in
+lookup cannot be vectorized
+on it. Instead
+spent on executing instructions
+different tasks.
+function means that
+mechanism stores a
+while many
+4; Register
+when choosing
+the history of CPU development,
+correction
+frameworks typically
+share the same cache, at
+resources than doing
+inefficient
+7.16 Function
+an extra register
+It may not
+logical processor is
+N:
+library is very large
+quite inefficient. The modern
+devices,
+select function, and
+(20 - 45
+polymorphic function. The
+and normal
+has the correct child class
+is rarely needed. 11 Out
+confirmed
+needs. The
+x (x)
+called near each
+restarted
+declared. An object of
+dispatcher treats non-Intel CPUs
+a+0 =
+Whenever
+devices if
+be a better solution. It
+accessed, and this error is
+optimizes
+on and off.
+to stack memory
+will align data members
+(b1*b2); The
+time slices.
+mimic
+allocated memory................................................................. 120 12.9
+tested under worst-case
+and store it in a
+away.
+} } The same
+of code). If the
+it is the responsibility
+for multiple variables as long
+a base class
+not-too-big upper limit
+pure. Virtual
+may use 64-bit integers if
+background calculations piece
+a kind
+how well
+propagation is
+contentions will
+good code
+16-bit systems
+the same or a nearby
+code" actually implies more
+binary digits. The
+take 3 - 5
+value wrap around. Adding 1
+that doesn't handle
+double 64 2
+= b * 1.2;
+between CPU cores. A
+frequency is increased when the
+set is enabled.
+is cached. Usually it
+may be at a disadvantage
+expect the table to
+opens
+bits (YMM), and
+strings are particularly
+type such as a structure
+row +
+which is very likely
+the function prototype: void
+b1, b2;
+several reasons. C++
+shows first the runtime polymorphism:
+first byte of zero
+enable constant
+Library) and other container
+Addison-
+SelectAddMul
+about function names and
+VIA CPUs.
+becomes faster
+calculations:
+Small functions are often
+for automatic CPU
+Fortunately, there are more efficient
+simpler when
+bit to compare absolute
+necessary then it may be
+precision require precision
+If Microsoft
+loop: //
+than by individual installation
+all dynamic libraries contend for
+module static static
+modified
+3: printf("Delta");
+tasks were
+be higher due to
+floating point calculations whenever
+to use the well optimized
+in the likely case that
+method is faster if
+a more distant future.
+involving integer addition, subtraction
+register variables,
+page 87 for a discussion
+the fraction is stored
+and i >= size
+1./3628800.,
+used. Do
+int)i >= (unsigned int)size)
+continue
+is critical. The worst
+The IPP library
+polynomial(x)
+precision
+multiple cores,
+= b; c = b
+the same module then
+viable compromise when
+therefore difficult to maintain. If
+String constants
+of the techniques of multithreading.
+117 12.7 Mathematical
+integral
+error reporting here: return
+x; for (i = 0;
+PLT entry with the pointer
+line is implicitly
+candidates
+are using functions
+costless
+several factors
+F1
+multiplication prior
+the actual processor. However,
+type-casted to
+predict a switch statement
+3, 4, 6,
+function library. If
+126 13.6 CPU dispatching
+then call _mm256_zeroupper() before leaving
+comes at
+in column
+1000;
+itself. Another
+way. If
+upper 32 bits of
+MFC). This method may
+the {} brackets in which
+of the beginning
+is small enough
+artificially changed
+50;
+cycles after
+two branches to
+Return
+case, the performance is
+against
+type, a
+for(i=0,i2=0; i<100;
+largest
+&Object2; p2->Hello();
+multithreaded
+and micro-operation breakdowns for Intel,
+end user. Dynamic linking
+modification
+It has excellent
+FPGAs. The
+} The multiplication
+constants will be replaced by
+member pointers if
+functions are listed in the
+the case then
+SIZE % 128
+the answers in
++ r.b;}
+series: ex
+using position-independent
+TR 18015,
+or -fsource-asm). This
+modern CPUs,
+Pointers, references, and stack entries
+signed with
+We take the
+identified.
+When you
+purposes
+benefit from its
+- x-xx----x x-xxxxxx-
+this: // Example 12.4e. Same
+Reading
+< size; i +=
+Yet,
+// If Microsoft compiler
+(2.5f
+loop-branch
+also recommended
+efficient. 64 bit systems have
+consequences.
+reduces
+keep the same precision
+system is often
+is called, a
+................................................................................................. 103 12
+(methods)
+recycled? There
+to make aligned arrays
+cache cannot prefetch
+an application
+Intel CPU’s. Another
+12.8b.
+obstacles to
+|)
+to minimize the amount
+error-prone.
+two 64-bit operations so
+truth
+{ return ipow(x,10); //
+both have addresses divisible by
+I am giving this example
+and fine-grained
+count how
+again, but it would
+service routine should
+be obvious
+the vector size
+dilemma.
+513
+called only
+Call to virtual function
+need to check if the
+= OneOrTwo5[b & 1];
+0.57
+c1 for all squares: for
+runtime.
+an up-to-date
+must be inside
+containing integers.
+situations where pre-increment is
+0; for (int i =
+though.
+is. The
+log(2.0)
+of a floating point
+the first result
+language for
+or reference to anything
+that does floating point
+code could benefit
+Static versus dynamic
+other is -0
+Example 8.8b
+N&(N-1) gives the
+calculate the most common
+the entire program
+the memory. The
+one register less so that
+just by turning
+4 128 SSE2 long long
+must be read
+can be joined into
+classes ............................................................................................. 113 12.6 Transforming
+programming languages
+this example, a, b
+with the option -fpic according
+ARM
+reduction
+compiled for 64-bit operating systems
+either in the
+1./4.790016E8, 1./6.22702E9,
+be copied into registers. A
+} The function F1 is
+mov mov
+all code branches
+r;
+by 64, but the alignment
+in example
+I have provided several
+0x20; 46
+efficient and you want
+algebraic
+significantly
+is significant if a parameter
+64-bit double,
+strings.
+subsequent manuals. Please note that
+C++ compilers. Wikipedia
+n.a. 2.23 0.95 0.6 1.19
+subsequent manuals. Please note
+more resources,
+cast The static_cast
+possible to do an
+real
+to integer can
+variables ......................... 142 14.10 Mathematical
+systems, especially if the
+several files
+then the multiplication can
+a function pointer typically
+moved,
+32, 64, ...). We
+See the compiler
+big block of memory
+of that branch and other
+same object. There is
+// Example 8.12b int a[2];
+Factors
+process
+The library function will return
+exceptions a
+method for transferring composite objects
+around at
+are used. Conversions of float
+register temp in
+calls alternately
+instructions cannot multiply integers
+155 test. You can
+basic
+form. A
+Example 14.29 union
+user will be
+memory,
+microprocessor doesn't
+computer.
+2.11
+susceptible
+four float's when the
+of the loop counter can
+more reliable results.
+need metaprogramming. The
+have Boolean variables as input
+} } } } else
+Integers of
+scattered everywhere
+by multiple threads Parallelization
+save by avoiding the
+have
+// Find
+Microsoft
+to insert
+32 bits of a double
+for N
+Make functions local A function
+vectorclass manual for details. //
+behaviors. Arrays
+programmed. Therefore, it is
+101 Multithreading works more
+the processor and
+Calling a function through
+row < NUMROWS;
+?Func@@YAXQAHAAH@Z
+possibilities for optimization. For
+test feature into
+Microprocessors with the
+This is safe and flexible,
+// square x // get
+CPU detection mechanism in Intel
+normally belongs
+the processor). Optimizing compilers will
+specialization, not with
+invalid,
+a1,
+may make some tests with
+calculations of (2n
+local non-member functions. 80
+executed
+85
+calculated asa << 4,
+never spend
+that a specific pointer
+18 3.4 Automatic updates
+cout << "Error: Index
+may be situations
+example 14.23 page 143. The
+have been added and then
+contain either sixteen integers of
+memset:
+will always select the
+language While C++ has many
+(other than log) inside the
+be fetched
+instance for each thread. Thread-local
+Mars compiler is mostly
+Extra memory space
+and parsing are
+allocation. You
+work,
+a fully compiled code.
+Iu32vec2 64 1 int64_t 64
+engineering
+and analyzing program
+the operating system and
+eax,
+resources and
+niche in
+even though it could
+relational
+reducing the
+thread. Pointers to contained objects?
+function can throw. In
+optimize away a
+imprecision in some
+developers choose other
+of optimizations. The results
+list[300]
+= 2; Unfortunately, some
+microprocessors. Integer
+the program 153 spends most
+is rarely enough to
+allocation of memory for
+It doesn't
+diagonal swapd(a[r][c], a[c][r]); // swap
+rest
+It is less efficient
+If a function is not
+addressing
+that the table is
+maximum,
+unrelated to each
+types available. declaration size,
+may report
+don't understand it. I am
+and other hardware-related details depend
+integers
+the IDE
+SSE2 instruction set makes
+of security,
+operations and choose the
+// 8 bytes. first
+13.1,
+to receive
+will be joined together in
+powN is
+single or double precision,
+expect to 99 read from
+the same result if
+of 100 doubles: union
+identification (RTTI). See
+for each thread. Thread-local storage
+makes testing
+one contiguous
+is included in the profile.
++ log(c[i]); // Increment
+setup
+are generally very fast.
+may work
+in so that they
+temp = a+1; b
+needed: // Example
+performance problems.
+file)
+profiler which
+string; while
+by itself. But a
+"move constructor" to transfer
+to contain all data
+block
+result ebx is then stored
+1; } } A
+16. Library
+Unfortunately, the standard
+except for char pointers.
+aa: a.store(aa+i); } } The
+the least significant n bits
+cleanup jobs
+declaration makes
+of two different implementations
+following alternatives: Make the
+? 1.0f : 2.5f;
+Older CPUs with
+system
+consumer if
+in the choice
+more integer to
+typical degree of
+to 12.8b automatically and vectorize
+useful to copy
+units, one or two floating
+PathScale. 2.
+is and
+choose the most often used
+sqaure: for (r2 = r1;
+soon
+member functions have a 'this'
+adhere
+tested,
+information, such
+public B2 {
+Algebraic reduction Most compilers can
+stand
+imported
+which may be
+variable size.
+a technological point
+light-weight
+unaligned op. AMD Opteron K8
+a; double b; int
+The developers
+elements b.load(bb+i);
+the desired functionality without polymorphism
+64-bit
+one container for
+type by type-casting its
+pointer is deleted. Smart pointers
+the generic
+call this distance the critical
+may vary dynamically and that
+forget to make the local
+shared object
+user interface than on
+Template Library (STL) which comes
+b * 3.5; c
+exponential function can be calculated
+only if, a level-2
+of costs to multithreading that
+area for a
+using InstructionSet():
+log(2.0);
+occur: if (SIZE
+update
+enable the compiler to reduce
+compiled for a
+File
+classes
+These profilers
+the operating
+called whole
+a2
+b1,
+possibility that a
+The &
+other way is
+the multiplication is exact. Multiple
+but unfortunately
+clock cycles. Calculations in
+versions of the CPU
+which method is likely to
+be accomplished
+insufficient
+us
+because there may be
+r1+1;
+float or
+(eax)
+(-a==-b)=(a==b)
+Returns time
+conversions can sometimes be
+and for fast and easy
+functions. I disagree with
+to override public symbols, but
+the producer will
+sets)
+new one. I
+number then we would
+time loading files or
+inlined so that the
+columns below
+binutils
+or int 8 AVX2 _mm_i32gather_epi32
+works less
+addition. If
+enabled.
+destructors after
+include
+pointers, references, 'this' pointer, common
+conditions using
+itself is
+c1 <
+( short int aa[size]
+eax edx, DWORD
+other purposes
+to have constructors
+is the
+to write the members individually.
+becomes bigger
+happened
+call a virtual
+become a serious
+loop will take 1000
+systems". The parameters a and
+to this the time
+caches
+accessible from
+is definitely
+have an option
+CriticalFunction = &CriticalFunction_386;
+List[ArraySize];
+message if it
+the child class members.
+__attribute__((const))
+previous iteration. This allows it
+of range. This may typically
+number of DLLs, configuration
+14.24
+OpenMP and automatic vectorization. It
+a function but
+ways of copying
+many renamed instances of the
+and a GOT for
+current .cpp
+// Example 9.2b void
+of calculations,
+very time-consuming garbage collector
+compatible instruction
+than signed
+x; x *= x;
+an integer, then
+well it optimizes
+variables or hide them
+reordering the data
+give overflow and negative inputs
+costly to
+hand,
+depending on how
+is a disadvantage
+105.
+all writes to load a
+been called
+bottlenecks is to
+architecture of the software.
+;
+the cost of longer response
+position-independent, makes a PLT
+multiple versions for different CPUs.
+arraysize)
+the throughput of CPU-intensive programs
+231-1
+into account. You
+12.9a. Taylor series
+instruction sets have
+blog
+functions, or if
+structures in
+process is used when
+method
+m.
+individual array elements more
+as entry point. //
+and see which one works
+divide
+requires an
+the {}
+1];
+up cache space.
+in b[i]
+multiplication, to mix
+Such hybrid
+10) { ... Conversions
+this important new
+remove or modify objects
+vector.
+own
+\n fistpl
+the memory if
+thenaandbcannot
+QueryPerformanceCounter functions for
+7.34a. Use macro as
+throw() statement
+examples I
+For example,a * 16is
+the class Vec16s
+bytes smaller. Structure
+-ipo
+same cache line. But these
+prevents it from
+Func1(2);
+lengths to reduce this problem.
+{ return vector(x
+A reference
+but the compiler uses position-independent
+and reusable classes.
+function, means that
+simple variables, loop
+a[N]; public:
+(Windows,
+bias
+be non-zero, and
+interface (OnIdle in Windows
+(16
+next line provokes an
+float Exp(float
+references are equally efficient
+faster and smaller.
+register stack is used. It
+for interrupt
+x-xxxxxx-
+of some
+timediff[i]
+make container classes in
+not compatible across compilers.
+constructing
+syntax:
+modularity
+Single
+based on its
+Virtual function
+<.
+complication
+independent of changes
+the new value of
+and VIA. The
+loaded into memory when the
+the processor. This
+or column. The access
+0.11 1.21 0.57
+14.12 Position-independent code..................................................................................
+frustration and waste of
+x, unsigned
+functions Some programming
+vectorization is.
+as possible for usability reasons.
+programming principles in order to
+manual at
+this loop?
+are mutually incompatible. A function
+called by the rest
+address. Pointers
+8.23b.
+it to. It
+the thread function
+execution is
+memory. This can be done
+class. The child class is
+of template parameters.
+makes sense
+with many labels that have
+105). If the
+platform independence,
+Size
+a function is called, it
+calculations usually take the same
+are so big that overflow
+with enum,
+135 14.4 Integer multiplication .............................................................................................
+interval:
+You may think
+names of inlined
+innermost loop: for (i =
+81 optimization
+operating system to swap memory
+data with all
+Function prototype CriticalFunctionType CriticalFunction_Dispatch; //
+Z;
+is created, deleted, copied
++= TILESIZE) {
+simpler in 64-bit mode
+to
+powerful
+only for objects
+then d+e,
+into a single branch if
+this address is
+actions like a
+does not occur. See
+2exponent 1023 1 fraction
+or C++.
+AMD LIBM library.
+static or
+(see p. 22). 159 18
+end users have.
+float s0
+_mm_mullo_epi16
+table of const double A
+/arch:SSE2. The
+Similar
+done as a
+allocates one memory
+brand, family
+uncommon for software
+version int CriticalFunction_386(int parm1, int
+check after
+manageable
+would be invalid
+to make a new
+regardless of precision on most
+We can only
+measured in this
+balanced
+and Gnu compilers are actually
+Sandy Bridge) because
+is not possible to add
+is able
+cache contentions,
+platforms. The Clang compiler
+runtime check that
+*(++p)
+satisfied
+module
+fine then it is
+Choosing
+fraction. The sign is stored
+instructions without help of
+int a[1000]; F1(a); }
+union {double
+used, even
+1980
+or structure
+= b * 1.2f; //
+10 -
+C2
+containing (2,2,2,2), and store
+instructions SSE4.2 string search
+an address below 2 GB,
+produced
+caches.
+i is interpreted
+pointer in an
+39916800,
+conclude this section by summing
+* 4 = 32. This
+decision.
+name for the child
+such a check
+The effect
+is discussed on page
+A compiler has to
+~a = -1 (a&~b)|(~a&b)=a^b ---------
+code may be stored
+efficient than investing in a
+the YMM register
+considerable.
+According
+function is called.
+non-Intel
+of cores will grow
+the loop unroll
+unique
+instructions rather
+Comes
+{ int r,
+and accessed
+an exception. Therefore,
+the loop and reorganize: //
+the divisor is known
+-(-a)=a
+number of bits
+addresses, or if pointers are
+www.agner.org/optimize/cppexamples.zip. If
+is repetitive. The
+You cannot expect a directive
+polymorphism.
+less computing resources than standard
+while most
+vector. The other STL containers
+CPUs".
+series of calculations, where
+the address of the array
+an attribute which can be
+than 33%
+important that the
+additions. Divisions
+as i
+language has full metaprogramming
+to temporarily lock a container
+if (absvalue >
+Development time
+code is fragmented
+98
+reason that they
+int row, column;
+the execution speed
+both get the
+a*1=a (-a)*(-b)=a*b a/a=1 ----x---x
+calculations then you
+only one CPU core
+$B2$3: ret ALIGN ;
+extern "C" int
+Only the
+give
+to integer can be
+actually more
+Espresso) that can
+case.
+The user expects
+order. Example: // Example 14.9
+qword
+LoadVector(bb
+value of
+for local references. If we
+advantageous because registers is
+a[c][r]);
+aware of.
+-S - masm=intel /FA
+vector division. 12.4
+example, the conversion
+u.i[1] ^= 0x80000000; because
+latencies.
+between efficiency, portability and development
+on performance. 7.18
+will be better because
+= s; An integer
+D :
+the speed here
+poorly for the end
+bits Instruction set char
+jumping around and less efficient
+on, then it will run
+doubled. A thread that
+resources cleaned up.
+use situation where the network
+access. Available protocols and
+speed Testing the
+can be optimized if a
+107.
+more then the offset
+x-xxxx--x Profile-guided
+are not. Supports 32-bit and
+values
+appropriate.
+of performance on AMD and
+programming style. The time consumption
+be reduced to always
+set Prefetch PREFETCH _mm_prefetch SSE
+is AND'ed with the inverted
+support,
+called when
+}; class C1
+other are also stored
+reduce example 12.1b to
+less than 128
+loop body begins
+(2,2,2,2), and
+type of
+are approximately six integer registers
+exit the
+16.2 calls the critical
+only a single function or
+16.
+method.
+or static or by
+consumer if it involves allocation
+set control no
+14.14b
+the program must clean up
+Adding 1
+stack frame makes
+operations,
+are called. The safe
+busy concentrating on
+This data conversion and shuffling
+starts
+point registers and correspondingly two
+under the worst- case conditions.
+int)(max
+1.1
+// Example 8.2a
+by choosing the
+dependency chains can be
+of the polymorphic functions. The
+use different
+compilers may be
+1024 bits
+64-bit programs to run
+debug breakpoints at every function
+call to a
+process running when
+and delete is to
+to take advantage
+make a function local: 1.
+known before
+Use intrinsic functions Use
+Mac. The Gnu compiler is
+profile-guided optimization.
+Vectors
+(6
+it
+Time-
+units,
+mutexes
+Several function libraries published
+38.7 512 512 2048
+space explicitly when alloca
+up to some positive value,
+or const reference
+p;
+// Example 8.16 float
+and it
+result is the same
+type int.
+errors in C++ programs.
+occupying
+compactness
+scan instruction and
+y = sin(x); }
+textbook on
+unused returns // Volatile to
+right = divide by 2
+counter. Example: //
+very large data
+for the Intel Core
+may ignore the problem and
+for inlining a function if
+better.
+is a very efficient way
+PC platform. However,
+-msse2 SSE3
+function is called a leaf
+The Boolean operators produce
+longer time. It can
+zero within a
+precision, but
+for the instruction set that
+longer used and
+code. The reason
+64-bit operating systems.
+int8_t short
+_controlfp_s(&dummy, 0, _EM_OVERFLOW); // _controlfp(0,
+listing reveals
+for one segment
+a double takes 8
+at vectorization. 3.
+and the critical functions
+by subtracting
+const x) { return
+overhead cost
+unknown at the time
+b+a,
+allocate
+||,
+.......................................................... 107 12.3
+line: static
+flip-flops, multiplexers,
+expressions also occur quite
+occurs in each
+x---x---x
+instead.
+or double because
+platform. Intel
+work. Data
+2-dimensional
+not work on
+functions have no check
+32 bits
+6,
+time on deciding which
+.................................................................
+be calculated in advance.
+between different parts of a
+a*0=0
+The string classes allocate a
+See page 153 for further
+fail if both are negative
+7.32b
+facilities
+Now s0, s1, s2
+sched_setaffinity).
+cannot be executed as
+{ goto CFALSE; }
+multiplications. How was
+preferably be responded to at
+Code
+microarchitecture.
+were splitting
+three clauses: initialization, condition, and
+larger memory footprint than the
+well in tests on Intel
+AES,
+formulas
+local non-member functions.
+or 3-dimensional
+that uses
+very much on
+iterative in nature,
+bit of i ;
+See the manual for
+manner by
+to fix the problem and
+refresh
+some cases take memory space
+multiplied by the clock
+non-inlined
+by the 107 number
+// Example 7.5. Set flush-to-zero
+the code if we
+has support for
+dynamic memory allocation is
+slice
+sequence in
+the first time because it
+coincides
+development, each
+= pow(x,n) As we can
+if the compiler doesn't know
+be used as command-line versions
+can look like and
+track of when
+__fastcall __attribute((
+parameter, so
+Example 8.25 void
+got
+to make a piece
+unsigned for fast
+dilemma
+complicated reductions.
+// x^4 F32vec4 s(0.f,
+moved. A binary
+Supported
+network
+set AVX instr.
+capable of register renaming
+prototypes for each version FuncType
+powN<true,1>
+&Object1; p1->Hello();
+0.28
+randomness in order to get
+is good for the
+and you cannot
+alignment and the
+column <
+WriteFile(handle, ...))
+as well,
+be overloaded or
+Sunday,
+registers rather
+x--
+false
+indeed
+but efficient, way
+count is odd and
+a cheap compiler for 32-bit
+return prediction).
+b with a
+Library" contains
+then FuncC.
+specifies
+{ short
+can disable exception
+identification (RTTI)
+a simple algorithm
+unwinding. All functions have to
+to fake an
+branch mispredictions, floating point exceptions,
+occur. See page 78
+x^10
+4.0.1.
+program happen to
+example: //
+fixed
+b =
+a[c][r] =
+soon became available because
+'this'. We
+C++ compilers exist for all
+are not suited for
+the program in a debugger
+the FAQ for
+object that
+!(a || b) a &&
+or update
+writing:
+A class member variable
+is executed even
+we want to measure
+using static linking rather than
+Which of
+a matrix and stores the
+/ nfac;
+from the leftmost
+b[i] and c[i]
+exploiting
+subexpressions, and
+spaces for
+all the inputs to the
+size of abc is a
+do manually. It must be
+address of the end
+give annoyingly long and irregular
+the alignment.
+allow you to manipulate the
+expansions.
+put seldom
+six in 32-bit systems and
+signed than with
+solution, but
+nearest integer. If two integers
+several versions for different
+Library" and "Integrated
+Are objects accessed
+increases
+prevent cache
+optimization by
+= (memory address) /
+a compiler generates
+is out
+reductions Most
+a minor error in
+lrintf and
+implementations of C++, directly compiled
+systems and 8 bytes in
+should test the
+The Clang compiler is
+in the list causes all
+times the first way
+#include <asmlib.h> void CriticalFunction(); ...
+destructor.
+instruction set are expected to
+kept
+not support static linking. A
+to make and
+inte-
+code.................................................................................. 148
+bit, the
+particular brand is likely to
+data used in the
+230.7 513 513 2056
+far from
+operator ++i
+--xxxx-xx a*1=a
+$B1$1:
+as additions. Divisions
+_mm_blendv_epi8(bc, c2,
+powN<true,N-N1>::p(x); #undef N1 } };
+void CriticalFunction(); ... // Use
+is often easier to
+the compiler doesn't know the
+says.
+I have ever seen can
+a matrix using example
+if a and b take
+sequentially. It works
+not the case we
+the clock frequency is limited
+is poor
+bloat. It is common for
+i < n; i++) {
+SSE2 and later instruction
+the performance dramatically by
+the effort. Square blocking
+// Loop counter //=2*A //=A*x*x+B*x+C
++ 1 is
+pattern,
+a[i] = *p +
+use branches, provided
+minimize the
+cores, and
+able to predict correctly whether
+cache MOVNTDQ _mm_stream_si128 SSE2 Table
+cannot make
+some things very smart
+int unsigned char 8 0
+compile time. //
+files).
+executable file
+---xxx-x-
+stride then this can cause
+function through a function pointer
+one thread than
+virtual table. Unfortunately,
+make overflow
+counter is
+care about
+3.13 Memory access Accessing data
+driver.
+pointed
+the goal of
+most important addition to
+serves as
+that the operands
+compiled. #if directives
+supported");
+by random events
+updates.
+relative to
+calculations. Even
+audience
+Windows and Mac.
+#include <intrin.h> long long ReadTSC()
+principles are
+as many encryption
+on the hardware platform and
+and more error prone. A
+see the excessive memory
+return route.
+several different ways of
+have more references to
+another
+27.
+a short
+loop counter when
+non-AVX code. This
+function pointer
+get the value 10
+mode. See the
+or integrated in
+doesn't compromise safety
+or reads to the same
+decreased
+8.9a
+functions, trigonometric
+course that reflects
+? 1.5f :
+/Fm Generate optimization report
+processor core. Try to
+Code that is
+also work, 133
+a register except in
+Time for transposing and copying
+lrint. Unfortunately, these functions are
+Threads are useful
+Even
+was called
+this topic,
+functions are included
+used for prefetching data
+IDE's
+list[size], sum = 0;
+use vector classes,
+usually take
+casting, but
+Extra
+2 can
+database ...................................................................................................... 20 3.9
+table from static memory
+wrap
+different microprocessors, different alignments and
+TILESIZE // Loop r1 and
+parameter to the
+A thread-safe
+single-thread
+exceptions in this block:
+one array
+(a&&b&&c)
+different alignments and different
+to the different versions of
+mode or
+together
+is not an Intel, even
+122 for
+which part
+1.0f;}
+cost in performance. Integer size
+incomplete information
+taking cache
+cc[])
+of 32-bit
+All x86 platforms (Windows, Linux,
+calculations whenever they are
+if the unsafe code is
+error messages
+increment.
+T+6,
+"standard
+changes of the
+Dispatcher.
+static link libraries. These factors
+a significant amount of
+Adolfy
+test setup but slow or
+through a pointer to
+compilers are not very
+Compile
+specific CPU feature
+// Implicit
+number of integer register
+about an
+FuncB, then FuncC.
++ C; }
+is used. For
+solutions
+the next vector, and the
+jump to a
+possible to do such
+how the if branch
+a float,
+are very similar
+strictness
+scalar (Scalar means not a
+they can block the execution
+propagation,
+attempts
+x,y
+noalias) __restrict #pragma
+there are a
+(XMM), 256 bits
+also prevents the
+isolate
+n.a. a+0 =
+p(double
+seen, is certainly a
+dynamic libraries
+---x---xx
+simple tasks. Sometimes it
+areas.
+mangling are explained
+and divisions are
+flush-to-zero mode rather
+includes the low-level C language
+<= (unsigned
+the chosen compiler doesn't provide
+this). Use rounding instead
+standard is used in almost
+the part of the
+type conversions:
+basis
+handles this code.
+of an array element. In
+41
+access these instructions.
+Because
+which otherwise
+for CPU dispatching and
+the data cache. The same
+to x?"
+useful source of
+a graphics card
+Namespaces........................................................................................................... 65 8 Optimizations in
+This
+is chosen for the
+SIZE = 64; //
+program development more expensive and
+| (~a&c) a&b&c&d
+bytes without cache MOVNTPS _mm_stream_ps
+performance monitor counters .................................................................... 155
+Example 8.11b
+most advanced code version on,
+= temp;
+ab[i].b = Func(ab[i].a); }
+= 1; a[1]
+iteration needs the
+through pointers or references
+objects are
+profiler.
+instead
+programmer does not have to
+= 20, columns = 32;
+or malloc and free.
+64)
+To prevent this kind of
+Software Developer’s Manual", Volume 1,
+2.2 Choice
+~,
+functions have a 'this'
+replace this line by any
+likely to go away
+1)sign
+a loop repeats
+printf("Delta");
+is a try block. There
+it has allocated
+mispredicted
+queue should
+Therefore, 64-bit Linux
+parallelism.
+Locked mutexes.
+the other hand, the
+are swapped then both can
+to invest
+for(i=0; i<100; i++)a[i]=2*i; The
+6 2.3 Choice of operating
+char, signed or unsigned
+should rely on
+if the repeat
+realistic set of data in
+pointer to the desired version
+be determined in advance,
+} sum = (s0+s1)+(s2+s3); Now
+speed.
+you turn them
+interrupt should preferably
+Critical pieces
+An object cannot
+the thread.
+a block of 16 bytes.
+If you forget to make
+_finite()) and redo
+shared_ptr than
+int 256 unsigned 256
+Other system
+short int (16 bits), unless
+be wrapped
+purpose: Contain one
+b+a
+4 = 2048 bytes =
+objects (rather than
+that it adds an
+Installing
+an inefficient way.
+errors.
+or model
+only the first
+two threads with
+Newton-Raphson iterations. Here
+Graphics and
+the DelayFiveSeconds function
+Such schemes
+operating system, and therefore
+nearby
+macro,
+the table in
+pointers ..........................................................................................................
+511
+Literature ..................................................................................................................... 163
+space becomes more fragmented when
+to use static
+2005;
+if a program has many
+Files on remote
+are: Optimizing for present
+time. It simply stores
+for relative addressing of
+be necessary to optimize
+for studying a piece
+the most important
+up in
+which then calls
+lookup table is advantageous
+automatically. There
+guess,
+target buffer.
+inline keyword is used or
+is set in the variable
+a hundred times
+is OS
+first in a series of
+list is large because the
+big endian
+0x8040); See page 145 and
+application program
+work cannot be ignored if
+the functions memset and memcpy:
+A code that does floating
+more efficient way if
+MOVNTQ _mm_stream_pi
+Then
+certain that the 64-bit
+much time
+return square(x) + 1.0f;}
+or See page 95 and
+{ // Define vector objects
+performance because the contents
+Other manuals
+because it makes floating point
+time consumers.
+on page 146 below. Position-independent
+point:
+a far
+clumsy AND-OR
+FuncType
+many people who have sent
+0.27
+may consider whether others
+an option that
+static memory and
+....................................................................................... 24 6 Development process......................................................................................................
+task that consumes most
+Obviously, the
+AVX support. There
+be wired for a
+RTTI then
+linking is used,
+two entries.
+into a vector of
+one thread
+Example 8.8a
+newest
+the programming
+its value is multiplied by
+Trying
+{x
+__int64 64
+....................................................................................................... 19
+may be the
+the time slices to
+16)
+speed exceeding
+layers
+the error code. If the
+ultimate solution would
+by using function inlining,
+All non-static variables and
+Common
+platforms (Windows, Linux, BSD, Intel-based
+then the instance in main
+will work only on Intel/x86-compatible
+libraries: Intel vector math
+number 6! The
+program execution then it is
+preceding addition then
+and data caching less
+C++ implementation may look
+ends
+graphics function that
+cannot use the same register.
+Java, C#,
+not always accurate, however, and
+brands
+other compilers can reduce other
+to use that for
+libraries Test Processor
+each statement that calls the
+The allocation of
+same as if
+operating systems").
+element zero.
+measures the speed
+of range (see page 134
+-100,
+uses a procedure
+object through a smart
+into multiple functions. I disagree
+smallest integer size
+be quite time-consuming (see
+for updates should
+find the one
+of these also treat
+library).
+((unsigned int)n < 4)
+absvalue,
+pointer to a table
+units. If any of the
+and causes the
+columns;
+fourteen in 64-bit systems. 67
+1./8.71782E10,
+is possible to do
+31
+- 30 // f is
+and) will cut
+in a programmable
+In order to access
+Bounds checking In
+p2
+45.
+has a parallel structure
+range from -128 to
+linked libraries or
+on the result of the
+forces the compiler
+at the object file
+Eliminate
+compilers have support for whole
+loaded only
+recommendation
+unsigned integers In most
+complications
+// u.d
+it comes before the compiler
+256-bit YMM registers. The first
+the addresses are spaced
+MultiplyBy
+64-bit.
+all. Fortunately,
+start of the program, and
+Long double precision
+all. In the case
+memory. See
+profiler that can tell how
+systems and fourteen in
+Core
+7.31a
+edx but the
+example, which calculates the
+execution,
+be divisible
+application can make
+computer users
+values:
+Other cases
+variables const double
+!b)
+need induction variables to
+of storage space.
+heap can easily become
+than 8,
+do the check after
+functions, called procedure
+and 3B.
+you cannot always
+This is useful when
+add the last
+be available, we may choose
+that can
+to gain if such dependency
+mode. See the manual for
+or interpretation
+a must
+accelerators
+j * (columns
+C++ and Fortran
+many of the advantages
+fragmented. An alternative is to
+the library file and
+says
+may replace
+structure then
+of branch that can
+vector function libraries.
+long double precision. Conversions
+graceful way.
+0.5ns. 2GHz A clock cycle
+xx4(x4);
+objects that
+of the 32 sets
+you have big
+development environment (IDE)
+__int64
+with out-of-order capabilities are very
+Of
+X?"
+same way, the first processors
+because it needs only
+is available for free.
+the size.
+the structure 8
+that compiler makers
+different types cannot
+representation
+sizes. Fortunately, the solution
+M
+floating point addition and
+chains
+when their live ranges do
+{ FuncB(i); }
+163
+Obviously,
+that use these methods
+the value of the divisor
+jl
+s2 =
+usually 32. In 64-bit systems
+processing
+code then you can get
+omitted,
+= a;
+both cheaper
+sum of a
+0; i--,
+for example if you write
+are making a
+etc. The efficiency of
+a variable which is
+execution time because the memory
+use just-in-time compilation. The
+of how compilers and
+to one thread than
+reading disk files. See page
+only on some processors that
+create a new one.
+= -1.0E8,
+example 8.21, you could
+clock counts. The
+store help
+automatic parallelization. The
+columns
+calls. There are three
+Those who
+instruction can
+it feeds a
+slower than intended because
+to 36. There may
+into vector c: __m128i c
+a built-in
+1
+vector size. Later models
+the same thing. Example: //
+Float
+39
+bits Instruction set
+you forget to
+then the expression
+3.x.
+{ // abs(u.f) > abs(v.f)
+problem are
+the code is not optimized.
+unsigned integer to a
+a * 3; return
+inputs when the
+be repeated 1024/4
+integers. 7.5 Booleans The order
+on the advanced principles
+can expect
+(4096). This will make all
+all the factors
+faster than the
+This example is specific
+application,
+unsigned variables.
+of a data
+instructions that are coded in
+collection can occur at random
+setting an array
+15.1b, and
+through a
+support for relative addressing of
+position-independent
+the function name is
+(page 77)
+C
+Templates make the source code
+in a union:
+precisions when
+that standard
+is inefficient, especially in 32-bit
+Overview of compiler
+be updated
+languages where everything
+interfaces and interfaces to network
+3.9 Other databases ....................................................................................................... 21
+a first-in-last-out fashion. It
+code (byte
+"worst
+much longer
+terms
+database can
+than the level-2
+functions You have
+pool.
+(int
+function name
+Supports both
+members. It is recommended to
+zero. A good
+of list[i] is equal to
+Pentium 4 processors,
+inefficient if a program creates
+more well-structured
+"Intel® C++ Compiler
+register.
+structure),
+most common
+self-relative
+miss
+more resources than the code
+with more RAM than end
+integer size that is larger
+for "assume no
+systems, but in registers
+that work
+0=
+Example: // Example 9.2a void
+an extra cache
+valid only until
+optimal,
+NumberOfTests = 10; int
+ago,
+Container
+true
+pointer in member functions
+b)
+of floating point expressions.
+14.30
+faster if the dividend is
+a BSF (bit
+Underestimating the
+a feature called
+stride) = (number of
+152
+the program if there is
+game or animation.
+operand is not
+optimizations that we want
+14.13
+do something
+a list should preferably
+^0
+as buffers
+FuncA(i); FuncC(i); FuncB(i+1);
+applications even on such
+to the beginning
+Some
+fetch the
+compiler from doing optimizations on
+overwritten, and even worse,
+................................................................................
+way: bool
+away and the result is
+installation of the program
+15. C++ is definitely the
+(not
+do much of the trivial
+69
+optimize across the function call.
+installed,
+with millisecond resolution and the
+= order(i); matrix[j][0] = i;
+If the granularity is too
+to force the swapping of
+metaprogramming is the only way
+way three times. Then
+c;
+where there are
+overflow,
+time. You can
+The value of cc[i]+2
+// Example 14.4b
+&&
+to make sure the result
+("int 3"); or __debugbreak();. If
+maintenance - to
+treat
+call inline void SelectAddMul(short
+90% of
+Works well with non-Intel
+computer starts
+double Y = C;
+sorting and
+code Assume that a function
+threads are areas
+an integer in
+worse, it can overwrite
+longer time. It is possible
+telling
+length function
+code took 50 clock
+language".
+-ipo No
+Sum2 and Sum3 are doing
+&SelectAddMul_SSE41;
+is free
+interrupt 3. The code
+Gnu directives work
+transfer a pointer or reference
++= sum2; If the
+compilers will align large static
+induction variable Y // Update
+code and lazy binding by
+up the data into
+n to
+move.
+parallel if
+that a function is not
+way. The Codeplay
+less efficient. The performance
+Interrupt
+the best
+when the original
+several drivers, configuration files
+In Windows, you
+program is more manageable
+the preceding iteration is
+size = 100; float
+if all functions
+the framework, during start
+unless you have special reasons
+programs spend
+A dispatcher function decides
+This reduces
+u[2]} a[size];
+has changed.
+Zero
+vectors are preferably
+for detecting
+It is therefore important
+reversed if
+critical because
+that a loop
+addresses of array
+reflected,
+Michael Abrash: "Zen of
+integer and double
+the factorial function looks like
+several other less well-known languages.
+copy Function inlining
+calculate the address
+83
+find elsewhere. Faster
+time then the sampling
+disturb
+crash.
+preceding iteration
+incompatible.
+return _mm_load_si128((__m128i
+Each graphics
+as possible for usability
+((unsigned int)n < 4) {
+of disk
+a:
+members. This alignment can
+Compiler-specific
+}; // constant data
+-(-a)
+Primitives
+executed 10 times rather than
+is initialized only the
+tables are
+call with a table
+to list
+inline keyword
+for overflow and works
+code the offset as a
+14.21
+address of the preceding
+SSE3 tmmintrin.h
+// vector
+f
+processors are not
+problems of overflow
+the code can
+bit // u.d is
+math core
+134 }
+//Loopby4
++ d;
+regular pattern,
+44.
+algebraic expressions on seven
+< b
+pulses
+Windows). There are several ways
+to the standards for
+rather than Boolean expressions. There
+copying them
+projects have
+exceeds
+if (a
+term for running multiple threads
+define application-specific instructions that
+in other modules
+operation using the |
+(-a)*(-b)
+volatile keyword makes sure that
+2, Tuesday = 4,
+tables.
+is available then each vector
+etc.,
+a try block.
+is admittedly very kludgy. The
+Different compilers
+condition is
+160 /Qparallel
+operand first.
+the speed or not. There
+not need updating in
+same as a
+ignore, then the solution
+used without
+violate or circumvent operating
+const,
+if the program had
+slow implementations of
+go the same way
+compiled with different
+while a
+purity.
+Intel libraries are used with
+seem illogical that
+cause
+memory pooling. It
+latter is more efficient. 64-bit
+Context
+to it. This is inefficient
+programmed. Therefore,
+A model
+(float const
+<intrin.h>
+program size, while
+transferred
+this address. Step (1)
+the work load. The clock
+operation,
+file can be wrapped
+vector register size. Vectorized
+.......................................................................................................................
+Pointer
+* _mm_load_ps(coef+i); // s
+123 and static const
+below. Microsoft Visual Studio
+the general case where
+normal afterwards.
+min)
+on page 26. Avoid global
+much higher
+construct an object with
+binary value of i to
+such as email and web
+} int main() {
+for transferring composite objects to
+Intel math function
+registers. The vector
+mechanism
+indicates
+the mouse. This task must
+loop for // multiply //
+software packages
+Factors that make vectorization favorable:
+first call to
+doubled. This makes it possible
+mispredictions,
+though it is doing
+17
+dictates that
+one (see
+? a
+and they waste a
+uninstallation of programs should be
+a bottleneck. Organize the
+and maintaining a
+than rounding. This is unfortunate
+template specialization is allowed
+breakpoints at
+causes misses in
+1. Add the
+for your application then you
+to Func1,
+style type-casting with a
+a hard disk
+time when performance
+// Example 14.18c
+by 16 is required.
+Greek[4] =
+intended, while the
+bytes without cache MOVNTI
+(new and
+Environments)
+'this'. We can
+later.
+Some compilers can
+one 256-bit
+a1, a2, b1, b2, y1,
+< 5) {
+instruction set available, e.g.
+Pascal used an intermediate
+may consider whether it
+counters when they are
+and destructors of each
+or data used in the
+zero within a block of
+controlling
+until a few
+} module2.cpp int Func2()
+shared_ptr
+type short int
+module or a
+case that the next
+on all elements of a
+that needs them. Pure functions
+complicated.
+/O3
+a[i+1]
+removed,
+platform-independent
+Iss. 4, 2007 (www.intel.com/technology/itj/).
+AVX2 long long
+API
+handling support anyway. The exception
+or Espresso)
+laws of algebra.
+list[ARRAYSIZE]; if (i < ARRAYSIZE
+compiler for Windows, while most
+very useful for many different
+which it has calculated in
+// Round to
+would be even
