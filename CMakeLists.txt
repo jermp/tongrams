@@ -7,30 +7,38 @@ if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE "Release")
 endif()
 
-option(TONGRAMS_USE_POPCNT
-  "Use popcount intrinsic. Available on x86-64 since SSE4.2."
-  OFF)
-
-if (TONGRAMS_USE_POPCNT)
-  if (UNIX)
+if(TONGRAMS_USE_POPCNT)
+  if(UNIX)
+    # Use popcount intrinsic. Available on x86-64 since SSE4.2.
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -msse4.2")
-  endif ()
-endif ()
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DTONGRAMS_USE_POPCNT")
+  endif()
+endif()
+
+if(TONGRAMS_USE_PDEP)
+  if(UNIX)
+    # Use parallel bit deposit intrinsic.
+    # Available on x86-64 since Intel’s Haswell CPUs: BMI2 (Bit Manipulation Instruction Set 2).
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DTONGRAMS_USE_PDEP")
+  endif()
+endif()
+
+if(TONGRAMS_USE_SANITIZER)
+  if(UNIX)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -fno-omit-frame-pointer")
+  endif()
+endif()
 
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
 endif ()
 
 if (UNIX)
-
-   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DNDEBUG")
-   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
-
-   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ggdb")
-   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native")
-   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wno-missing-braces")
-
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ggdb")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wno-missing-braces")
 endif()
 
 find_package(Boost 1.58.0 COMPONENTS iostreams system filesystem thread REQUIRED)

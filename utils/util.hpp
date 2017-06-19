@@ -400,7 +400,7 @@ namespace tongrams
             const std::time_put<char>& tp =
                 std::use_facet<std::time_put<char>>(loc);
             const char *fmt = "%F %T";
-            tp.put(std::cerr, std::cerr, ' ',
+            tp.put(std::cout, std::cout, ' ',
                    std::localtime(&t), fmt, fmt + strlen(fmt));
             std::cout << ": " << msg << std::endl;
         }
@@ -413,6 +413,10 @@ namespace tongrams
             return std::strtoul(reinterpret_cast<const char*>(br.first), nullptr, 10);
         }
 
+        inline static uint64_t toull(byte_range const& br) {
+            return std::strtoull(reinterpret_cast<const char*>(br.first), nullptr, 10);
+        }
+        
         inline static uint64_t toull(const char* s) {
             return std::strtoull(s, nullptr, 10);
         }
@@ -575,7 +579,6 @@ namespace tongrams
         }
 
         inline uint8_t msb(uint64_t x, unsigned long& ret) {
-            // TODO: check for intrinsics!
             return bsr64(&ret, x);
         }
 
@@ -624,15 +627,39 @@ namespace tongrams
                 return bytes_sum(byte_counts(x));
             #endif
         }
-        
-        inline uint64_t select_in_word(const uint64_t x, const uint64_t k) {
+
+        // this is the select-in-word algorithm presented in
+        // "A Fast x86 Implementation of Select" by
+        // P. Pandey, M. A. Bender, and R. Johnson
+        // the algorithm uses only four x86 machine instructions,
+        // two of which were introduced in Intel’s Haswell CPUs in 2013
+        // source: https://github.com/splatlab/rankselect/blob/master/popcount.h
+        inline uint64_t select64_pdep_tzcnt(uint64_t x, const uint64_t k)
+        {
+            uint64_t i = 1ULL << k;
+            asm("pdep %[x], %[mask], %[x]"
+                    : [x] "+r" (x)
+                    : [mask] "r" (i));
+            asm("tzcnt %[bit], %[index]"
+                    : [index] "=r" (i)
+                    : [bit] "g" (x)
+                    : "cc");
+            return i;
+        }
+
+        inline uint64_t select_in_word(const uint64_t x, const uint64_t k)
+        {
             assert(k < popcount(x));
-            uint64_t byte_sums = byte_counts(x) * ones_step_8;
-            const uint64_t k_step_8 = k * ones_step_8;
-            const uint64_t geq_k_step_8 = (((k_step_8 | msbs_step_8) - byte_sums) & msbs_step_8);
-            const uint64_t place = popcount(geq_k_step_8) * 8;
-            const uint64_t byte_rank = k - (((byte_sums << 8 ) >> place) & uint64_t(0xFF));
-            return place + tables::select_in_byte[((x >> place) & 0xFF ) | (byte_rank << 8)];
+            #if TONGRAMS_USE_PDEP
+                return select64_pdep_tzcnt(x, k);
+            #else
+                uint64_t byte_sums = byte_counts(x) * ones_step_8;
+                const uint64_t k_step_8 = k * ones_step_8;
+                const uint64_t geq_k_step_8 = (((k_step_8 | msbs_step_8) - byte_sums) & msbs_step_8);
+                const uint64_t place = popcount(geq_k_step_8) * 8;
+                const uint64_t byte_rank = k - (((byte_sums << 8 ) >> place) & uint64_t(0xFF));
+                return place + tables::select_in_byte[((x >> place) & 0xFF ) | (byte_rank << 8)];
+            #endif
         }
 
         template<typename IntType1, typename IntType2>

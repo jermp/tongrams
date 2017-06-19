@@ -285,25 +285,27 @@ namespace tongrams
     typedef double_valued_mpht<emphf::jenkins64_hasher> double_valued_mpht64;
 
     // NOTE: used by sequences/fast_ef_sequence.hpp
-    template<typename BaseHasher = emphf::jenkins64_hasher>
-    struct int_mpht
+    template<typename UintValueType1,
+             typename UintValueType2,
+             typename BaseHasher = emphf::jenkins64_hasher>
+    struct uint_mpht
     {
         typedef tongrams::mphf<BaseHasher> hash_function;
 
-        int_mpht()
+        uint_mpht()
         {}
 
-        template <typename T, typename Adaptor>
-        int_mpht(std::vector<T> const& from,
-                 std::vector<T> const& to,
+        template<typename Adaptor>
+        uint_mpht(std::vector<UintValueType1> const& from,
+                 std::vector<UintValueType2> const& to,
                  Adaptor adaptor)
         {
             build(from, to, adaptor);
         }
 
-        template <typename T, typename Adaptor>
-        void build(std::vector<T> const& from,
-                   std::vector<T> const& to,
+        template<typename Adaptor>
+        void build(std::vector<UintValueType1> const& from,
+                   std::vector<UintValueType2> const& to,
                    Adaptor adaptor)
         {
             using namespace emphf;
@@ -331,8 +333,9 @@ namespace tongrams
             m_values.build(cvb);
         }
 
-        template <typename T, typename Adaptor>
-        T lookup(T x, Adaptor adaptor) const {
+        template<typename Adaptor>
+        UintValueType2 lookup(UintValueType1 x,
+                              Adaptor adaptor) const {
             auto hashes = m_h.hashes(x, adaptor);
             uint64_t pos = m_h.lookup(hashes);
             return m_values[pos];
@@ -352,7 +355,7 @@ namespace tongrams
             return m_values.bytes();
         }
 
-        void swap(int_mpht& other) {
+        void swap(uint_mpht& other) {
             m_h.swap(other.m_h);
             m_values.swap(other.m_values);
         }

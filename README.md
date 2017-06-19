@@ -38,8 +38,7 @@ To build the code on Unix systems (see file `CMakeLists.txt` for the used compil
     $ cmake .. -DCMAKE_BUILD_TYPE=Release
     $ make -j[number of jobs]
 
-Setting `[number of jobs]` is recommended, e.g., `make -j4`. For best of performace use also `-DTONGRAMS_USE_POPCNT=ON`, i.e., `cmake .. 
--DTONGRAMS_USE_POPCNT=ON -DCMAKE_BUILD_TYPE=Release`.
+Setting `[number of jobs]` is recommended, e.g., `make -j4`. For best of performace use also `-DTONGRAMS_USE_POPCNT=ON` and `-DTONGRAMS_USE_PDEP=ON', i.e., `cmake .. -DCMAKE_BUILD_TYPE=Release -DTONGRAMS_USE_POPCNT=ON -DTONGRAMS_USE_PDEP=ON`.
 
 Unless otherwise specified, for the rest of this guide we assume that we type the terminal commands of the following examples from the created directory `build`.
 
@@ -171,7 +170,7 @@ where `count_data_structure.bin` is the name of the data structure binary file a
 Benchmarks
 ----------
 ----------
-For the examples in this section, we used a 2009 desktop machine running Mac OS X El Capitan, equipped with 2.4 GHz Intel Core 2 Duo and 8 GBs of RAM (referred to as *Desktop Mac*). The code was compiled with `clang` (see section [Building the code](#building-the-code)). We additionally replicate some experiments on a 16 Intel Xeon E5-2630 v3 cores clocked at 2.4 Ghz, with 193 GBs of RAM, running Linux 3.13.0, 64 bits (the same machine for the experiments of Section 5 of [1], referred to as *Server Linux*). In this case the code was compiled with `gcc`.
+For the examples in this section, we used a 2009 desktop machine running Mac OS X El Capitan, equipped with 2.4 GHz Intel Core 2 Duo and 8 GBs of RAM (referred to as *Desktop Mac*). The code was compiled with `clang` (see section [Building the code](#building-the-code)) *without using* any intrinsic instructions. We additionally replicate some experiments on a 16 Intel Xeon E5-2630 v3 cores clocked at 2.4 Ghz, with 193 GBs of RAM, running Linux 3.13.0, 64 bits (the same machine for the experiments of Section 5 of [1], referred to as *Server Linux*). In this case the code was compiled with `gcc`, *using* hardware `popcnt` and `pdep` instructions.
 
 For a data structure storing frequency counts, we can test the speed of lookup queries by using the benchmark program `lookup_perf_test`.
 In the following example, we show how to build and benchmark three different data structures: **EF-Trie** with no remapping, **EF-RTrie** with remapping order 1 and **PEF-RTrie** with remapping order 2 (we use the same names for the data structures as presented in [1]). Each experiment is repeated 1,000 times over the test query file `queries.random.5K`. The benchmark program `lookup_perf_test` will show mean time per run and mean time per query (along with the total number of *N*-grams, total bytes of the data structure and bytes per *N*-gram).

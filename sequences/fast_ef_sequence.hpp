@@ -71,7 +71,7 @@ namespace tongrams
             return m_high_bits_d1.num_positions();
         }
 
-        void find(pointer_range const r, uint64_t id, uint64_t* pos)
+        void find(pointer_range const& r, uint64_t id, uint64_t* pos)
         {
             assert(r.end > r.begin);
             assert(r.end <= size());
@@ -277,7 +277,7 @@ namespace tongrams
 
     private:
         uint64_t m_size;
-        int_mpht<> m_offsets;
+        uint_mpht<uint64_t, uint64_t> m_offsets;
         std::vector<sample_t> m_samplings;
         bit_vector m_high_bits;
         darray1 m_high_bits_d1;
@@ -429,12 +429,6 @@ namespace tongrams
                                    RandomAccessIterator it,
                                    std::vector<sample_t>& samplings)
         {
-            #ifdef DEBUG
-            // check that all samplings are greater
-            // than the previous range upper bound
-            uint64_t prev_upper = samplings.front();
-            #endif
-
             typedef std::pair<uint64_t, uint64_t> range_t;
             range_t root(lo, hi);
             deque_t<range_t> ranges; // BFS-order
@@ -447,7 +441,6 @@ namespace tongrams
                     uint64_t lo = r.first;
                     uint64_t hi = r.second;
                     size_t mid = (lo + hi) >> 1;
-                    assert(it[mid] > prev_upper);
                     samplings.push_back(it[mid]);
                     range_t left(lo, mid);
                     range_t right(mid + 1, hi);

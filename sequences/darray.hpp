@@ -7,7 +7,7 @@ namespace tongrams
 {
     namespace detail
     {
-        template <typename WordGetter>
+        template<typename WordGetter>
         struct darray
         {
             darray()
@@ -23,8 +23,8 @@ namespace tongrams
                 std::vector<uint16_t> subblock_inventory;
                 std::vector<uint64_t> overflow_positions;
 
-                for (size_t word_idx = 0; word_idx < data.size(); ++word_idx) {
-                    // std::cout << word_idx << std::endl;
+                for (size_t word_idx = 0; word_idx < data.size(); ++word_idx)
+                {
                     size_t cur_pos = word_idx << 6;
                     uint64_t cur_word = WordGetter()(data, word_idx);
                     unsigned long l;
@@ -53,23 +53,7 @@ namespace tongrams
                 m_overflow_positions.swap(overflow_positions);
             }
 
-            darray(darray const& other)
-            {
-                m_positions = other.m_positions;
-                m_block_inventory = other.m_block_inventory;
-                m_subblock_inventory = other.m_subblock_inventory;
-                m_overflow_positions = other.m_overflow_positions;
-            }
-
-            darray& operator=(darray const& other)
-            {
-                darray tmp(other);
-                tmp.swap(*this);
-                return *this;
-            }
-
-            void swap(darray& other)
-            {
+            void swap(darray& other) {
                 std::swap(other.m_positions, m_positions);
                 m_block_inventory.swap(other.m_block_inventory);
                 m_subblock_inventory.swap(other.m_subblock_inventory);
@@ -81,7 +65,7 @@ namespace tongrams
                 assert(idx < num_positions());
                 uint64_t block = idx / block_size;
                 int64_t block_pos = m_block_inventory[block];
-                if (block_pos < 0) {
+                if (block_pos < 0) { // sparse super-block
                     uint64_t overflow_pos = uint64_t(-block_pos - 1);
                     return m_overflow_positions[overflow_pos + (idx & (block_size - 1))];
                 }
@@ -109,29 +93,25 @@ namespace tongrams
                 }
             }
 
-            inline uint64_t num_positions() const
-            {
+            inline uint64_t num_positions() const {
                 return m_positions;
             }
 
-            uint64_t bytes() const
-            {
+            uint64_t bytes() const {
                 return sizeof(m_positions)
-                     + m_block_inventory.size() * 8
-                     + m_subblock_inventory.size() * 2
-                     + m_overflow_positions.size() * 8;
+                     + m_block_inventory.size() * sizeof(m_block_inventory[0])
+                     + m_subblock_inventory.size() * sizeof(m_subblock_inventory[0])
+                     + m_overflow_positions.size() * sizeof(m_overflow_positions[0]);
             }
 
-            void save(std::ostream& os) const
-            {
+            void save(std::ostream& os) const {
                 util::save_pod(os, &m_positions);
                 util::save_vec(os, m_block_inventory);
                 util::save_vec(os, m_subblock_inventory);
                 util::save_vec(os, m_overflow_positions);
             }
 
-            void load(std::istream& is)
-            {
+            void load(std::istream& is) {
                 util::load_pod(is, &m_positions);
                 util::load_vec(is, m_block_inventory);
                 util::load_vec(is, m_subblock_inventory);
@@ -169,15 +149,13 @@ namespace tongrams
             std::vector<uint64_t> m_overflow_positions;
         };
 
-        struct identity_getter
-        {
+        struct identity_getter {
             uint64_t operator()(std::vector<uint64_t> const& data, size_t idx) const {
                 return data[idx];
             }
         };
 
-        struct negating_getter
-        {
+        struct negating_getter {
             uint64_t operator()(std::vector<uint64_t> const& data, size_t idx) const {
                 return ~data[idx];
             }
