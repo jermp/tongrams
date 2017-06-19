@@ -38,7 +38,7 @@ To build the code on Unix systems (see file `CMakeLists.txt` for the used compil
     $ cmake .. -DCMAKE_BUILD_TYPE=Release
     $ make -j[number of jobs]
 
-Setting `[number of jobs]` is recommended, e.g., `make -j4`. For best of performace use also `-DTONGRAMS_USE_POPCNT=ON` and `-DTONGRAMS_USE_PDEP=ON', i.e., `cmake .. -DCMAKE_BUILD_TYPE=Release -DTONGRAMS_USE_POPCNT=ON -DTONGRAMS_USE_PDEP=ON`.
+Setting `[number of jobs]` is recommended, e.g., `make -j4`. For best of performace use also `-DTONGRAMS_USE_POPCNT=ON` and `-DTONGRAMS_USE_PDEP=ON`, i.e., `cmake .. -DCMAKE_BUILD_TYPE=Release -DTONGRAMS_USE_POPCNT=ON -DTONGRAMS_USE_PDEP=ON`.
 
 Unless otherwise specified, for the rest of this guide we assume that we type the terminal commands of the following examples from the created directory `build`.
 
