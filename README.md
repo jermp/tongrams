@@ -188,9 +188,9 @@ The results of this (micro) benchmark are summarized in the following table.
 
 |**Data structure** |**Remapping order** | **Bytes x gram**  | **µs x query** - Desktop Mac| **µs x query** - Server Linux|
 |-------------------|:------------------:|-------------------|-----------------|--------------------|
-|EF-Trie            |                   0|2.40               |             1.13|      0.61          |
-|EF-RTrie           |                   1|1.93 (**-19.7%**)  |      1.53 (+26%)|      0.80 (+23.75%)|
-|PEF-RTrie          |                   2|1.75 (**-26.9%**)  |      1.65 (+32%)|      0.82 (+25.61%)|
+|EF-Trie            |                   0|2.40               |      1.13       |      0.51          |
+|EF-RTrie           |                   1|1.93 (**-19.7%**)  |      1.53 (+26%)|      0.70 (+27.14%)|
+|PEF-RTrie          |                   2|1.75 (**-26.9%**)  |      1.65 (+32%)|      0.72 (+29.16%)|
 
 For a data structure storing probabilities and backoffs, we can instead test the speed of scoring a text file by using the benchmark program `score`. A complete example follows.
     
