@@ -9,10 +9,9 @@
 #include "../vectors/bit_vector.hpp"
 #include "../vectors/compact_vector.hpp"
 
-namespace pef
-{
-    struct uniform_pef_sequence
-    {
+namespace pef {
+
+    struct uniform_pef_sequence {
         uniform_pef_sequence()
             : m_size(0)
             , m_universe(0)
@@ -20,12 +19,13 @@ namespace pef
             , m_log_partition_size(0)
         {}
 
-        template<typename Iterator>
-        void build(Iterator grams_begin, uint64_t num_grams,
-                   std::vector<uint64_t>& pointers, uint8_t order)
+        template<typename Iterator,
+                 typename Pointers = std::vector<uint64_t>>
+        void build(Iterator begin, uint64_t n,
+                   Pointers& pointers, uint8_t order)
         {
             std::vector<uint64_t> values;
-            values.reserve(num_grams);
+            values.reserve(n);
             uint64_t prev_upper = 0;
             auto pointers_it = pointers.begin();
             uint64_t start = *pointers_it;
@@ -33,7 +33,7 @@ namespace pef
             uint64_t end = *pointers_it;
             uint64_t run = end - start;
             uint64_t within = 0;
-            for (uint64_t i = 0; i < num_grams; ++i, ++grams_begin) {
+            for (uint64_t i = 0; i < n; ++i, ++begin) {
                 if (within == run) {
                     within = 0;
                     do {
@@ -45,19 +45,17 @@ namespace pef
                     prev_upper = values.size()
                                ? values.back() : 0;
                 }
-                uint64_t v = *grams_begin;
+                uint64_t v = *begin;
                 values.push_back(v + prev_upper);
                 ++within;
             }
-            assert(values.size() == num_grams);
-            write(values.begin(), values.back(),
-                  values.size(), order);
+            assert(values.size() == n);
+            write(values.begin(), values.back(), n, order);
         }
 
         template<typename Iterator>
         void build(Iterator begin, uint64_t n,
-                   uint64_t universe, uint8_t order)
-        {
+                   uint64_t universe, uint8_t order) {
             write(begin, universe, n, order);
         }
 
@@ -67,23 +65,22 @@ namespace pef
                    uint64_t n, uint8_t order)
         {
             assert(n > 0);
-
             m_size = n;
             m_universe = universe;
 
-            if (order <= 2) {
-                m_log_partition_size = 6;
-            } else {
-               m_log_partition_size = 7;
+            m_log_partition_size = 6;
+            if (order > 2) {
+                m_log_partition_size = 7;
             }
-            
+
             pef_global_parameters params;
             uint64_t partition_size = uint64_t(1) << m_log_partition_size;
             size_t partitions = tongrams::util::ceil_div(n, partition_size);
 
             m_partitions = partitions;
 
-            tongrams::bit_vector_builder bvb;
+            tongrams::bit_vector_builder data_bvb;
+            tongrams::compact_vector::builder upper_bounds_cvb;
             std::vector<uint64_t> cur_partition;
 
             uint64_t cur_base = 0;
@@ -95,19 +92,19 @@ namespace pef
                     cur_partition.push_back(*it - cur_base);
                 }
 
-                uint64_t universe_bits = tongrams::util::ceil_log2(universe);
-                bvb.append_bits(cur_base, universe_bits);
+                uint64_t universe_bits = tongrams::util::ceil_log2(universe + 1);
+                data_bvb.append_bits(cur_base, universe_bits);
                 // write universe only if non-singleton and not tight
                 if (n > 1) {
                     if (cur_base + cur_partition.back() + 1 == universe) {
                         // tight universe
-                        write_delta(bvb, 0);
+                        write_delta(data_bvb, 0);
                     } else {
-                        write_delta(bvb, cur_partition.back());
+                        write_delta(data_bvb, cur_partition.back());
                     }
                 }
 
-                compact_elias_fano::write(bvb, cur_partition.begin(),
+                compact_elias_fano::write(data_bvb, cur_partition.begin(),
                                           cur_partition.back() + 1,
                                           cur_partition.size(), params);
             } else {
@@ -132,7 +129,7 @@ namespace pef
 
                     assert(cur_partition.size() <= partition_size);
                     assert((p == partitions - 1)
-                           || cur_partition.size() == partition_size);
+                          or cur_partition.size() == partition_size);
 
                     uint64_t upper_bound = value;
                     assert(cur_partition.size() > 0);
@@ -145,24 +142,23 @@ namespace pef
                     cur_base = upper_bound;
                 }
 
-
-                tongrams::compact_vector::builder
-                    ub_cv_builder(upper_bounds.size(),
-                                  tongrams::util::ceil_log2(upper_bounds.back() + 1));
+                upper_bounds_cvb.resize(upper_bounds.size(),
+                                        tongrams::util::ceil_log2(upper_bounds.back() + 1));
                 for (auto u: upper_bounds) {
-                    ub_cv_builder.push_back(u);
+                    upper_bounds_cvb.push_back(u);
                 }
-                m_upper_bounds.build(ub_cv_builder);
 
                 uint64_t endpoint_bits = tongrams::util::ceil_log2(bv_sequences.size() + 1);
-                write_gamma(bvb, endpoint_bits);
+                write_gamma(data_bvb, endpoint_bits);
                 for (uint64_t p = 0; p < endpoints.size() - 1; ++p) {
-                    bvb.append_bits(endpoints[p], endpoint_bits);
+                    data_bvb.append_bits(endpoints[p], endpoint_bits);
                 }
 
-                bvb.append(bv_sequences);
-                m_data.build(&bvb);
+                data_bvb.append(bv_sequences);
             }
+
+            m_upper_bounds.build(upper_bounds_cvb);
+            m_data.build(&data_bvb);
 
             // init enumerator to map ids needed by pef_rtrie
             e.init(m_data, m_upper_bounds, m_size,
@@ -184,17 +180,18 @@ namespace pef
                 return;
             }
 
-            uint64_t partition_begin = r.begin >> m_log_partition_size;
-            uint64_t partition_end = r.end >> m_log_partition_size;
-
-            e.switch_partition(partition_begin);
+            if (m_partitions > 1) {
+                uint64_t partition_begin = r.begin >> m_log_partition_size;
+                e.switch_partition(partition_begin);
+            }
 
             uint64_t prev_upper = 0;
             if (LIKELY(r.begin)) {
                 prev_upper = operator[](r.begin - 1);
             }
-            
+
             id += prev_upper;
+            uint64_t partition_end = r.end >> m_log_partition_size;
             auto pos_value = e.next_geq(id, r.end, partition_end);
             if (pos_value.second == id) {
                 *pos = pos_value.first;
@@ -203,8 +200,7 @@ namespace pef
             *pos = tongrams::global::not_found;
         }
 
-        struct enumerator
-        {
+        struct enumerator {
             typedef std::pair<uint64_t, uint64_t> value_type; // (position, value)
 
             enumerator()
@@ -221,6 +217,9 @@ namespace pef
                 m_bv = &bv;
                 m_upper_bounds = &upper_bounds;
                 m_log_partition_size = log_partition_size;
+
+                m_position = 0;
+                m_first = true; // for next()
 
                 pef_global_parameters params;
                 tongrams::bits_iterator<tongrams::bit_vector> it(bv);
@@ -240,8 +239,8 @@ namespace pef
                     m_partition_enum =
                         compact_elias_fano::enumerator
                         (*m_bv, it.position(), ub + 1, n, params);
-
                     m_cur_upper_bound = m_cur_base + ub;
+
                 } else {
                     m_endpoint_bits = read_gamma(it);
                     uint64_t cur_offset = it.position();
@@ -249,11 +248,8 @@ namespace pef
                     uint64_t endpoints_size = m_endpoint_bits * (m_partitions - 1);
                     cur_offset += endpoints_size;
                     m_sequences_offset = cur_offset;
+                    slow_move();
                 }
-
-                m_position = 0;
-                m_first = true; // for next()
-                slow_move();
             }
 
             const uint64_t linear_scan_threshold = 8;
@@ -285,7 +281,7 @@ namespace pef
                 if (lower_bound < m_cur_base) { // out of bounds form the left
                     return value_type(m_position, tongrams::global::not_found);
                 }
-                
+
                 return slow_next_geq(lower_bound, range_end, partition_end);
             }
 
@@ -311,7 +307,7 @@ namespace pef
                 while (lo <= hi) {
                     uint64_t mid = (lo + hi) / 2;
                     uint64_t mid_value = vec->access(mid);
-                    
+
                     if (mid_value > lower_bound) {
                         hi = mid != 0 ? mid - 1 : 0;
                         if (lower_bound > vec->access(hi)) {
