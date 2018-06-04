@@ -8,7 +8,7 @@ Additionally to the trie data structure, the library allows to build models base
 
 When used to store frequency counts, the data structures support a `lookup()` operation that returns the number of occurrences of the specified *N*-gram. Differently, when used to store probabilities and backoffs, the data structures implement a `score()` function that, given a text as input, computes the [perplexity](https://en.wikipedia.org/wiki/Perplexity) score of the text.
 
-This guide is meant to provide a brief overview of the library and to illustrate its funtionalities through some examples.
+This guide is meant to provide a brief overview of the library and to illustrate its functionalities through some examples.
 ##### Table of contents
 * [Building the code](#building-the-code)
 * [Input data format](#input-data-format)
@@ -46,13 +46,13 @@ Input data format
 -----------------
 -----------------
 The *N*-gram counts files follow the [Google format](http://storage.googleapis.com/books/ngrams/books/datasetsv2.html), i.e., one separate file for each distinct value of *N* (order) listing one gram per row. We enrich this format with a file header indicating the total number of *N*-grams in the file (rows):
-    
+
     <total_number_of_rows>
     <gram1> <TAB> <count1>
     <gram2> <TAB> <count2>
     <gram3> <TAB> <count3>
     ...
-    
+
 Such *N* files must be named according to the following convention: `<order>-grams`, where `<order>` is a placeholder for the value of *N*. The files can be left unsorted if only MPH-based models have to be built, whereas these must be sorted in *prefix order* for trie-based data structures, *according to the chosen vocabulary mapping*, which should be represented by the uni-gram file (see Subsection 3.1 of [1]). Compressing the input files with standard utilities, such as `gzip`, is highly recommended.
 The utility `sort_grams` can be used to sort the *N*-gram counts files in prefix order.
 In conclusion, the data structures storing frequency counts are built from a directory containing the files
@@ -61,7 +61,7 @@ In conclusion, the data structures storing frequency counts are built from a dir
 * `3-grams.sorted.gz`
 * ...
 
-formatted as explained above. 
+formatted as explained above.
 
 The file listing *N*-gram probabilities and backoffs is conform to, instead, the [ARPA file format](http://www.speech.sri.com/projects/srilm/manpages/ngram-format.5.html).
 The *N*-grams in the ARPA file must be sorted in *suffix order* in order to build the reversed trie data structure.
@@ -81,9 +81,9 @@ Building the data structures
 The two executables `build_trie_lm` and `build_mph_lm` must be used to build trie-based and (minimal perfect) hash-based language models respectively. By running the executables without any arguments, or with the flag `--help`, the detailed list of expected input parameters is shown, along with their meanings. For example, by doing
 
     $ ./build_trie_lm --help
-    
+
 the following message will show up (plus additional details, here not reported for brevity):
-    
+
     $ Usage ./build_trie_lm:
         data_structure_type
         order
@@ -154,15 +154,15 @@ builds a MPH-based model
 Tests
 -----
 -----
-The `test` directory contains the unit tests of some of the fundamental building blocks used by the implemented data structures. As usual, running the executables without any arguments will show the list of their expected input parameters. 
+The `test` directory contains the unit tests of some of the fundamental building blocks used by the implemented data structures. As usual, running the executables without any arguments will show the list of their expected input parameters.
 Examples:
 
     $ ./compact_vector_test 10000 13
     $ ./fast_ef_sequence_test 1000000 128
 
-The directory also contains the unit test for the data structures storing frequency counts, named `check_count_model`, which validates the implementation by checking that each count stored in the data structure is the same as the one provided in the input files from which the data structure was previously built. 
+The directory also contains the unit test for the data structures storing frequency counts, named `check_count_model`, which validates the implementation by checking that each count stored in the data structure is the same as the one provided in the input files from which the data structure was previously built.
 Example:
-    
+
     $ ./check_count_model count_data_structure.bin ../test_data
 
 where `count_data_structure.bin` is the name of the data structure binary file and `test_data` is the name of the folder containing the input *N*-gram counts files.
@@ -193,7 +193,7 @@ The results of this (micro) benchmark are summarized in the following table.
 |PEF-RTrie          |                   2|1.75 (**-26.9%**)  |      1.65 (+32%)|      0.72 (+29.16%)|
 
 For a data structure storing probabilities and backoffs, we can instead test the speed of scoring a text file by using the benchmark program `score`. A complete example follows.
-    
+
     $ ./build_trie_lm ef_trie 5 prob_backoff --u -10.0 --p 8 --b 8 --arpa ../test_data/arpa --out ef_trie.prob_backoff.8.8.bin
     $ ./score ef_trie.prob_backoff.8.8.bin ../test_data/sample_text
 
@@ -214,7 +214,7 @@ Statistics
 The executable `print_stats` can be used to gather useful statistics regarding the space usage of the various data structure components (e.g., gram-ID and pointer sequences for tries), as well as structual properties of the indexed *N*-gram dataset (e.g., number of unique counts, min/max range lengths, average gap of gram-ID sequences, ecc.).
 
 As an example, the following command:
-    
+
     $ ./print_stats data_structure.bin
 
 will show the statistics for the data structure serialized to the file `data_structure.bin`.
