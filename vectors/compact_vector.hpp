@@ -83,6 +83,18 @@ namespace tongrams
                 }
             }
 
+            void resize(size_t n, uint64_t w) {
+                m_size = n;
+                m_width = !w ? w + 1 : w;
+                if (m_width > 64) {
+                    std::cerr << "Error: width must be <= 64."
+                              << std::endl;
+                    std::terminate();
+                }
+                m_mask = -(w == 64) | ((uint64_t(1) << w) - 1);
+                m_bits.resize(util::words_for(m_size * m_width), 0);
+            }
+
             template<typename Iterator>
             builder(Iterator begin, uint64_t n, uint64_t w)
                 : builder(n, w)
@@ -152,7 +164,7 @@ namespace tongrams
             typedef iterator<builder> iterator_type;
 
             iterator_type begin() const {
-                return iterator_type(this); 
+                return iterator_type(this);
             }
 
             iterator_type end() const {
@@ -288,7 +300,7 @@ namespace tongrams
             std::swap(m_mask, other.m_mask);
             m_bits.swap(other.m_bits);
         }
-        
+
         void save(std::ostream& os) const {
             util::save_pod(os, &m_size);
             util::save_pod(os, &m_width);
