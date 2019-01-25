@@ -36,8 +36,9 @@ namespace tongrams
                 for (uint8_t order = 1; order <= m_order; ++order) {
                     std::string filename;
                     util::input_filename(m_input_dir, order, filename);
+                    util::check_filename(filename);
                     grams_gzparser gp(filename.c_str());
-                    
+
                     std::vector<uint64_t> counts;
                     counts.reserve(gp.num_lines());
 
@@ -46,15 +47,15 @@ namespace tongrams
                     for (auto const& l: gp) {
                         counts.push_back(l.count);
                     }
-                    
+
                     counts_builder.build_sequence(counts.begin(), counts.size());
                 }
 
                 util::logger("Building vocabulary");
                 build_vocabulary(counts_builder);
-                
+
                 for (uint8_t order = 2; order <= m_order; ++order)
-                {    
+                {
                     std::string order_grams(std::to_string(order) + "-grams");
                     std::string prv_order_filename;
                     std::string cur_order_filename;
@@ -63,9 +64,9 @@ namespace tongrams
 
                     grams_gzparser gp_prv_order(prv_order_filename.c_str());
                     grams_gzparser gp_cur_order(cur_order_filename.c_str());
-                    
+
                     uint64_t n = gp_cur_order.num_lines();
-                    
+
                     typename sorted_array_type::builder
                             sa_builder(n,
                                        m_vocab.size(),                  // max_gram_id
@@ -93,7 +94,7 @@ namespace tongrams
                     util::logger("Writing pointers");
                     sorted_array_type::builder::build_pointers(m_arrays[order - 2], pointers);
                 }
-                
+
                 counts_builder.build(m_distinct_counts);
             }
 
@@ -137,7 +138,7 @@ namespace tongrams
                 std::string filename;
                 util::input_filename(m_input_dir, 1, filename);
                 unigrams_pool.load_from<grams_gzparser>(filename.c_str());
-                
+
                 auto& unigrams_pool_index = unigrams_pool.index();
                 uint64_t n = unigrams_pool_index.size();
 
@@ -159,7 +160,7 @@ namespace tongrams
                 for (uint64_t id = 0; id < n; ++id) {
                     ids_cvb.push_back(id);
                 }
-                
+
                 // NOTE:
                 // build vocabulary excluding null terminators
                 // from unigrams strings so that we can lookup
@@ -272,7 +273,7 @@ namespace tongrams
             for (uint64_t i = 1; i < order_m1; ++i) {
                 m_arrays[i].next(r, word_ids[i]);
             }
-            
+
             uint64_t pos = m_arrays[order_m1].position(r, word_ids[order_m1]);
             uint64_t count_rank = m_arrays[order_m1].count_rank(pos);
             return m_distinct_counts.access(order_m1, count_rank);

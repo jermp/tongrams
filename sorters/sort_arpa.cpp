@@ -17,7 +17,7 @@ void build_vocabulary(const char* vocab_filename, single_valued_mpht64& vocab)
     unigrams.load_from<grams_gzparser>(vocab_filename);
     auto& unigrams_pool_index = unigrams.index();
     uint64_t n = unigrams_pool_index.size();
-    
+
     std::vector<byte_range> bytes;
     bytes.reserve(n);
     for (auto const& record: unigrams_pool_index) {
@@ -117,7 +117,6 @@ int main(int argc, char** argv)
         ap.read_line();
     }
 
-    uint64_t k = 0;
     auto n = counts[order - 1];
     grams_probs_pool pool(n, ram_percentage);
 
@@ -154,11 +153,9 @@ int main(int argc, char** argv)
                 }
             }
         }
-        
+
         auto& grams_index = pool.index();
-        sorter.sort(grams_index.begin(),
-                    grams_index.end(),
-                    tmp_dir + "/" + output_filename + "." + std::to_string(k++));
+        sorter.sort(grams_index.begin(), grams_index.end());
         pool.clear();
         ++i;
     }

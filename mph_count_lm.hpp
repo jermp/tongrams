@@ -29,8 +29,9 @@ namespace tongrams
             for (uint8_t order = 1; order <= m_order; ++order) {
                 std::string filename;
                 util::input_filename(input_dir, order, filename);
+                util::check_filename(filename);
                 grams_gzparser gp(filename.c_str());
-                
+
                 std::vector<uint64_t> counts;
                 counts.reserve(gp.num_lines());
 
@@ -45,7 +46,7 @@ namespace tongrams
             size_t available_ram = sysconf(_SC_PAGESIZE)
                                  * sysconf(_SC_PHYS_PAGES);
             for (uint8_t order = 1; order <= m_order; ++order)
-            {    
+            {
                 util::logger("Building " + std::to_string(order) + "-grams");
                 grams_counts_pool unigrams_pool(available_ram);
                 std::string filename;

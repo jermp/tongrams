@@ -27,16 +27,16 @@ namespace tongrams
         }
 
         template<typename Iterator>
-        void sort(Iterator begin, Iterator end,
-                  std::string const& output_filename)
+        void sort(Iterator begin, Iterator end)
         {
             if (begin == end) {
-                throw std::runtime_error("nothing to sort");
+                return;
             }
 
             size_t n = end - begin;
             m_batch_size = n;
             std::cout << "batch size = " << m_batch_size << std::endl;
+            std::string output_filename = next_tmp_filename();
             util::logger("sorting " + output_filename);
             std::sort(begin, end, m_comparator);
             util::logger("flushing " + output_filename);
@@ -53,9 +53,8 @@ namespace tongrams
         std::deque<std::string> m_files;
         std::string m_tmp_dir;
 
-        std::string next_tmp_filename() const {
-            return m_tmp_dir + "/." + m_output_filename +
-                                "." + std::to_string(m_cur_filename);
+        std::string next_tmp_filename() {
+            return m_tmp_dir + "/.XXX." + std::to_string(m_cur_filename++);
         }
 
         void merge_batches()
@@ -93,7 +92,7 @@ namespace tongrams
         template<typename Iterator>
         void flush(Iterator begin, Iterator end,
                    std::string const& output_filename)
-        {           
+        {
             std::ofstream os(output_filename.c_str());
             std::string line_to_write;
             uint64_t n = uint64_t(end - begin);
@@ -146,7 +145,7 @@ namespace tongrams
 
             if (!building_util::is_empty(input1)
             &&  !building_util::is_empty(input2))
-            {   
+            {
                 std::getline(input1, line1);
                 std::getline(input2, line2);
                 auto t1 = LineHandler::parse_line(line1);

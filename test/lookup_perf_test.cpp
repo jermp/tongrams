@@ -32,7 +32,7 @@ void perf_test(const char* query_filename,
     std::cout << "\tTotal bytes: " << file_size << "\n";
     std::cout << "\tTotal ngrams: " << model.size() << "\n";
     std::cout << "\tBytes per gram: " << double(file_size) / model.size() << std::endl;
-    
+
     uint8_t const* base_addr = sp.base_addr();
 
     util::logger("Performing lookups");
@@ -96,7 +96,7 @@ int main(int argc, char** argv)
         perf_test<T>(query_filename,                            \
                      binary_filename,                           \
                      runs);                                     \
-        
+
         BOOST_PP_SEQ_FOR_EACH(LOOP_BODY, _, SXLM_COUNT_TYPES);
 #undef LOOP_BODY
     } else {

@@ -94,12 +94,11 @@ int main(int argc, char** argv)
         build_vocabulary(unigrams_pool, vocab);
     }
 
-    uint64_t k = 0;
     grams_gzparser parser(ngrams_filename);
 
     auto n = parser.num_lines();
     grams_counts_pool gp(n, ram_percentage);
-    
+
     auto begin = parser.begin();
     auto const end = parser.end();
 
@@ -128,9 +127,7 @@ int main(int argc, char** argv)
         }
 
         auto& grams_index = gp.index();
-        sorter.sort(grams_index.begin(),
-                    grams_index.end(),
-                    tmp_dir + "/" + output_filename + "." + std::to_string(k++));
+        sorter.sort(grams_index.begin(), grams_index.end());
         gp.clear();
         ++i;
     }

@@ -63,7 +63,7 @@ namespace tongrams
         inline uint64_t num_ones() const {
             return m_high_bits_d1.num_positions();
         }
-        
+
         struct iterator {
             iterator(ef_sequence const& ef, uint64_t i = 0)
                 : m_ef(&ef)
