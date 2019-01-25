@@ -41,7 +41,7 @@ namespace tongrams
             for (; pos != range.second; ++pos) {
                 // assume words separated by whitespaces
                 if (*pos == ' ') {
-                    
+
                     // the token to lookup could be a whitespace ' '
                     if (pos == range.first) {
                         ++pos;
@@ -222,7 +222,7 @@ namespace tongrams
             word_ids[order_m1] = id;
             return order_m1;
         }
-    
+
     private:
         template<typename SortedArray> static inline
         uint64_t map_id(uint64_t id, uint64_t* parent_ids,
