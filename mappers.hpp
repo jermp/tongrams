@@ -132,6 +132,9 @@ namespace tongrams
             uint64_t pos = 0;
             auto grams = ngrams->grams();
             grams->find(r, id, &pos);
+            if (pos == global::not_found) {
+                return global::not_found;
+            }
             assert(pos >= r.begin && pos < r.end);
             return pos - r.begin;
         }

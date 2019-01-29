@@ -181,11 +181,11 @@ namespace tongrams
                               typename Values::builder const& counts_builder,
                               typename sorted_array_type::builder& sa_builder)
             {
+                assert(order > 1);
                 pointers.push_back(0);
                 identity_adaptor adaptor;
 
                 uint64_t pos = 0;
-
                 auto prv_order_begin = gp_prv_order.begin();
                 auto prv_order_end = gp_prv_order.end();
 
@@ -213,11 +213,11 @@ namespace tongrams
                         ++prv_order_begin;
                     }
 
-                    // check correctness of ngram file
+                    // correctness check
                     if (prv_order_begin == prv_order_end) {
-                        std::cerr << "ngram file contains wrong data:\n";
+                        std::cerr << int(order) << "-grams file is incomplete:\n";
                         std::cerr << "\t'" << std::string(pattern.first, pattern.second) << "'"
-                                  << " should have been found within previous order grams"
+                                  << " should have been found among " << int(order - 1) << "-grams"
                                   << std::endl;
                         exit(1);
                     }
@@ -227,12 +227,23 @@ namespace tongrams
                     uint64_t token_id = 0;
                     m_vocab.lookup(token, token_id, adaptor);
 
-                    // apply remapping if Mapper has to
-                    if (Mapper::context_remapping && order > m_remapping_order + 1) {
+                    if (Mapper::context_remapping and order > m_remapping_order + 1)
+                    {
                         token_id = m_mapper.map_id(gram, token_id, &m_vocab,
                                                    &m_arrays.front(),
                                                    m_remapping_order,
                                                    false); // FORWARD trie
+
+                        // correctness check
+                        if (token_id == global::not_found)
+                        {
+                            std::cerr << int(order) << "-grams file is incomplete:\n";
+                            std::cerr << "\t'" << std::string(token.first, token.second) << "'"
+                                      << " should have been found among the children of "
+                                      << "'" << std::string(pattern.first, pattern.second) << "'"
+                                      << std::endl;
+                            exit(1);
+                        }
                     }
 
                     sa_builder.add_gram(token_id);
@@ -254,7 +265,7 @@ namespace tongrams
             , m_remapping_order(0)
         {}
 
-        template <typename T, typename Adaptor>
+        template<typename T, typename Adaptor>
         uint64_t lookup(T gram, Adaptor adaptor)
         {
             static uint64_t word_ids[global::max_order];

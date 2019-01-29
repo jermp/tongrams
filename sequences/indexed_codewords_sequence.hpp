@@ -21,20 +21,22 @@ namespace tongrams
             for (uint64_t i = 0; i < n; ++i, ++start) {
                 bits += util::floor_log2(*start + 2);
             }
-            bit_vector_builder bvb_index(bits);
+            bit_vector_builder bvb_index(bits + 1);
             bit_vector_builder bvb_codewords(bits);
-            
+
             uint64_t pos = 0;
             for (uint64_t i = 0; i < n; ++i, ++begin) {
                 auto v = *begin;
                 uint64_t len = util::floor_log2(v + 2);
+                assert(len <= 64);
                 uint64_t cw = v + 2 - (uint64_t(1) << len);
                 bvb_codewords.set_bits(pos, cw, len);
                 bvb_index.set(pos, 1);
                 pos += len;
             }
             // NOTE: store a last 1 to delimit last codeword:
-            // avoid test for last codeword in access
+            // avoid test for last codeword in operator[]
+            assert(pos == bits);
             bvb_index.set(pos, 1);
 
             bit_vector(&bvb_codewords).swap(m_codewords);
@@ -44,8 +46,11 @@ namespace tongrams
 
         inline uint64_t operator[](uint64_t i) const {
             uint64_t pos = m_index_d1.select(m_index, i);
+            assert(pos < m_index.size());
             bit_vector::unary_iterator e(m_index, pos + 1);
-            uint64_t len = e.next() - pos;
+            uint64_t next = e.next();
+            uint64_t len = next - pos;
+            assert(len <= 64);
             uint64_t cw = m_codewords.get_bits(pos, len);
             uint64_t value = cw + (uint64_t(1) << len) - 2;
             return value;

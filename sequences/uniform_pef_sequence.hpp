@@ -172,6 +172,11 @@ namespace pef {
 
         void find(tongrams::pointer_range const& r, uint64_t id, uint64_t* pos)
         {
+            if (r.begin == r.end) {
+                *pos = tongrams::global::not_found;
+                return;
+            }
+
             assert(r.end > r.begin);
             assert(r.end <= size());
 
