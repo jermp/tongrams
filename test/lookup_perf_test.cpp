@@ -47,10 +47,10 @@ void perf_test(const char* query_filename,
             byte_range br = sp.get_bytes(base_addr, offsets[i], offsets[i + 1]);
             uint64_t count = model.lookup(br, adaptor);
             util::do_not_optimize_away(count);
-            if (count == global::not_found) {
-                std::cout << "'" << std::string(br.first, br.second)
-                          << "' not found" << std::endl;
-            }
+            // if (count == global::not_found) {
+            //     std::cout << "'" << std::string(br.first, br.second)
+            //               << "' not found" << std::endl;
+            // }
         }
         double elapsed = double(util::get_time_usecs() - tick);
         if (run) { // first run is not timed
