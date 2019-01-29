@@ -10,7 +10,7 @@ module1 = Extension('tongram',
                     # library_dirs = [''],
                     sources = ['tongrammodule.cpp'])
 
-setup (name = 'tongram',
-       version = '1.0',
-       description = 'Tongrams Ngrams',
-       ext_modules = [module1])
+setup(name = 'tongrams',
+      version = '1.0',
+      description = 'Tons of N-Grams',
+      ext_modules = [module1])
