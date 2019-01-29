@@ -2,21 +2,21 @@
 
 #include "vectors/sorted_array.hpp"
 
-namespace tongrams
-{
+namespace tongrams {
+
     template<typename Vocabulary,
              typename Mapper,
              typename Values,
              typename Ranks,
              typename Grams,
              typename Pointers>
-    struct trie_count_lm
-    {
+    struct trie_count_lm {
+
         typedef sorted_array<Grams,
                              Ranks,
                              Pointers> sorted_array_type;
-        struct builder
-        {
+
+        struct builder {
             builder()
             {}
 
@@ -224,8 +224,7 @@ namespace tongrams
 
                     ++pos;
 
-                    uint64_t token_id = 0;
-                    m_vocab.lookup(token, token_id, adaptor);
+                    uint64_t token_id = m_vocab.lookup(token, adaptor);
 
                     if (Mapper::context_remapping and order > m_remapping_order + 1)
                     {
@@ -269,25 +268,28 @@ namespace tongrams
         uint64_t lookup(T gram, Adaptor adaptor)
         {
             static uint64_t word_ids[global::max_order];
-            uint64_t order_m1 =
+            uint64_t order =
                 m_mapper.map_query(adaptor(gram), word_ids,
                                    &m_vocab, &m_arrays.front(),
                                    m_remapping_order);
-            assert(order_m1 < m_order);
 
-            if (!order_m1) {
-                uint64_t count_rank = m_arrays[0].count_rank(word_ids[0]);
-                return m_distinct_counts.access(0, count_rank);
+            if (order == global::not_found) {
+                return global::not_found;
+            }
+            assert(order < m_order);
+
+            pointer_range r;
+            uint64_t pos = word_ids[0];
+            for (uint64_t i = 1; i <= order; ++i) {
+                r = m_arrays[i - 1].range(pos);
+                pos = m_arrays[i].position(r, word_ids[i]);
+                if (pos == global::not_found) {
+                    return global::not_found;
+                }
             }
 
-            auto r = m_arrays[0].range(word_ids[0]);
-            for (uint64_t i = 1; i < order_m1; ++i) {
-                m_arrays[i].next(r, word_ids[i]);
-            }
-
-            uint64_t pos = m_arrays[order_m1].position(r, word_ids[order_m1]);
-            uint64_t count_rank = m_arrays[order_m1].count_rank(pos);
-            return m_distinct_counts.access(order_m1, count_rank);
+            uint64_t count_rank = m_arrays[order].count_rank(pos);
+            return m_distinct_counts.access(order, count_rank);
         }
 
         inline uint64_t order() const {
@@ -314,9 +316,9 @@ namespace tongrams
             m_distinct_counts.save(os);
             m_vocab.save(os);
             m_arrays.front().save(os, 1, value_type::count);
-            for (uint8_t order_m1 = 1;
-                         order_m1 < m_order; ++order_m1) {
-                m_arrays[order_m1].save(os, order_m1 + 1,
+            for (uint8_t order = 1;
+                         order < m_order; ++order) {
+                m_arrays[order].save(os, order + 1,
                                         value_type::count);
             }
         }
@@ -328,9 +330,9 @@ namespace tongrams
             m_vocab.load(is);
             m_arrays.resize(m_order);
             m_arrays.front().load(is, 1, value_type::count);
-            for (uint8_t order_m1 = 1;
-                         order_m1 < m_order; ++order_m1) {
-                m_arrays[order_m1].load(is, order_m1 + 1,
+            for (uint8_t order = 1;
+                         order < m_order; ++order) {
+                m_arrays[order].load(is, order + 1,
                                         value_type::count);
             }
         }

@@ -61,7 +61,7 @@ namespace tongrams
                                             + "-grams probs/backoffs");
                     ap.read_values(order, n, probs, backoffs);
                     assert(probs.size() == n);
-                    
+
                     if (order != 1) { // unigrams are NOT quantized
                         probs_builder.build_probs_sequence(probs, probs_quantization_bits);
                         if (order != m_order) {
@@ -75,12 +75,12 @@ namespace tongrams
 
                 util::logger("Building vocabulary");
                 build_vocabulary(arpa_offsets.front());
-                
+
                 for (uint8_t order = 2; order <= m_order; ++order)
-                {    
+                {
                     std::string order_grams(std::to_string(order) + "-grams");
                     uint64_t n = counts[order - 1];
-                    
+
                     typename sorted_array_type::builder
                             sa_builder(n,
                                        m_vocab.size(),              // max_gram_id
@@ -90,7 +90,7 @@ namespace tongrams
                     uint64_t num_pointers = counts[order - 2] + 1;
 
                     // NOTE: we could use this to save pointers' space at building time
-                    // compact_vector::builder pointers(num_pointers, util::ceil_log2(n + 1));                  
+                    // compact_vector::builder pointers(num_pointers, util::ceil_log2(n + 1));
                     std::vector<uint64_t> pointers;
                     pointers.reserve(num_pointers);
 
@@ -178,7 +178,7 @@ namespace tongrams
                         && m_unk_prob == global::default_unk_prob) {
                         m_unk_prob = prob;
                         std::cout << "<unk> probability found to be: "
-                                  << m_unk_prob << std::endl; 
+                                  << m_unk_prob << std::endl;
                     }
 
                     unigrams_pool.append(gram);
@@ -190,7 +190,7 @@ namespace tongrams
 
                 std::vector<byte_range> bytes;
                 bytes.reserve(n);
-                
+
                 auto base_addr = unigrams_pool.base_addr();
                 for (uint64_t i = 0; i < offsets.size() - 1; ++i) {
                     bytes.emplace_back(unigrams_pool.get_bytes(base_addr,
@@ -241,7 +241,7 @@ namespace tongrams
                 {
                     auto const& record = curr_it.next();
                     auto gram = record.gram;
-                    
+
                     // NOTE:
                     // in a BACKWARD trie, 'pattern' is the suffix of 'gram'
                     // and 'token' is the first token of 'gram'
@@ -271,8 +271,7 @@ namespace tongrams
 
                     ++pos;
 
-                    uint64_pair token_id;
-                    m_vocab.lookup(token, token_id, adaptor);
+                    uint64_pair token_id = m_vocab.lookup_pair(token, adaptor);
 
                     // apply remapping if Mapper has to
                     if (Mapper::context_remapping && order > m_remapping_order + 1) {
@@ -317,8 +316,7 @@ namespace tongrams
         void score(state_type& state, byte_range const& word,
                    bool& is_OOV, float& prob)
         {
-            uint64_pair word_id;
-            m_vocab.lookup(word, word_id, identity_adaptor());
+            uint64_pair word_id = m_vocab.lookup_pair(word, identity_adaptor());
             state.add_word(word_id.first);
 
             uint8_t longest_matching_history_len = 0;
@@ -332,7 +330,7 @@ namespace tongrams
                 state.add_backoff(backoff);
 
                 if (backoff) {
-                    longest_matching_history_len = 1;    
+                    longest_matching_history_len = 1;
                 }
 
                 auto words_rbegin = state.words.rbegin();
@@ -341,11 +339,11 @@ namespace tongrams
                 // needed for remapping
                 uint64_t prev_id = word_id.first;
                 uint64_t prev_prev_id = prev_id;
-                
+
                 auto r = m_arrays[0].range(word_id.first);
 
                 for (; order_m1 <= state.length; ++order_m1, ++words_rbegin)
-                {    
+                {
                     state.advance();
 
                     if (r.end - r.begin == 0) {
@@ -367,7 +365,7 @@ namespace tongrams
                     if (pos == global::not_found) {
                         break;
                     }
-            
+
                     uint64_t probs_quantization_bits = m_probs_averages.quantization_bits(order_m1 - 1);
                     uint64_t mask = (uint64_t(1) << probs_quantization_bits) - 1;
                     uint64_t prob_backoff_rank = m_arrays[order_m1].prob_backoff_rank(pos);
@@ -394,7 +392,7 @@ namespace tongrams
                 prob = m_unk_prob;
                 state.add_backoff(0.0);
             }
-            
+
             // STEP (2): add backoff weights
             // if we encountered unseen ngrams during STEP (1)
             for (uint64_t i = order_m1 - 1; i < state.length; ++i) {

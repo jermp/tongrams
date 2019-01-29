@@ -15,15 +15,15 @@ void check_model(Model& model, std::string const& input_folder) {
                               str_order + "-grams.sorted.gz").c_str());
         util::logger("Checking " + str_order + "-grams");
         uint64_t i = 0;
-        for (auto const& l: grams_parser) {
-            try {
-                uint64_t count = model.lookup(l.gram, adaptor);
-                util::check(i, count, l.count, "value");
-            } catch (std::runtime_error& e) {
-                std::cout << e.what() << std::endl;
-                std::cout << "gram = '"
+        for (auto const& l: grams_parser)
+        {
+            uint64_t count = model.lookup(l.gram, adaptor);
+            if (count == global::not_found) {
+                std::cout << int(order) << "-gram = '"
                           << std::string(l.gram.first, l.gram.second)
                           << "' not found at line " << i << std::endl;
+            } else {
+                util::check(i, count, l.count, "value");
             }
             ++i;
         }
@@ -40,7 +40,6 @@ int main(int argc, char** argv)
                   << "\t" << style::bold << style::underline << "input_folder" << style::off
                   << std::endl;
         std::cout << "-----------------------------------------------\n";
-        std::cout << "Recompile with '-DDEBUG' for better diagnostic." << std::endl;
         return 1;
     }
 
@@ -48,7 +47,7 @@ int main(int argc, char** argv)
     std::string input_folder = argv[2];
 
     auto model_string_type = util::get_model_type(binary_filename);
-    
+
     if (false) {
 #define LOOP_BODY(R, DATA, T)                                          \
     } else if (model_string_type == BOOST_PP_STRINGIZE(T)) {           \
@@ -60,7 +59,7 @@ int main(int argc, char** argv)
         std::cout << "\tBytes per gram: "                              \
                   << double(file_size) / model.size() << std::endl;    \
         check_model<T>(model, input_folder);                           \
-        
+
     BOOST_PP_SEQ_FOR_EACH(LOOP_BODY, _, SXLM_COUNT_TYPES);
 #undef LOOP_BODY
     } else {

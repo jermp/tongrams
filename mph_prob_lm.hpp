@@ -6,17 +6,16 @@
 #include "utils/iterators.hpp"
 #include "state.hpp"
 
-namespace tongrams
-{
+namespace tongrams {
+
     template<typename Values,
              typename KeyRankSequence,
              typename BaseHasher>
-    struct mph_prob_lm
-    {
+    struct mph_prob_lm {
+
         typedef single_valued_mpht<KeyRankSequence, BaseHasher> hash_table;
 
-        struct builder
-        {
+        struct builder {
             builder()
             {}
 
@@ -165,7 +164,7 @@ namespace tongrams
                         && m_unk_prob == global::default_unk_prob) {
                         m_unk_prob = record.prob;
                         std::cout << "<unk> probability found to be: "
-                                  << m_unk_prob << std::endl; 
+                                  << m_unk_prob << std::endl;
                     }
                     pool.append(record);
                 }
@@ -206,8 +205,7 @@ namespace tongrams
         void score(state_type& state, byte_range const& word,
                    bool& is_OOV, float& prob)
         {
-            uint64_t value = 0;
-            m_tables[0].lookup(word, value, identity_adaptor());
+            uint64_t value = m_tables[0].lookup(word, identity_adaptor());
             state.add_word(word.first); // save beginning of word
 
             uint8_t longest_matching_history_len = 0;
@@ -221,21 +219,20 @@ namespace tongrams
                 state.add_backoff(backoff);
 
                 if (backoff) {
-                    longest_matching_history_len = 1;    
+                    longest_matching_history_len = 1;
                 }
-                
+
                 auto words_rbegin = state.words.rbegin();
                 ++words_rbegin; // skip just added word
 
                 for (; order_m1 <= state.length; ++order_m1, ++words_rbegin)
-                {                    
+                {
                     state.advance();
 
                     auto prev_word_begin = *words_rbegin;
                     byte_range gram(prev_word_begin, word.second);
 
-                    uint64_t rank = 0;
-                    m_tables[order_m1].lookup(gram, rank, identity_adaptor());
+                    uint64_t rank = m_tables[order_m1].lookup(gram, identity_adaptor());
                     if (rank == global::not_found) {
                         break;
                     }
@@ -244,8 +241,8 @@ namespace tongrams
 
                         uint64_t probs_quantization_bits =
                             m_probs_averages.quantization_bits(order_m1 - 1);
-                        uint64_t mask = (uint64_t(1) << probs_quantization_bits) - 1;                     
-                        uint64_t prob_rank = rank & mask;              
+                        uint64_t mask = (uint64_t(1) << probs_quantization_bits) - 1;
+                        uint64_t prob_rank = rank & mask;
                         uint64_t backoff_rank = rank >> probs_quantization_bits;
                         prob = m_probs_averages.access(order_m1 - 1, prob_rank);
                         backoff = m_backoffs_averages.access(order_m1 - 1, backoff_rank);
@@ -317,5 +314,5 @@ namespace tongrams
         Values m_probs_averages;
         Values m_backoffs_averages;
         std::vector<hash_table> m_tables;
-    };  
+    };
 }

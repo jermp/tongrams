@@ -2,13 +2,12 @@
 
 #include "../utils/iterators.hpp"
 
-namespace tongrams
-{
+namespace tongrams {
+
     template<typename Vocabulary,
              typename Record,
              typename Iterator>
-    struct comparator
-    {
+    struct comparator {
         comparator(Vocabulary const& vocab)
             : m_vocab(&vocab)
         {}
@@ -32,16 +31,12 @@ namespace tongrams
 
                 if (!bytes::equal_bytes(br_x, br_y))
                 {
-                    uint64_t id_x = 0;
-                    m_vocab->lookup(br_x, id_x,
-                                    identity_adaptor());
+                    uint64_t id_x = m_vocab->lookup(br_x, identity_adaptor());
                     if (id_x == global::not_found) {
                         return false;
                     }
 
-                    uint64_t id_y = 0;
-                    m_vocab->lookup(br_y, id_y,
-                                    identity_adaptor());
+                    uint64_t id_y = m_vocab->lookup(br_y, identity_adaptor());
                     if (id_y == global::not_found) {
                         return false;
                     }
