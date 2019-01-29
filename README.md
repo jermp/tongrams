@@ -22,7 +22,7 @@ This guide is meant to provide a brief overview of the library and to illustrate
 Building the code
 -----------------
 -----------------
-The code is tested on Linux Ubuntu with `gcc` 5.4.1 and Mac OS X El Capitan with `clang`. The following dependencies are needed for the build: `CMake` >= 2.8 and `Boost` >= 1.58.
+The code is tested on Linux Ubuntu with `gcc` 5.4.1 and Mac OS X El Capitan with `clang`. The following dependencies are needed for the build: `CMake` >= 2.8 and `Boost`.
 
 The code depends on the [`emphf`](https://github.com/ot/emphf) git submodule. If you have cloned the repository
 without `--recursive`, you will need to perform the following commands before
