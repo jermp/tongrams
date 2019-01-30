@@ -31,7 +31,7 @@ namespace tongrams
                                                                             hash_compact_vector<uint ## HASH_KEY_BITS ## _t>,                       \
                                                                             emphf::jenkins ## HASH_KEY_BITS ## _hasher                              \
                                                                            >                                                                        \
-    
+
     typedef MPH_COUNT_TYPE(32, 32) mph3232_count_lm;
     typedef MPH_COUNT_TYPE(32, 64) mph3264_count_lm;
     typedef MPH_COUNT_TYPE(64, 32) mph6432_count_lm;
@@ -42,7 +42,7 @@ namespace tongrams
                                                      hash_compact_vector<uint ## HASH_KEY_BITS ## _t>,  \
                                                      emphf::jenkins ## HASH_KEY_BITS ## _hasher         \
                                                     >                                                   \
-    
+
     typedef MPH_PROB_TYPE(32) mph32_prob_lm;
     typedef MPH_PROB_TYPE(64) mph64_prob_lm;
 

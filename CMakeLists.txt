@@ -41,7 +41,7 @@ if (UNIX)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wno-missing-braces")
 endif()
 
-find_package(Boost 1.58.0 COMPONENTS iostreams system filesystem thread REQUIRED)
+find_package(Boost COMPONENTS iostreams system filesystem REQUIRED)
 include_directories(${Boost_INCLUDE_DIRS})
 link_directories(${Boost_LIBRARY_DIRS})
 

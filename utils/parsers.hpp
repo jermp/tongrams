@@ -15,12 +15,12 @@ namespace tongrams
         byte_range gram(br.first, br.second);
         count_record record;
         record.gram = gram;
-        
+
         // if parsed end of line, count will default to 0
         if (br.second == reinterpret_cast<uint8_t const*>(line.c_str()) + line.size()) {
             return record;
         }
-        
+
         auto pos = reinterpret_cast<const char*>(br.second) + 1;
         uint64_t count = util::toull(pos);
         record.count = count;
@@ -90,7 +90,7 @@ namespace tongrams
         static void format_line(count_record const& record,
                                 std::string& formatted_line)
         {
-            formatted_line = std::string(record.gram.first, 
+            formatted_line = std::string(record.gram.first,
                                          record.gram.second)
                            // omit 0 counts?
                            + "\t" + std::to_string(record.count);
@@ -148,7 +148,7 @@ namespace tongrams
 
             expect("\\" + std::to_string(order) + "-grams:");
             m_offsets.push_back(m_is.tellg());
-            
+
             for (uint64_t i = 0; i < num_ngrams; ++i) {
                 read_line();
                 parse_line();
@@ -292,7 +292,7 @@ namespace tongrams
             try {
                 m_num_lines = std::stoull(line);
                 if (!m_num_lines) {
-                    throw std::runtime_error("number of lines must not be 0."); 
+                    throw std::runtime_error("number of lines must not be 0.");
                 }
             } catch (std::invalid_argument& e) {
                 std::cerr << e.what() << std::endl;
@@ -339,7 +339,7 @@ namespace tongrams
     //         }
     //         m_num_lines = std::stoull(line);
     //         if (!m_num_lines) {
-    //             throw std::runtime_error("number of lines must not be 0."); 
+    //             throw std::runtime_error("number of lines must not be 0.");
     //         }
     //     }
 

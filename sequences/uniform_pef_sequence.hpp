@@ -76,7 +76,6 @@ namespace pef {
             pef_global_parameters params;
             uint64_t partition_size = uint64_t(1) << m_log_partition_size;
             size_t partitions = tongrams::util::ceil_div(n, partition_size);
-
             m_partitions = partitions;
 
             tongrams::bit_vector_builder data_bvb;
@@ -84,7 +83,8 @@ namespace pef {
             std::vector<uint64_t> cur_partition;
 
             uint64_t cur_base = 0;
-            if (partitions == 1) {
+            if (partitions == 1)
+            {
                 cur_base = *begin;
                 Iterator it = begin;
 
@@ -172,6 +172,11 @@ namespace pef {
 
         void find(tongrams::pointer_range const& r, uint64_t id, uint64_t* pos)
         {
+            if (r.begin == r.end) {
+                *pos = tongrams::global::not_found;
+                return;
+            }
+
             assert(r.end > r.begin);
             assert(r.end <= size());
 
@@ -223,12 +228,13 @@ namespace pef {
 
                 pef_global_parameters params;
                 tongrams::bits_iterator<tongrams::bit_vector> it(bv);
+
                 if (m_partitions == 1) {
                     m_cur_partition = 0;
                     m_cur_begin = 0;
                     m_cur_end = n;
 
-                    uint64_t universe_bits = tongrams::util::ceil_log2(universe);
+                    uint64_t universe_bits = tongrams::util::ceil_log2(universe + 1);
                     m_cur_base = it.get_bits(universe_bits);
                     auto ub = 0;
                     if (n > 1) {

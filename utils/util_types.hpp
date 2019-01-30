@@ -33,15 +33,15 @@ namespace tongrams
 
     typedef std::pair<uint64_t,
                       uint64_t> uint64_pair;
-    
+
     typedef std::tuple<uint64_t,
                        uint64_t,
                        uint64_t> uint64_triplet;
 
     typedef std::vector<uint64_pair> pairs_vector;
-    
+
     typedef std::pair<const uint8_t*, const uint8_t*> byte_range;
-    
+
     struct count_record {
         count_record()
             : count(0)
@@ -68,7 +68,7 @@ namespace tongrams
             : gram(g)
             , prob(p)
             , backoff(b)
-        {}        
+        {}
 
         byte_range gram;
         float prob, backoff;

@@ -15,16 +15,14 @@
 #include "../vectors/hash_compact_vector.hpp"
 #include "../vectors/compact_triplets_vector.hpp"
 
-namespace tongrams
-{
+namespace tongrams {
+
     template<typename KeyValueSequence,
              typename BaseHasher>
-    struct single_valued_mpht
-    {
+    struct single_valued_mpht {
         typedef tongrams::mphf<BaseHasher> hash_function;
 
-        struct builder
-        {
+        struct builder {
             builder()
             {}
 
@@ -85,13 +83,13 @@ namespace tongrams
             single_valued_mpht::builder().swap(in);
         }
 
-        template <typename T, typename Adaptor>
-        void lookup(T gram, uint64_t& val, Adaptor adaptor) const {
+        template<typename T, typename Adaptor>
+        uint64_t lookup(T gram, Adaptor adaptor) const {
             auto hashes = m_h.hashes(gram, adaptor);
             uint64_t key = m_h.mix_hashes(hashes);
             uint64_t pos = m_h.lookup(hashes);
             auto const& p = m_data[pos];
-            val = p.first == key ? p.second : global::not_found;
+            return p.first == key ? p.second : global::not_found;
         }
 
         size_t size() const {
@@ -139,8 +137,8 @@ namespace tongrams
                               single_valued_mpht64;
 
     template<typename BaseHasher>
-    struct double_valued_mpht
-    {
+    struct double_valued_mpht {
+
         typedef tongrams::mphf<BaseHasher> hash_function;
 
         double_valued_mpht()
@@ -180,7 +178,7 @@ namespace tongrams
                 hash_function(sorter, n, ngrams, adaptor).swap(m_h);
             }
 
-            
+
             compact_triplets_vector::builder data_builder(n,
                                                           keys.size() ? keys.width() : 64,
                                                           values1.width(),
@@ -206,47 +204,51 @@ namespace tongrams
         }
 
         // always compare with default hash keys
-        template <typename T, typename Adaptor>
-        void lookup(T gram, uint64_pair& values, Adaptor adaptor) const {
-            auto hashes = m_h.hashes(gram, adaptor);
-            uint64_t key = m_h.mix_hashes(hashes);
-            uint64_t pos = m_h.lookup(hashes);          
-            auto const& triple = m_data[pos];
-            if (std::get<0>(triple) == key) {
-                values.first = std::get<1>(triple);
-                values.second = std::get<2>(triple); 
-            } else {
-                // if key not found, just assign default values
-                values.first = global::not_found;
-                values.second = global::not_found;
-            }
-        }
-
-        // compare with the passed key
-        template <typename T, typename Adaptor>
-        void lookup(T gram, uint64_t key, uint64_pair& values, Adaptor adaptor) const {
-            auto hashes = m_h.hashes(gram, adaptor);
-            uint64_t pos = m_h.lookup(hashes);          
-            auto const& triple = m_data[pos];
-            if (std::get<0>(triple) == key) {
-                values.first = std::get<1>(triple);
-                values.second = std::get<2>(triple); 
-            } else {
-                // if key not found, just assign default values
-                values.first = global::not_found;
-                values.second = global::not_found;
-            }
-        }
-
-        // just return the first field, comparing with default hash key
-        template <typename T, typename Adaptor>
-        void lookup(T gram, uint64_t& first, Adaptor adaptor) const {
+        template<typename T, typename Adaptor>
+        uint64_pair lookup_pair(T gram, Adaptor adaptor) const {
             auto hashes = m_h.hashes(gram, adaptor);
             uint64_t key = m_h.mix_hashes(hashes);
             uint64_t pos = m_h.lookup(hashes);
             auto const& triple = m_data[pos];
-            first = std::get<0>(triple) == key
-                  ? std::get<1>(triple) : global::not_found;
+            uint64_pair values;
+            if (std::get<0>(triple) == key) {
+                values.first = std::get<1>(triple);
+                values.second = std::get<2>(triple);
+            } else {
+                // if key not found, just assign default values
+                values.first = global::not_found;
+                values.second = global::not_found;
+            }
+            return values;
+        }
+
+        // compare with the passed key
+        // template<typename T, typename Adaptor>
+        // uint64_pair lookup_pair(T gram, uint64_t key, Adaptor adaptor) const {
+        //     auto hashes = m_h.hashes(gram, adaptor);
+        //     uint64_t pos = m_h.lookup(hashes);
+        //     auto const& triple = m_data[pos];
+        //     uint64_pair values;
+        //     if (std::get<0>(triple) == key) {
+        //         values.first = std::get<1>(triple);
+        //         values.second = std::get<2>(triple);
+        //     } else {
+        //         // if key not found, just assign default values
+        //         values.first = global::not_found;
+        //         values.second = global::not_found;
+        //     }
+        //     return values;
+        // }
+
+        // just return the first field, comparing with default hash key
+        template<typename T, typename Adaptor>
+        uint64_t lookup(T gram, Adaptor adaptor) const {
+            auto hashes = m_h.hashes(gram, adaptor);
+            uint64_t key = m_h.mix_hashes(hashes);
+            uint64_t pos = m_h.lookup(hashes);
+            auto const& triple = m_data[pos];
+            return std::get<0>(triple) == key
+                 ? std::get<1>(triple) : global::not_found;
         }
 
         size_t size() const {
@@ -288,8 +290,8 @@ namespace tongrams
     template<typename UintValueType1,
              typename UintValueType2,
              typename BaseHasher = emphf::jenkins64_hasher>
-    struct uint_mpht
-    {
+    struct uint_mpht {
+
         typedef tongrams::mphf<BaseHasher> hash_function;
 
         uint_mpht()

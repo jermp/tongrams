@@ -2,21 +2,21 @@
 
 #include "vectors/sorted_array.hpp"
 
-namespace tongrams
-{
+namespace tongrams {
+
     template<typename Vocabulary,
              typename Mapper,
              typename Values,
              typename Ranks,
              typename Grams,
              typename Pointers>
-    struct trie_count_lm
-    {
+    struct trie_count_lm {
+
         typedef sorted_array<Grams,
                              Ranks,
                              Pointers> sorted_array_type;
-        struct builder
-        {
+
+        struct builder {
             builder()
             {}
 
@@ -36,8 +36,9 @@ namespace tongrams
                 for (uint8_t order = 1; order <= m_order; ++order) {
                     std::string filename;
                     util::input_filename(m_input_dir, order, filename);
+                    util::check_filename(filename);
                     grams_gzparser gp(filename.c_str());
-                    
+
                     std::vector<uint64_t> counts;
                     counts.reserve(gp.num_lines());
 
@@ -46,15 +47,15 @@ namespace tongrams
                     for (auto const& l: gp) {
                         counts.push_back(l.count);
                     }
-                    
+
                     counts_builder.build_sequence(counts.begin(), counts.size());
                 }
 
                 util::logger("Building vocabulary");
                 build_vocabulary(counts_builder);
-                
+
                 for (uint8_t order = 2; order <= m_order; ++order)
-                {    
+                {
                     std::string order_grams(std::to_string(order) + "-grams");
                     std::string prv_order_filename;
                     std::string cur_order_filename;
@@ -63,9 +64,9 @@ namespace tongrams
 
                     grams_gzparser gp_prv_order(prv_order_filename.c_str());
                     grams_gzparser gp_cur_order(cur_order_filename.c_str());
-                    
+
                     uint64_t n = gp_cur_order.num_lines();
-                    
+
                     typename sorted_array_type::builder
                             sa_builder(n,
                                        m_vocab.size(),                  // max_gram_id
@@ -93,7 +94,7 @@ namespace tongrams
                     util::logger("Writing pointers");
                     sorted_array_type::builder::build_pointers(m_arrays[order - 2], pointers);
                 }
-                
+
                 counts_builder.build(m_distinct_counts);
             }
 
@@ -137,7 +138,7 @@ namespace tongrams
                 std::string filename;
                 util::input_filename(m_input_dir, 1, filename);
                 unigrams_pool.load_from<grams_gzparser>(filename.c_str());
-                
+
                 auto& unigrams_pool_index = unigrams_pool.index();
                 uint64_t n = unigrams_pool_index.size();
 
@@ -159,7 +160,7 @@ namespace tongrams
                 for (uint64_t id = 0; id < n; ++id) {
                     ids_cvb.push_back(id);
                 }
-                
+
                 // NOTE:
                 // build vocabulary excluding null terminators
                 // from unigrams strings so that we can lookup
@@ -180,11 +181,11 @@ namespace tongrams
                               typename Values::builder const& counts_builder,
                               typename sorted_array_type::builder& sa_builder)
             {
+                assert(order > 1);
                 pointers.push_back(0);
                 identity_adaptor adaptor;
 
                 uint64_t pos = 0;
-
                 auto prv_order_begin = gp_prv_order.begin();
                 auto prv_order_end = gp_prv_order.end();
 
@@ -212,26 +213,36 @@ namespace tongrams
                         ++prv_order_begin;
                     }
 
-                    // check correctness of ngram file
+                    // correctness check
                     if (prv_order_begin == prv_order_end) {
-                        std::cerr << "ngram file contains wrong data:\n";
+                        std::cerr << int(order) << "-grams file is incomplete:\n";
                         std::cerr << "\t'" << std::string(pattern.first, pattern.second) << "'"
-                                  << " should have been found within previous order grams"
+                                  << " should have been found among " << int(order - 1) << "-grams"
                                   << std::endl;
                         exit(1);
                     }
 
                     ++pos;
 
-                    uint64_t token_id = 0;
-                    m_vocab.lookup(token, token_id, adaptor);
+                    uint64_t token_id = m_vocab.lookup(token, adaptor);
 
-                    // apply remapping if Mapper has to
-                    if (Mapper::context_remapping && order > m_remapping_order + 1) {
+                    if (Mapper::context_remapping and order > m_remapping_order + 1)
+                    {
                         token_id = m_mapper.map_id(gram, token_id, &m_vocab,
                                                    &m_arrays.front(),
                                                    m_remapping_order,
                                                    false); // FORWARD trie
+
+                        // correctness check
+                        if (token_id == global::not_found)
+                        {
+                            std::cerr << int(order) << "-grams file is incomplete:\n";
+                            std::cerr << "\t'" << std::string(token.first, token.second) << "'"
+                                      << " should have been found among the children of "
+                                      << "'" << std::string(pattern.first, pattern.second) << "'"
+                                      << std::endl;
+                            exit(1);
+                        }
                     }
 
                     sa_builder.add_gram(token_id);
@@ -253,29 +264,32 @@ namespace tongrams
             , m_remapping_order(0)
         {}
 
-        template <typename T, typename Adaptor>
+        template<typename T, typename Adaptor>
         uint64_t lookup(T gram, Adaptor adaptor)
         {
             static uint64_t word_ids[global::max_order];
-            uint64_t order_m1 =
+            uint64_t order =
                 m_mapper.map_query(adaptor(gram), word_ids,
                                    &m_vocab, &m_arrays.front(),
                                    m_remapping_order);
-            assert(order_m1 < m_order);
 
-            if (!order_m1) {
-                uint64_t count_rank = m_arrays[0].count_rank(word_ids[0]);
-                return m_distinct_counts.access(0, count_rank);
+            if (order == global::not_found) {
+                return global::not_found;
+            }
+            assert(order < m_order);
+
+            pointer_range r;
+            uint64_t pos = word_ids[0];
+            for (uint64_t i = 1; i <= order; ++i) {
+                r = m_arrays[i - 1].range(pos);
+                pos = m_arrays[i].position(r, word_ids[i]);
+                if (pos == global::not_found) {
+                    return global::not_found;
+                }
             }
 
-            auto r = m_arrays[0].range(word_ids[0]);
-            for (uint64_t i = 1; i < order_m1; ++i) {
-                m_arrays[i].next(r, word_ids[i]);
-            }
-            
-            uint64_t pos = m_arrays[order_m1].position(r, word_ids[order_m1]);
-            uint64_t count_rank = m_arrays[order_m1].count_rank(pos);
-            return m_distinct_counts.access(order_m1, count_rank);
+            uint64_t count_rank = m_arrays[order].count_rank(pos);
+            return m_distinct_counts.access(order, count_rank);
         }
 
         inline uint64_t order() const {
@@ -302,9 +316,9 @@ namespace tongrams
             m_distinct_counts.save(os);
             m_vocab.save(os);
             m_arrays.front().save(os, 1, value_type::count);
-            for (uint8_t order_m1 = 1;
-                         order_m1 < m_order; ++order_m1) {
-                m_arrays[order_m1].save(os, order_m1 + 1,
+            for (uint8_t order = 1;
+                         order < m_order; ++order) {
+                m_arrays[order].save(os, order + 1,
                                         value_type::count);
             }
         }
@@ -316,9 +330,9 @@ namespace tongrams
             m_vocab.load(is);
             m_arrays.resize(m_order);
             m_arrays.front().load(is, 1, value_type::count);
-            for (uint8_t order_m1 = 1;
-                         order_m1 < m_order; ++order_m1) {
-                m_arrays[order_m1].load(is, order_m1 + 1,
+            for (uint8_t order = 1;
+                         order < m_order; ++order) {
+                m_arrays[order].load(is, order + 1,
                                         value_type::count);
             }
         }

@@ -125,7 +125,7 @@ namespace tongrams
                 m_bits[word + 1] |= bits >> stored;
             }
         }
-        
+
         inline void append_bits(uint64_t bits, size_t len)
         {
             // check there are no spurious bits
@@ -193,7 +193,7 @@ namespace tongrams
             std::swap(m_size, other.m_size);
             std::swap(m_cur_word, other.m_cur_word);
         }
-        
+
         std::vector<uint64_t>& data() {
             return m_bits;
         }

@@ -19,7 +19,7 @@ namespace tongrams
 
         inline void push_back(T x) {
             m_data[m_end] = x;
-            
+
             ++m_end;
             fall_back(m_end);
 

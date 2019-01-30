@@ -104,19 +104,15 @@ namespace tongrams
         {}
 
         inline pointer_range range(uint64_t pos) {
-            #ifdef DEBUG
-                        // for better diagnostic of
-                        // test/check_count_model.cpp
-                if (pos == global::not_found) {
-                    throw std::runtime_error("not found");
-                }
-            #endif
             assert(pos < size());
             return m_pointers[pos];
         }
 
         inline uint64_t next(pointer_range& r, uint64_t id) {
             uint64_t pos = position(r, id);
+            if (pos == global::not_found) {
+                return global::not_found;
+            }
             r = range(pos);
             return pos;
         }

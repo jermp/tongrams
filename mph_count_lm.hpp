@@ -29,8 +29,9 @@ namespace tongrams
             for (uint8_t order = 1; order <= m_order; ++order) {
                 std::string filename;
                 util::input_filename(input_dir, order, filename);
+                util::check_filename(filename);
                 grams_gzparser gp(filename.c_str());
-                
+
                 std::vector<uint64_t> counts;
                 counts.reserve(gp.num_lines());
 
@@ -45,7 +46,7 @@ namespace tongrams
             size_t available_ram = sysconf(_SC_PAGESIZE)
                                  * sysconf(_SC_PHYS_PAGES);
             for (uint8_t order = 1; order <= m_order; ++order)
-            {    
+            {
                 util::logger("Building " + std::to_string(order) + "-grams");
                 grams_counts_pool unigrams_pool(available_ram);
                 std::string filename;
@@ -75,16 +76,14 @@ namespace tongrams
             counts_builder.build(m_distinct_counts);
         }
 
-        template <typename T, typename Adaptor>
+        template<typename T, typename Adaptor>
         uint64_t lookup(T gram, Adaptor adaptor) const
         {
             byte_range br = adaptor(gram);
-            auto order_m1 = // order minus 1
-                std::count(br.first, br.second, ' ');
-            assert(order_m1 < m_order);
-            uint64_t rank = 0;
-            m_tables[order_m1].lookup(gram, rank, adaptor);
-            return m_distinct_counts.access(order_m1, rank);
+            auto order = std::count(br.first, br.second, ' '); // order minus 1
+            assert(order < m_order);
+            uint64_t rank = m_tables[order].lookup(gram, adaptor);
+            return m_distinct_counts.access(order, rank);
         }
 
         void print_stats(size_t bytes) const;

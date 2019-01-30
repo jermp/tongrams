@@ -65,7 +65,7 @@ namespace tongrams
         static const uint8_t default_probs_quantization_bits = 8;
         static const uint8_t default_backoffs_quantization_bits = 8;
     }
-    
+
     namespace style
     {
         std::ostream& bold(std::ostream& os) {
@@ -416,7 +416,7 @@ namespace tongrams
         inline static uint64_t toull(byte_range const& br) {
             return std::strtoull(reinterpret_cast<const char*>(br.first), nullptr, 10);
         }
-        
+
         inline static uint64_t toull(const char* s) {
             return std::strtoull(s, nullptr, 10);
         }
@@ -426,7 +426,7 @@ namespace tongrams
             uint64_t word_bits = sizeof(WordType) * 8;
             return (bits + word_bits - 1) / word_bits;
         }
-        
+
         inline double get_time_usecs() {
             timeval tv;
             gettimeofday(&tv, NULL);
@@ -456,11 +456,20 @@ namespace tongrams
         }
 
         void input_filename(const char* input_dir, uint8_t order,
-                            std::string& filename) {
+                            std::string& filename)
+        {
             filename = std::string(input_dir) + "/" +
                        std::to_string(order) + "-grams.sorted.gz";
         }
-            
+
+        void check_filename(std::string const& filename) {
+            std::ifstream is(filename.c_str());
+            if (!is.good()) {
+                std::cerr << "Expected file: '" << filename << "', but it does not exist." << std::endl;
+                std::abort();
+            }
+        }
+
         template<typename RandomAccessSequence, typename Adaptor>
         bool binary_search(RandomAccessSequence const& s,
                            uint64_t n, uint64_t x, uint64_t& rank,
@@ -600,7 +609,7 @@ namespace tongrams
         inline uint64_t ceil_log2(const uint64_t x) {
             return (x > 1) ? msb(x - 1) + 1 : 0;
         }
-        
+
         inline uint64_t floor_log2(const uint64_t x) {
             return (x > 1) ? msb(x) : 0;
         }

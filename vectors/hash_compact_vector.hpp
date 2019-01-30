@@ -52,7 +52,7 @@ namespace tongrams
                     uint64_t hash_key_mask = (hash_t(1) << shift) - 1;
                     m_bits[block] &= hash_key_mask;
                     m_bits[block] |= k << shift;
-                    hash_t res_shift = hash_bits - shift;           
+                    hash_t res_shift = hash_bits - shift;
                     m_bits[block + 1] &= ~hash_key_mask;
                     m_bits[block + 1] |= k >> res_shift;
 

@@ -32,21 +32,25 @@ void perf_test(const char* query_filename,
     std::cout << "\tTotal bytes: " << file_size << "\n";
     std::cout << "\tTotal ngrams: " << model.size() << "\n";
     std::cout << "\tBytes per gram: " << double(file_size) / model.size() << std::endl;
-    
+
     uint8_t const* base_addr = sp.base_addr();
 
     util::logger("Performing lookups");
     std::vector<double> query_times;
     query_times.reserve(runs - 1);
 
-    for (size_t run = 0; run < runs; ++run) {
+    for (size_t run = 0; run < runs; ++run)
+    {
         auto tick = util::get_time_usecs();
-        for (size_t i = 0; i < test_strings; ++i) {
-            byte_range br = sp.get_bytes(base_addr,
-                                         offsets[i],
-                                         offsets[i + 1]);
-            auto value = model.lookup(br, adaptor);
-            util::do_not_optimize_away(value);
+        for (size_t i = 0; i < test_strings; ++i)
+        {
+            byte_range br = sp.get_bytes(base_addr, offsets[i], offsets[i + 1]);
+            uint64_t count = model.lookup(br, adaptor);
+            util::do_not_optimize_away(count);
+            // if (count == global::not_found) {
+            //     std::cout << "'" << std::string(br.first, br.second)
+            //               << "' not found" << std::endl;
+            // }
         }
         double elapsed = double(util::get_time_usecs() - tick);
         if (run) { // first run is not timed
@@ -96,7 +100,7 @@ int main(int argc, char** argv)
         perf_test<T>(query_filename,                            \
                      binary_filename,                           \
                      runs);                                     \
-        
+
         BOOST_PP_SEQ_FOR_EACH(LOOP_BODY, _, SXLM_COUNT_TYPES);
 #undef LOOP_BODY
     } else {
