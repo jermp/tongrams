@@ -1,0 +1,14 @@
+To install the python wrapper simple run
+
+    $ build_install.sh
+
+To test it, run in the build directory
+
+    $ ./build_trie_lm pef_trie 5 count --dir ../test_data/ --ranks PSEF --out ../data_pef_trie.count.out
+
+And then
+
+    $ python test_after_install.py
+
+The python wrapper should be generalized to support all data structures (currently supports only the pef_trie)
+

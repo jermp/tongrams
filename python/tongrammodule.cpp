@@ -36,9 +36,6 @@ static PyObject * tongram_lookup(PyObject *self, PyObject *args){
 
     stl_string_adaptor adaptor;
 	uint64_t value1 = model.lookup(ngrams_space_separated, adaptor);
-	std::cout << value1 << std::endl;
-
-//	cout << "Done lookup." << endl;
 
     return Py_BuildValue("i", value1);
 }
