@@ -1,4 +1,4 @@
-To install the python wrapper simple run
+To install the python wrapper simply run
 
     $ build_install.sh
 
