@@ -268,19 +268,18 @@ namespace tongrams {
         uint64_t lookup(T gram, Adaptor adaptor)
         {
             static uint64_t word_ids[global::max_order];
-            uint64_t order =
+            uint64_t o =
                 m_mapper.map_query(adaptor(gram), word_ids,
                                    &m_vocab, &m_arrays.front(),
                                    m_remapping_order);
 
-            if (order == global::not_found) {
+            if (o == global::not_found or o > order()) {
                 return global::not_found;
             }
-            assert(order < m_order);
 
             pointer_range r;
             uint64_t pos = word_ids[0];
-            for (uint64_t i = 1; i <= order; ++i) {
+            for (uint64_t i = 1; i <= o; ++i) {
                 r = m_arrays[i - 1].range(pos);
                 pos = m_arrays[i].position(r, word_ids[i]);
                 if (pos == global::not_found) {
@@ -288,8 +287,8 @@ namespace tongrams {
                 }
             }
 
-            uint64_t count_rank = m_arrays[order].count_rank(pos);
-            return m_distinct_counts.access(order, count_rank);
+            uint64_t count_rank = m_arrays[o].count_rank(pos);
+            return m_distinct_counts.access(o, count_rank);
         }
 
         inline uint64_t order() const {
