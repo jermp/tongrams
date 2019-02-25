@@ -37,7 +37,15 @@ static PyObject * tongram_lookup(PyObject *self, PyObject *args){
     stl_string_adaptor adaptor;
 	uint64_t value1 = model.lookup(ngrams_space_separated, adaptor);
 
-    return Py_BuildValue("i", value1);
+//	cout << "lookup value: " << value1 << std::endl;
+
+	if (value1 == global::not_found) {
+	    return Py_BuildValue("K", 0); // unsigned long long
+	} else {
+	    return Py_BuildValue("K", value1); // unsigned long long
+	}
+
+
 }
 
 static PyMethodDef TongramMethods[] = {
