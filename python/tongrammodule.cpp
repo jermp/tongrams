@@ -8,11 +8,10 @@
 using namespace tongrams;
 using namespace std;
 
-pef_trie_PSEF_ranks_count_lm model;
-
 
 static PyObject * tongram_load(PyObject *self, PyObject *args){
     const char *binary_filename;
+    pef_trie_PSEF_ranks_count_lm * model_p = new pef_trie_PSEF_ranks_count_lm;
 
     if (!PyArg_ParseTuple(args, "s", &binary_filename)) return NULL;
 
@@ -20,32 +19,33 @@ static PyObject * tongram_load(PyObject *self, PyObject *args){
 
 	std::cout << "tongram model_string_type: " << model_string_type << "\n";
 	util::logger("Loading data structure");
-	size_t file_size = util::load(model, binary_filename);
+	size_t file_size = util::load(*model_p, binary_filename);
 
 	std::cout << "\tTotal bytes: " << file_size << "\n";
-	std::cout << "\tTotal ngrams: " << model.size() << "\n";
-	std::cout << "\tBytes per gram: " << double(file_size) / model.size() << std::endl;
+	std::cout << "\tTotal ngrams: " << model_p->size() << "\n";
+	std::cout << "\tBytes per gram: " << double(file_size) / model_p->size() << std::endl;
 
-    return Py_BuildValue("i", 0);
+    // return Py_BuildValue("i", 0); // Integet
+    return Py_BuildValue("O", model_p); // Any kind of object
 }
 
 static PyObject * tongram_lookup(PyObject *self, PyObject *args){
     const char *ngrams_space_separated;
+    pef_trie_PSEF_ranks_count_lm *pointer_to_model;
 
-    if (!PyArg_ParseTuple(args, "s", &ngrams_space_separated)) return NULL;
+    if (!PyArg_ParseTuple(args, "Os", &pointer_to_model, &ngrams_space_separated))  return NULL; // https://docs.python.org/3/extending/extending.html
 
     stl_string_adaptor adaptor;
-	uint64_t value1 = model.lookup(ngrams_space_separated, adaptor);
 
-//	cout << "lookup value: " << value1 << std::endl;
+	uint64_t value1 = pointer_to_model->lookup(ngrams_space_separated, adaptor);
+
+    // cout << "lookup value: " << value1 << std::endl;
 
 	if (value1 == global::not_found) {
 	    return Py_BuildValue("K", 0); // unsigned long long
 	} else {
 	    return Py_BuildValue("K", value1); // unsigned long long
 	}
-
-
 }
 
 static PyMethodDef TongramMethods[] = {
