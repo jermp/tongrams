@@ -69,6 +69,51 @@ namespace tongrams
         bool m_eol;
     };
 
+
+
+    struct string_text_lines
+        {
+    	string_text_lines(const char* space_seperated_string)
+                : m_pos(0)
+                , m_num_words(0)
+                , m_eol(false) {
+
+                m_data = (uint8_t const*) space_seperated_string;
+                m_size = strlen(space_seperated_string);
+            }
+
+            void next_word(byte_range& word) {
+                uint64_t pos = m_pos;
+                for (; (m_data[pos] != ' '); ++pos) {
+                    if (m_data[pos] == '\n' || pos==m_size) {
+                        m_eol = true;
+                        break;
+                    }
+                }
+                ++m_num_words;
+                word.first = &m_data[m_pos];
+                word.second = &m_data[pos];
+                m_pos = pos + 1;
+            }
+
+
+            bool end_of_line() const {
+                return m_eol;
+            }
+
+
+            uint64_t num_words() const {
+                return m_num_words;
+            }
+
+        private:
+            uint8_t const* m_data;
+            size_t m_size;
+            uint64_t m_pos;
+            uint64_t m_num_words;
+            bool m_eol;
+	};
+
     struct arpa_iterator {
         arpa_iterator(char const* arpa_filename, uint8_t order, uint64_t offset)
             : m_num_grams(0)
