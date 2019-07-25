@@ -121,7 +121,7 @@ static PyObject * tongram_score_by_type(PyObject *self, unsigned long pointer_as
     while (!corpus.end_of_line()) {
         corpus.next_word(word);
         pointer_to_model->score(state, word, is_OOV, log10_prob);
-        std::cout << "\"Word\" : \"" << std::string(word.first, word.second) << "\", " << "\"log10_prob\" : " << log10_prob << "\n";
+//        std::cout << "\"Word\" : \"" << std::string(word.first, word.second) << "\", " << "\"log10_prob\" : " << log10_prob << "\n";
         sentence_log10_prob += log10_prob;
     }
 
