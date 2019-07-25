@@ -1,126 +1,165 @@
 #include <Python.h>
-
 #include "lm_types.hpp"
-
 #include "../utils/util.hpp"
 #include "../utils/pools.hpp"
+#include <sstream>
 
 using namespace tongrams;
 using namespace std;
 
+template<typename Model>
+static PyObject * tongram_load_by_type(PyObject *self, PyObject *args, std::string model_string_type){
 
-// https://docs.python.org/3/extending/newtypes_tutorial.html
+    const char *binary_filename;
+    if (!PyArg_ParseTuple(args, "s", &binary_filename)) return NULL;
+
+    Model * model_p = new Model;
+
+    std::cout << "Loading data structure type: " << model_string_type << "\n";
+    size_t file_size = util::load(*model_p, binary_filename);
+
+    std::cout << "\tTotal bytes: " << file_size << "\n";
+    std::cout << "\tTotal ngrams: " << model_p->size() << "\n";
+    std::cout << "\tBytes per gram: " << double(file_size) / model_p->size() << std::endl;
+
+    return Py_BuildValue("ks", model_p, model_string_type.c_str()); // unsigned long. https://docs.python.org/3/c-api/arg.html
+} // EOF tongram_load_by_type
+
 
 static PyObject * tongram_load(PyObject *self, PyObject *args){
     const char *binary_filename;
-    pef_trie_PSEF_ranks_count_lm * model_p;
 
-    model_p = new pef_trie_PSEF_ranks_count_lm;
     if (!PyArg_ParseTuple(args, "s", &binary_filename)) return NULL;
 
-    auto model_string_type = util::get_model_type(binary_filename);
+    std::string model_string_type = util::get_model_type(binary_filename);
 
-    std::cout << "tongram model_string_type: " << model_string_type << "\n";
-    util::logger("Loading data structure");
-    size_t file_size = util::load(*model_p, binary_filename);
+    if (false) {
+#define LOOP_BODY(R, DATA, T)                                   \
+    } else if (model_string_type == BOOST_PP_STRINGIZE(T)) {    \
+        return tongram_load_by_type<T>(self, args, model_string_type);      \
 
-    std::cout << "\tTotal bytes: " << file_size << "\n";
-    std::cout << "\tTotal ngrams: " << model_p->size() << "\n";
-    std::cout << "\tBytes per gram: " << double(file_size) / model_p->size() << std::endl;
+        BOOST_PP_SEQ_FOR_EACH(LOOP_BODY, _, SXLM_SCORE_TYPES);
+#undef LOOP_BODY
+    }
 
-    return Py_BuildValue("k", model_p); // unsigned long. https://docs.python.org/3/c-api/arg.html
-}
+    if (false) {
+#define LOOP_BODY(R, DATA, T)                                   \
+    } else if (model_string_type == BOOST_PP_STRINGIZE(T)) {    \
+        return tongram_load_by_type<T>(self, args, model_string_type);      \
 
-// ef_trie.prob_backoff.bin
-static PyObject * tongram_load_ef_trie_prob_backoff(PyObject *self, PyObject *args){
-    const char *binary_filename;
-    // ef_trie_prob_lm
-    //pef_trie_PSEF_ranks_count_lm * model_p;
-    ef_trie_prob_lm * model_p;
+        BOOST_PP_SEQ_FOR_EACH(LOOP_BODY, _, SXLM_TRIE_COUNT_TYPES);
+#undef LOOP_BODY
+    }
 
-    model_p = new ef_trie_prob_lm;
-    if (!PyArg_ParseTuple(args, "s", &binary_filename)) return NULL;
-//
-    auto model_string_type = util::get_model_type(binary_filename);
-//
-    std::cout << "tongram model_string_type: " << model_string_type << "\n";
-    util::logger("Loading data structure");
-    size_t file_size = util::load(*model_p, binary_filename);
-//
-    std::cout << "\tTotal bytes: " << file_size << "\n";
-    std::cout << "\tTotal ngrams: " << model_p->size() << "\n";
-    std::cout << "\tBytes per gram: " << double(file_size) / model_p->size() << std::endl;
+    std::ostringstream oss;
+    oss << "Error: tongram_load() not supported with type " << "'" << model_string_type << "' ["<< binary_filename <<"].";
 
-    return Py_BuildValue("k", model_p); // unsigned long. https://docs.python.org/3/c-api/arg.html
-}
+    PyErr_SetString(PyExc_RuntimeError, oss.str().c_str());
+    return NULL;
+
+} // EOF tongram_load
 
 
-static PyObject * tongram_lookup(PyObject *self, PyObject *args){
-    const char *ngrams_space_separated;
-    pef_trie_PSEF_ranks_count_lm *pointer_to_model;
+template<typename Model>
+static PyObject * tongram_lookup_by_type(PyObject *self, unsigned long pointer_as_long, const char * ngrams_space_separated){
 
-    unsigned long pointer_as_long;
-    if (!PyArg_ParseTuple(args, "ls", &pointer_as_long, &ngrams_space_separated))  return NULL; // https://docs.python.org/3/extending/extending.html
-    pointer_to_model = (pef_trie_PSEF_ranks_count_lm *)pointer_as_long;
-
+    Model * pointer_to_model = (Model *)pointer_as_long;
     stl_string_adaptor adaptor;
 
 	uint64_t value1 = pointer_to_model->lookup(ngrams_space_separated, adaptor);
-
-    // cout << "lookup value: " << value1 << std::endl;
 
 	if (value1 == global::not_found) {
 	    return Py_BuildValue("K", 0); // unsigned long long // https://docs.python.org/3/c-api/arg.html
 	} else {
 	    return Py_BuildValue("K", value1); // unsigned long long
 	}
-}
 
-// _ef_trie_prob_backoff
-static PyObject * tongram_score_ef_trie_prob_backoff(PyObject *self, PyObject *args){
-    const char *ngrams_space_separated;
+} // EOF tongram_lookup_by_type
 
-    ef_trie_prob_lm  *pointer_to_model;
 
-    unsigned long pointer_as_long;
-    if (!PyArg_ParseTuple(args, "ls", &pointer_as_long, &ngrams_space_separated))  return NULL; // https://docs.python.org/3/extending/extending.html
-    pointer_to_model = (ef_trie_prob_lm *)pointer_as_long;
+static PyObject * tongram_lookup(PyObject *self, PyObject *args){
+    const    char *  ngrams_space_separated;
+    unsigned long    pointer_as_long;
+    const    char *  model_string_type;
 
-    float log10_prob = 0.0;
-    float sentence_log10_prob;
-    bool is_OOV = false;
-    auto state = pointer_to_model->state();
+    if (!PyArg_ParseTuple(args, "(ls)s", &pointer_as_long, &model_string_type, &ngrams_space_separated))  return NULL; // https://docs.python.org/3/extending/extending.html
+
+    std::string tmp_string = model_string_type;
+
+    if (false) {
+#define LOOP_BODY(R, DATA, T)                                   \
+    } else if (tmp_string == BOOST_PP_STRINGIZE(T)) {    \
+        return tongram_lookup_by_type<T>(self, pointer_as_long, ngrams_space_separated);      \
+
+        BOOST_PP_SEQ_FOR_EACH(LOOP_BODY, _, SXLM_TRIE_COUNT_TYPES);
+#undef LOOP_BODY
+    }
+
+    std::ostringstream oss;
+    oss << "Error: tongram_lookup() not supported with type " << "'" << model_string_type;
+
+    PyErr_SetString(PyExc_RuntimeError, oss.str().c_str());
+    return NULL;
+
+} // EOF tongram_score
+
+template<typename Model>
+static PyObject * tongram_score_by_type(PyObject *self, unsigned long pointer_as_long, const char * ngrams_space_separated){
+
+    Model * pointer_to_model = (Model *)pointer_as_long;
+
+    float log10_prob          = 0.0;
+    float sentence_log10_prob = 0.0;
+    bool  is_OOV              = false;
+    auto  state               = pointer_to_model->state();
 
     byte_range word;
 
     string_text_lines corpus(ngrams_space_separated);
-
     state.init();
 
-    sentence_log10_prob = 0.0;
-
     while (!corpus.end_of_line()) {
-
         corpus.next_word(word);
         pointer_to_model->score(state, word, is_OOV, log10_prob);
-
-//         std::cout << "\"word\" : \"" << std::string(word.first, word.second) << "\", "
-//                << "\"log10_prob\" : " << log10_prob << "\n";
-
+        std::cout << "\"Word\" : \"" << std::string(word.first, word.second) << "\", " << "\"log10_prob\" : " << log10_prob << "\n";
         sentence_log10_prob += log10_prob;
     }
 
-//    std::cout << "score value: " << sentence_log10_prob << std::endl;
-
     return Py_BuildValue("f", sentence_log10_prob); // unsigned long long
-}
+} // EOF tongram_score_by_type
+
+
+static PyObject * tongram_score(PyObject *self, PyObject *args){
+    const    char *  ngrams_space_separated;
+    unsigned long    pointer_as_long;
+    const    char *  model_string_type;
+
+    if (!PyArg_ParseTuple(args, "(ls)s", &pointer_as_long, &model_string_type, &ngrams_space_separated))  return NULL; // https://docs.python.org/3/extending/extending.html
+
+    std::string tmp_string = model_string_type;
+
+    if (false) {
+#define LOOP_BODY(R, DATA, T)                                   \
+    } else if (tmp_string == BOOST_PP_STRINGIZE(T)) {    \
+        return tongram_score_by_type<T>(self, pointer_as_long, ngrams_space_separated);      \
+
+        BOOST_PP_SEQ_FOR_EACH(LOOP_BODY, _, SXLM_SCORE_TYPES);
+#undef LOOP_BODY
+    }
+
+    std::ostringstream oss;
+    oss << "Error: tongram_score() not supported with type " << "'" << model_string_type;
+
+    PyErr_SetString(PyExc_RuntimeError, oss.str().c_str());
+    return NULL;
+
+} // EOF tongram_score
 
 static PyMethodDef TongramMethods[] = {
 
 	{"load",                         tongram_load                       , METH_VARARGS, "Load a binary tongram model."},
-	{"load_ef_trie_prob_backoff",    tongram_load_ef_trie_prob_backoff  , METH_VARARGS, "Load a binary tongram model - _ef_trie_prob_backoff."},
 	{"lookup",                       tongram_lookup                     , METH_VARARGS, "Look up a space separated ngram."},
-	{"score_ef_trie_prob_backoff",  tongram_score_ef_trie_prob_backoff, METH_VARARGS, "Look up a space separated ngram - _ef_trie_prob_backoff."},
+	{"score",                        tongram_score                      , METH_VARARGS, "score a space separated ngram"},
     
     {NULL, NULL, 0, NULL}        /* Sentinel */
 };
@@ -139,3 +178,4 @@ int main(int argc, char *argv[]) {
     /* Add a static module */
     inittongram();
 }
+
