@@ -1,6 +1,5 @@
 `tongrams` - Tons of *N*-Grams
-=============================
------------------------------
+----------
 `tongrams` is a C++ library implementing the compressed data structures described in the paper [*Efficient Data Structures for Massive N-Gram Datasets*](http://pages.di.unipi.it/pibiri/papers/SIGIR17.pdf), by Giulio Ermanno Pibiri and Rossano Venturini, published in ACM SIGIR 2017 [1]. The proposed data structures can be used to map *N*-grams to their corresponding (integer) frequency counts or to (floating point) probabilities and backoffs for backoff-interpolated [Knenser-Ney](https://en.wikipedia.org/wiki/Kneser%E2%80%93Ney_smoothing) models.
 
 The library features a compressed trie data structure in which *N*-grams are assigned integer identifiers (IDs) and compressed with *Elias-Fano* (Subsection 3.1 of [1]) as to support efficient searches within compressed space. The *context-based remapping* of such identifiers (Subsection 3.2 of [1]) permits to encode a word following a context of fixed length _k_, i.e., its preceding _k_ words, with an integer whose value is bounded by the number of words that follow such context and _not_ by the size of the whole vocabulary (number of uni-grams).
@@ -21,29 +20,39 @@ This guide is meant to provide a brief overview of the library and to illustrate
 
 Building the code
 -----------------
------------------
-The code is tested on Linux Ubuntu with `gcc` 5.4.1 and Mac OS X El Capitan with `clang`. The following dependencies are needed for the build: `CMake` >= 2.8 and `Boost`.
+The code has been tested on Linux Ubuntu with `gcc` 5.4.1 and Mac OS X El Capitan with `clang`.
+The following dependencies are needed for the build: `CMake` >= 2.8 and `Boost`.
 
-The code depends on the [`emphf`](https://github.com/ot/emphf) git submodule. If you have cloned the repository
+The code depends on the [`emphf`](https://github.com/ot/emphf) git submodule.
+If you have cloned the repository
 without `--recursive`, you will need to perform the following commands before
 building:
 
     $ git submodule init
     $ git submodule update
 
-To build the code on Unix systems (see file `CMakeLists.txt` for the used compilation flags), it is sufficient to do the following:
+To build the code on Unix systems (see file `CMakeLists.txt` for the used compilation flags), it is sufficient to do the following.
 
     $ mkdir build
     $ cd build
-    $ cmake .. -DCMAKE_BUILD_TYPE=Release
-    $ make -j[number of jobs]
+    $ cmake ..
+    $ make
 
-Setting `[number of jobs]` is recommended, e.g., `make -j4`. For best of performace use also `-DTONGRAMS_USE_POPCNT=ON` and `-DTONGRAMS_USE_PDEP=ON`, i.e., `cmake .. -DCMAKE_BUILD_TYPE=Release -DTONGRAMS_USE_POPCNT=ON -DTONGRAMS_USE_PDEP=ON`.
+You can enable parallel compilation by specifying some jobs: `make -j4`.
+
+For best of performace, compile as follows.
+
+    $ cmake .. -DCMAKE_BUILD_TYPE=Release  -DTONGRAMS_USE_SANITIZERS=OFF -DEMPHF_USE_POPCOUNT=ON -DTONGRAMS_USE_POPCNT=ON -DTONGRAMS_USE_PDEP=ON
+    $ make
+
+For a debug environment, compile as follows instead.
+
+    $ cmake .. -DCMAKE_BUILD_TYPE=Debug -DTONGRAMS_USE_SANITIZERS=ON
+    $ make
 
 Unless otherwise specified, for the rest of this guide we assume that we type the terminal commands of the following examples from the created directory `build`.
 
 Input data format
------------------
 -----------------
 The *N*-gram counts files follow the [Google format](http://storage.googleapis.com/books/ngrams/books/datasetsv2.html), i.e., one separate file for each distinct value of *N* (order) listing one gram per row. We enrich this format with a file header indicating the total number of *N*-grams in the file (rows):
 
@@ -76,7 +85,6 @@ The directory `test_data` contains:
 For the following examples, we assume to work with the sample data contained in `test_data`.
 
 Building the data structures
-----------------------------
 ----------------------------
 The two executables `build_trie_lm` and `build_mph_lm` must be used to build trie-based and (minimal perfect) hash-based language models respectively. By running the executables without any arguments, or with the flag `--help`, the detailed list of expected input parameters is shown, along with their meanings. For example, by doing
 
@@ -153,7 +161,6 @@ builds a MPH-based model
 
 Tests
 -----
------
 The `test` directory contains the unit tests of some of the fundamental building blocks used by the implemented data structures. As usual, running the executables without any arguments will show the list of their expected input parameters.
 Examples:
 
@@ -168,7 +175,6 @@ Example:
 where `count_data_structure.bin` is the name of the data structure binary file and `test_data` is the name of the folder containing the input *N*-gram counts files.
 
 Benchmarks
-----------
 ----------
 For the examples in this section, we used a 2009 desktop machine running Mac OS X El Capitan, equipped with 2.4 GHz Intel Core 2 Duo and 8 GBs of RAM (referred to as *Desktop Mac*). The code was compiled with Apple LLVM version 7.0.2 `clang` (see section [Building the code](#building-the-code)) *without using* any intrinsic instructions. We additionally replicate some experiments on a 16 Intel Xeon E5-2630 v3 cores clocked at 2.4 Ghz, with 193 GBs of RAM, running Linux 3.13.0, 64 bits (the same machine for the experiments of Section 5 of [1], referred to as *Server Linux*). In this case the code was compiled with `gcc` 6.3.0, *using* hardware `popcnt` and `pdep` instructions.
 
@@ -210,7 +216,6 @@ An examplar output could be (OOV stands for *Out Of Vocabulary*):
 
 Statistics
 ----------
-----------
 The executable `print_stats` can be used to gather useful statistics regarding the space usage of the various data structure components (e.g., gram-ID and pointer sequences for tries), as well as structual properties of the indexed *N*-gram dataset (e.g., number of unique counts, min/max range lengths, average gap of gram-ID sequences, ecc.).
 
 As an example, the following command:
@@ -221,11 +226,9 @@ will show the statistics for the data structure serialized to the file `data_str
 
 Authors
 -------
--------
 * [Giulio Ermanno Pibiri](http://pages.di.unipi.it/pibiri/), <giulio.pibiri@di.unipi.it>
 * [Rossano Venturini](http://pages.di.unipi.it/rossano/), <rossano.venturini@unipi.it>
 
 Bibliography
-------------
 ------------
 * [1] Giulio Ermanno Pibiri and Rossano Venturini, *Efficient Data Structures for Massive N-Gram Datasets*. In the Proceedings of the 40-th ACM Conference on Research and Development in Information Retrieval (SIGIR 2017).

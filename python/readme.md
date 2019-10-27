@@ -1,14 +1,16 @@
 To install the python wrapper simply run
 
-    $ build_install.sh
+    $ bash build_install.sh
 
-To test it, first create an index. For example, run the following command from the `build/` directory
+To test it, first create some indexes.
 
-    $ ./build_trie_lm pef_trie 5 count --dir ../test_data/ --ranks PSEF --out ../data_pef_trie.count.out
+For example, run the following commands from within a `build` directory
+where the library was compiler.
 
-And then
+    $ ./build_trie_lm pef_trie 5 count --dir ../test_data/ --ranks PSEF --out pef_trie.count.bin
+    $ ./build_trie_lm pef_trie 5 prob_backoff --arpa ../test_data/arpa --out pef_trie.prob_backoff.bin
 
-    $ python test_after_install.py
+And then execute the example tests.
 
-The python wrapper should be generalized to support all data structures (currently supports only the `pef_trie` with `PSEF` ranks).
-
+    $ python test_trie_count.py
+    $ python test_trie_prob.py

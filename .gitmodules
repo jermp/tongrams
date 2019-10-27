@@ -1,3 +1,3 @@
-[submodule "emphf"]
-	path = emphf
+[submodule "external/emphf"]
+	path = external/emphf
 	url = https://github.com/ot/emphf.git
