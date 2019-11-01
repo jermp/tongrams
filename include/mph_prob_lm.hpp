@@ -5,6 +5,7 @@
 #include "utils/mph_tables.hpp"
 #include "utils/iterators.hpp"
 #include "state.hpp"
+#include "utils/util.hpp"
 
 namespace tongrams {
 
@@ -60,13 +61,14 @@ struct mph_prob_lm {
             ap.parse_eof();
             std::vector<uint64_t> arpa_offsets = ap.offsets();
 
-            util::logger("Building vocabulary");
+            essentials::logger("Building vocabulary");
             build_vocabulary(arpa_offsets.front());
 
             size_t available_ram =
                 sysconf(_SC_PAGESIZE) * sysconf(_SC_PHYS_PAGES);
             for (uint8_t order = 2; order <= m_order; ++order) {
-                util::logger("Building " + std::to_string(order) + "-grams");
+                essentials::logger("Building " + std::to_string(order) +
+                                   "-grams");
                 arpa_iterator it(m_arpa_filename, order,
                                  arpa_offsets[order - 1]);
                 uint64_t n = it.num_grams();
@@ -271,8 +273,8 @@ struct mph_prob_lm {
     }
 
     void save(std::ostream& os) const {
-        util::save_pod(os, &m_order);
-        util::save_pod(os, &m_unk_prob);
+        essentials::save_pod(os, m_order);
+        essentials::save_pod(os, m_unk_prob);
         m_probs_averages.save(os);
         m_backoffs_averages.save(os);
         for (auto const& t : m_tables) {
@@ -281,8 +283,8 @@ struct mph_prob_lm {
     }
 
     void load(std::istream& is) {
-        util::load_pod(is, &m_order);
-        util::load_pod(is, &m_unk_prob);
+        essentials::load_pod(is, m_order);
+        essentials::load_pod(is, m_unk_prob);
         m_probs_averages.load(is, m_order - 1);
         m_backoffs_averages.load(is, m_order - 2);
         m_tables.resize(m_order);

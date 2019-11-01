@@ -92,7 +92,7 @@ int main(int argc, char** argv) {
         // assume unigrams fit in memory
         grams_counts_pool unigrams_pool(available_ram);
         unigrams_pool.load_from<grams_gzparser>(vocab_filename);
-        util::logger("Building vocabulary");
+        essentials::logger("Building vocabulary");
         build_vocabulary(unigrams_pool, vocab);
     }
 

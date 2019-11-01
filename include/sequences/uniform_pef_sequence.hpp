@@ -490,21 +490,21 @@ struct uniform_pef_sequence {
     }
 
     void save(std::ostream& os) const {
-        tongrams::util::save_pod(os, &m_size);
-        tongrams::util::save_pod(os, &m_universe);
-        tongrams::util::save_pod(os, &m_partitions);
+        essentials::save_pod(os, m_size);
+        essentials::save_pod(os, m_universe);
+        essentials::save_pod(os, m_partitions);
         m_upper_bounds.save(os);
         m_data.save(os);
-        tongrams::util::save_pod(os, &m_log_partition_size);
+        essentials::save_pod(os, m_log_partition_size);
     }
 
     void load(std::istream& is) {
-        tongrams::util::load_pod(is, &m_size);
-        tongrams::util::load_pod(is, &m_universe);
-        tongrams::util::load_pod(is, &m_partitions);
+        essentials::load_pod(is, m_size);
+        essentials::load_pod(is, m_universe);
+        essentials::load_pod(is, m_partitions);
         m_upper_bounds.load(is);
         m_data.load(is);
-        tongrams::util::load_pod(is, &m_log_partition_size);
+        essentials::load_pod(is, m_log_partition_size);
 
         if (m_size) {
             e.init(m_data, m_upper_bounds, m_size, m_universe, m_partitions,

@@ -6,6 +6,7 @@
 #include "utils/util.hpp"
 #include "utils/pools.hpp"
 #include "vectors/compact_vector.hpp"
+#include "../external/essentials/include/essentials.hpp"
 
 namespace tongrams {
 
@@ -156,8 +157,8 @@ struct arpa_parser {
         std::getline(m_is, m_cur_line);
         ++m_cur_line_num;
         if (m_cur_line_num % 100000000 == 0) {
-            util::logger("Processed " + std::to_string(m_cur_line_num) +
-                         " lines");
+            essentials::logger("Processed " + std::to_string(m_cur_line_num) +
+                               " lines");
         }
         return !m_cur_line.empty();
     }
@@ -232,8 +233,8 @@ struct count_records_iterator {
         std::getline(*m_buf, m_cur_line);
         ++m_cur_line_num;
         if (m_cur_line_num % 100000000 == 0) {
-            util::logger("Processed " + std::to_string(m_cur_line_num) +
-                         " lines");
+            essentials::logger("Processed " + std::to_string(m_cur_line_num) +
+                               " lines");
         }
         return *this;
     }

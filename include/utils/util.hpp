@@ -16,6 +16,7 @@
 #endif
 
 #include "utils/binary_header.hpp"
+#include "../external/essentials/include/essentials.hpp"
 
 #define LIKELY(x) __builtin_expect(!!(x), 1)
 #define UNLIKELY(x) __builtin_expect(!!(x), 0)
@@ -398,15 +399,6 @@ void write(std::ofstream& os, std::string const& line) {
 }  // namespace building_util
 
 namespace util {
-void logger(std::string const& msg) {
-    time_t t = std::time(nullptr);
-    std::locale loc;
-    const std::time_put<char>& tp = std::use_facet<std::time_put<char>>(loc);
-    const char* fmt = "%F %T";
-    tp.put(std::cout, std::cout, ' ', std::localtime(&t), fmt,
-           fmt + strlen(fmt));
-    std::cout << ": " << msg << std::endl;
-}
 
 void not_found(std::string const& what) {
     throw std::runtime_error(("'" + what + "' not found.").c_str());
@@ -424,21 +416,10 @@ inline static uint64_t toull(const char* s) {
     return std::strtoull(s, nullptr, 10);
 }
 
-template <typename WordType = uint64_t>
-uint64_t words_for(uint64_t bits) {
-    uint64_t word_bits = sizeof(WordType) * 8;
-    return (bits + word_bits - 1) / word_bits;
-}
-
 inline double get_time_usecs() {
     timeval tv;
     gettimeofday(&tv, NULL);
     return double(tv.tv_sec) * 1000000 + double(tv.tv_usec);
-}
-
-template <typename T>
-inline void do_not_optimize_away(T&& datum) {
-    asm volatile("" : "+r"(datum));
 }
 
 template <typename T>
@@ -492,43 +473,6 @@ bool binary_search(RandomAccessSequence const& s, uint64_t n, uint64_t x,
 }
 
 template <typename T>
-void check_if_pod() {
-    if (!std::is_pod<T>::value) {
-        throw std::runtime_error("basic type must be a POD.");
-    }
-}
-
-template <typename T>
-void save_pod(std::ostream& os, T const* val) {
-    check_if_pod<T>();
-    os.write(reinterpret_cast<char const*>(val), sizeof(T));
-}
-
-template <typename T>
-void save_vec(std::ostream& os, std::vector<T> const& vec) {
-    check_if_pod<T>();
-    size_t n = vec.size();
-    os.write(reinterpret_cast<char const*>(&n), sizeof(size_t));
-    os.write(reinterpret_cast<char const*>(vec.data()),
-             (std::streamsize)(sizeof(T) * n));
-}
-
-template <typename T>
-void load_pod(std::istream& is, T* val) {
-    check_if_pod<T>();
-    is.read(reinterpret_cast<char*>(val), sizeof(T));
-}
-
-template <typename T>
-void load_vec(std::istream& is, std::vector<T>& vec) {
-    size_t n;
-    is.read(reinterpret_cast<char*>(&n), sizeof(size_t));
-    vec.resize(n);
-    is.read(reinterpret_cast<char*>(vec.data()),
-            (std::streamsize)(sizeof(T) * n));
-}
-
-template <typename T>
 void save(uint8_t header, T const& data_structure,
           char const* output_filename) {
     if (output_filename == nullptr) {
@@ -536,7 +480,7 @@ void save(uint8_t header, T const& data_structure,
             "You must specify the name of the output file.");
     }
     std::ofstream os(output_filename, std::ios::binary);
-    save_pod(os, &header);
+    essentials::save_pod(os, header);
     data_structure.save(os);
     os.close();
 }
@@ -549,7 +493,7 @@ size_t load(T& data_structure, char const* binary_filename) {
             "Error in opening binary file, it may not exist or be malformed.");
     }
     uint8_t header = 0;
-    load_pod(is, &header);
+    essentials::load_pod(is, header);
     (void)header;  // skip header
     data_structure.load(is);
     size_t bytes = (size_t)is.tellg();
@@ -564,7 +508,7 @@ std::string get_model_type(char const* binary_filename) {
             "Error in opening binary file, it may not exist or be malformed.");
     }
     uint8_t header = 0;
-    load_pod(is, &header);
+    essentials::load_pod(is, header);
     binary_header bin_header;
     bool verbose = true;
     auto model_string_type = bin_header.parse(header, verbose);

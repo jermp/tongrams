@@ -159,7 +159,7 @@ struct quantized_sequence_collection {
             reinterpret_cast<char const*>(m_quantization_bits.data()),
             (std::streamsize)(sizeof(uint8_t) * m_quantization_bits.size()));
         for (auto const& s : m_sequences) {
-            util::save_vec(os, s);
+            essentials::save_vec(os, s);
         }
     }
 
@@ -169,7 +169,7 @@ struct quantized_sequence_collection {
                 (std::streamsize)(sizeof(uint8_t) * order));
         m_sequences.resize(order);
         for (auto& s : m_sequences) {
-            util::load_vec(is, s);
+            essentials::load_vec(is, s);
         }
     }
 
@@ -303,14 +303,14 @@ struct byte_aligned_sequence_collection {
 
     void save(std::ostream& os) const {
         for (auto const& s : m_sequences) {
-            util::save_vec(os, s);
+            essentials::save_vec(os, s);
         }
     }
 
     void load(std::istream& is, uint8_t order) {
         m_sequences.resize(order);
         for (auto& s : m_sequences) {
-            util::load_vec(is, s);
+            essentials::load_vec(is, s);
         }
     }
 

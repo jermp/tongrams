@@ -3,6 +3,7 @@
 
 #include "utils/util.hpp"
 #include "vectors/hash_compact_vector.hpp"
+#include "../external/essentials/include/essentials.hpp"
 
 using namespace tongrams;
 
@@ -19,7 +20,7 @@ void perf_test(uint64_t n, uint64_t w) {
     std::mt19937 eng(rd());
     std::uniform_int_distribution<uint64_t> distr(0, std::pow(2, w - 1));
 
-    util::logger("Generating random (key, value) pairs");
+    essentials::logger("Generating random (key, value) pairs");
     for (uint64_t i = 0; i < n; ++i) {
         hash_t k = distr(eng);
         uint64_t v = distr(eng);
@@ -29,29 +30,29 @@ void perf_test(uint64_t n, uint64_t w) {
     }
 
     hash_compact_vector<hash_t> cv(hcvb);
-    util::logger("Checking hash_compact_vector random access");
+    essentials::logger("Checking hash_compact_vector random access");
     for (uint64_t i = 0; i < n; ++i) {
         auto got = cv[i];
         util::check(i, got.first, keys[i], "key");
         util::check(i, got.second, values[i], "value");
     }
-    util::logger("OK");
+    essentials::logger("OK");
 
-    util::logger("Writing to disk");
+    essentials::logger("Writing to disk");
     util::save(global::null_header, cv, "./tmp.out");
 
-    util::logger("Loading from disk");
+    essentials::logger("Loading from disk");
     hash_compact_vector<hash_t> loaded;
     size_t file_size = util::load(loaded, "./tmp.out");
-    util::logger("read " + std::to_string(file_size) + " bytes");
+    essentials::logger("read " + std::to_string(file_size) + " bytes");
 
-    util::logger("Checking loaded values");
+    essentials::logger("Checking loaded values");
     for (uint64_t i = 0; i < n; ++i) {
         auto got = loaded[i];
         util::check(i, got.first, keys[i], "key");
         util::check(i, got.second, values[i], "value");
     }
-    util::logger("OK");
+    essentials::logger("OK");
     std::remove("./tmp.out");
 }
 

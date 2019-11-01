@@ -3,6 +3,7 @@
 
 #include "utils/util.hpp"
 #include "sequences/fast_ef_sequence.hpp"
+#include "../external/essentials/include/essentials.hpp"
 
 int main(int argc, char** argv) {
     using namespace tongrams;
@@ -68,11 +69,11 @@ int main(int argc, char** argv) {
     assert(values.size() == n);
 
     fast_ef_sequence seq;
-    util::logger("Building sequence");
+    essentials::logger("Building sequence");
     seq.build(values.begin(), values.size(), pointers,
               0);  // ngram order is not used
 
-    util::logger("Testing iterator");
+    essentials::logger("Testing iterator");
     auto it = seq.begin();
     uint64_t j = 0;
     for (uint64_t i = 0; i < n; ++i) {
@@ -85,9 +86,9 @@ int main(int argc, char** argv) {
                     values[i], "value");
     }
     assert(j == pointer_ranges.size() - 1);
-    util::logger("OK");
+    essentials::logger("OK");
 
-    util::logger("Testing fast_ef_sequence::find()");
+    essentials::logger("Testing fast_ef_sequence::find()");
     j = 0;
     for (uint64_t i = 0; i < n; ++i) {
         auto ptr_range = pointer_ranges[j];
@@ -100,7 +101,7 @@ int main(int argc, char** argv) {
         util::check(i, pos, i, "position");
     }
     assert(j == pointer_ranges.size() - 1);
-    util::logger("OK");
+    essentials::logger("OK");
 
     return 0;
 }

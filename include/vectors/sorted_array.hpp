@@ -161,7 +161,7 @@ struct sorted_array {
     }
 
     void save(std::ostream& os, uint8_t order, int value_t) const {
-        util::save_pod(os, &m_size);
+        essentials::save_pod(os, m_size);
 
         if (order != 1) {
             m_grams.save(os);
@@ -184,7 +184,7 @@ struct sorted_array {
     }
 
     void load(std::istream& is, uint8_t order, int value_t) {
-        util::load_pod(is, &m_size);
+        essentials::load_pod(is, m_size);
 
         if (order != 1) {
             m_grams.load(is);

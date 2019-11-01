@@ -4,6 +4,7 @@
 
 #include "../external/essentials/include/essentials.hpp"
 #include "utils/util_types.hpp"
+#include "../external/essentials/include/essentials.hpp"
 
 namespace tongrams {
 
@@ -65,8 +66,9 @@ struct grams_probs_pool {
                 record.backoff);
 
             if (m_strings_pool.size() % essentials::GB == 0) {
-                util::logger("Loaded " + std::to_string(m_strings_pool.size()) +
-                             " bytes");
+                essentials::logger("Loaded " +
+                                   std::to_string(m_strings_pool.size()) +
+                                   " bytes");
             }
         }
 
@@ -119,8 +121,9 @@ struct grams_counts_pool {
                 record.count);
 
             if (m_strings_pool.size() % essentials::GB == 0) {
-                util::logger("Loaded " + std::to_string(m_strings_pool.size()) +
-                             " bytes");
+                essentials::logger("Loaded " +
+                                   std::to_string(m_strings_pool.size()) +
+                                   " bytes");
             }
         }
 

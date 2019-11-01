@@ -104,18 +104,18 @@ struct compact_triplets_vector {
     }
 
     void save(std::ostream& os) const {
-        util::save_pod(os, &m_size);
-        util::save_pod(os, &m_width1);
-        util::save_pod(os, &m_width2);
-        util::save_pod(os, &m_width3);
+        essentials::save_pod(os, m_size);
+        essentials::save_pod(os, m_width1);
+        essentials::save_pod(os, m_width2);
+        essentials::save_pod(os, m_width3);
         m_bits.save(os);
     }
 
     void load(std::istream& is) {
-        util::load_pod(is, &m_size);
-        util::load_pod(is, &m_width1);
-        util::load_pod(is, &m_width2);
-        util::load_pod(is, &m_width3);
+        essentials::load_pod(is, m_size);
+        essentials::load_pod(is, m_width1);
+        essentials::load_pod(is, m_width2);
+        essentials::load_pod(is, m_width3);
         m_bits.load(is);
     }
 

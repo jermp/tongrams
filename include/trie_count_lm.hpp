@@ -1,5 +1,6 @@
 #pragma once
 
+#include "utils/util.hpp"
 #include "vectors/sorted_array.hpp"
 
 namespace tongrams {
@@ -32,8 +33,8 @@ struct trie_count_lm {
                 counts.reserve(gp.num_lines());
 
                 m_arrays.push_back(sorted_array_type(gp.num_lines()));
-                util::logger("Reading " + std::to_string(order) +
-                             "-grams counts");
+                essentials::logger("Reading " + std::to_string(order) +
+                                   "-grams counts");
                 for (auto const& l : gp) {
                     counts.push_back(l.count);
                 }
@@ -41,7 +42,7 @@ struct trie_count_lm {
                 counts_builder.build_sequence(counts.begin(), counts.size());
             }
 
-            util::logger("Building vocabulary");
+            essentials::logger("Building vocabulary");
             build_vocabulary(counts_builder);
 
             for (uint8_t order = 2; order <= m_order; ++order) {
@@ -71,15 +72,15 @@ struct trie_count_lm {
                 std::vector<uint64_t> pointers;
                 pointers.reserve(num_pointers);
 
-                util::logger("Building " + order_grams);
+                essentials::logger("Building " + order_grams);
                 build_ngrams(order, pointers, gp_cur_order, gp_prv_order,
                              counts_builder, sa_builder);
                 assert(pointers.back() == n);
                 assert(pointers.size() == num_pointers);
-                util::logger("Writing " + order_grams);
+                essentials::logger("Writing " + order_grams);
                 sa_builder.build(m_arrays[order - 1], pointers, order,
                                  value_type::count);
-                util::logger("Writing pointers");
+                essentials::logger("Writing pointers");
                 sorted_array_type::builder::build_pointers(m_arrays[order - 2],
                                                            pointers);
             }
@@ -292,8 +293,8 @@ struct trie_count_lm {
     }
 
     void save(std::ostream& os) const {
-        util::save_pod(os, &m_order);
-        util::save_pod(os, &m_remapping_order);
+        essentials::save_pod(os, m_order);
+        essentials::save_pod(os, m_remapping_order);
         m_distinct_counts.save(os);
         m_vocab.save(os);
         m_arrays.front().save(os, 1, value_type::count);
@@ -303,8 +304,8 @@ struct trie_count_lm {
     }
 
     void load(std::istream& is) {
-        util::load_pod(is, &m_order);
-        util::load_pod(is, &m_remapping_order);
+        essentials::load_pod(is, m_order);
+        essentials::load_pod(is, m_remapping_order);
         m_distinct_counts.load(is, m_order);
         m_vocab.load(is);
         m_arrays.resize(m_order);

@@ -108,7 +108,7 @@ int main(int argc, char** argv) {
         }
 
         single_valued_mpht64 vocab;
-        util::logger("Building vocabulary");
+        essentials::logger("Building vocabulary");
         build_vocabulary(vocab_filename, vocab);
 
         ap.read_line();

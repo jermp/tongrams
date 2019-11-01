@@ -5,13 +5,14 @@
 #include "utils/util.hpp"
 #include "utils/iterators.hpp"
 #include "lm_types.hpp"
+#include "../external/essentials/include/essentials.hpp"
 
 using namespace tongrams;
 
 template <typename Model>
 void score_corpus(const char* binary_filename, const char* corpus_filename) {
     Model model;
-    util::logger("Loading data structure");
+    essentials::logger("Loading data structure");
     util::load(model, binary_filename);
 
     text_lines corpus(corpus_filename);
@@ -29,7 +30,7 @@ void score_corpus(const char* binary_filename, const char* corpus_filename) {
     auto state = model.state();
     byte_range word;
 
-    util::logger("Scoring");
+    essentials::logger("Scoring");
     auto tick = util::get_time_usecs();
 
     while (!corpus.end_of_file()) {  // assume one sentence per line

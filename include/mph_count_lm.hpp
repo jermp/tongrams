@@ -4,6 +4,7 @@
 
 #include "utils/mph_tables.hpp"
 #include "utils/parsers.hpp"
+#include "utils/util.hpp"
 
 namespace tongrams {
 template <typename Values, typename KeyRankSequence, typename BaseHasher>
@@ -27,7 +28,8 @@ struct mph_count_lm {
             std::vector<uint64_t> counts;
             counts.reserve(gp.num_lines());
 
-            util::logger("Reading " + std::to_string(order) + "-grams counts");
+            essentials::logger("Reading " + std::to_string(order) +
+                               "-grams counts");
             for (auto const& l : gp) {
                 counts.push_back(l.count);
             }
@@ -37,7 +39,7 @@ struct mph_count_lm {
 
         size_t available_ram = sysconf(_SC_PAGESIZE) * sysconf(_SC_PHYS_PAGES);
         for (uint8_t order = 1; order <= m_order; ++order) {
-            util::logger("Building " + std::to_string(order) + "-grams");
+            essentials::logger("Building " + std::to_string(order) + "-grams");
             grams_counts_pool unigrams_pool(available_ram);
             std::string filename;
             util::input_filename(input_dir, order, filename);
@@ -89,7 +91,7 @@ struct mph_count_lm {
     }
 
     void save(std::ostream& os) const {
-        util::save_pod(os, &m_order);
+        essentials::save_pod(os, m_order);
         m_distinct_counts.save(os);
         for (auto const& t : m_tables) {
             t.save(os);
@@ -97,7 +99,7 @@ struct mph_count_lm {
     }
 
     void load(std::istream& is) {
-        util::load_pod(is, &m_order);
+        essentials::load_pod(is, m_order);
         m_distinct_counts.load(is, m_order);
         m_tables.resize(m_order);
         for (auto& t : m_tables) {

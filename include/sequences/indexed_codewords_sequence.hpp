@@ -98,14 +98,14 @@ struct indexed_codewords_sequence {
     }
 
     void save(std::ostream& os) const {
-        util::save_pod(os, &m_size);
+        essentials::save_pod(os, m_size);
         m_codewords.save(os);
         m_index.save(os);
         m_index_d1.save(os);
     }
 
     void load(std::istream& is) {
-        util::load_pod(is, &m_size);
+        essentials::load_pod(is, m_size);
         m_codewords.load(is);
         m_index.load(is);
         m_index_d1.load(is);

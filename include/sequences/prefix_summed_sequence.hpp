@@ -1,5 +1,7 @@
 #pragma once
 
+#include "utils/util.hpp"
+
 namespace tongrams {
 
 template <typename Sequence>
@@ -38,12 +40,12 @@ struct prefix_summed_sequence {
     }
 
     void save(std::ostream& os) const {
-        util::save_pod(os, &m_size);
+        essentials::save_pod(os, m_size);
         m_sequence.save(os);
     }
 
     void load(std::istream& is) {
-        util::load_pod(is, &m_size);
+        essentials::load_pod(is, m_size);
         m_sequence.load(is);
     }
 

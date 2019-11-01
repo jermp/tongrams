@@ -3,6 +3,7 @@
 
 #include "utils/util.hpp"
 #include "sequences/uniform_pef_sequence.hpp"
+#include "../external/essentials/include/essentials.hpp"
 
 int main(int argc, char** argv) {
     using namespace tongrams;
@@ -46,22 +47,22 @@ int main(int argc, char** argv) {
         assert(values.size() == n);
 
         pef::uniform_pef_sequence seq;
-        util::logger("Building sequence");
+        essentials::logger("Building sequence");
         seq.build(values.begin(), values.size(), values.back(),
                   2);  // partition size is 64
 
-        util::logger("Testing iterator");
+        essentials::logger("Testing iterator");
         auto it = seq.begin();
         for (uint64_t i = 0; i < n; ++i) {
             util::check(i, it.next(), values[i], "value");
         }
-        util::logger("OK");
+        essentials::logger("OK");
 
-        util::logger("Testing uniform_pef_sequence::operator[]()");
+        essentials::logger("Testing uniform_pef_sequence::operator[]()");
         for (uint64_t i = 0; i < n; ++i) {
             util::check(i, seq[i], values[i], "value");
         }
-        util::logger("OK");
+        essentials::logger("OK");
     }
 
     std::uniform_int_distribution<uint64_t> range_distr(1,  // not empty ranges
@@ -103,11 +104,11 @@ int main(int argc, char** argv) {
     assert(values.size() == n);
 
     pef::uniform_pef_sequence seq;
-    util::logger("Building sequence");
+    essentials::logger("Building sequence");
     seq.build(values.begin(), values.size(), pointers,
               2);  // partition size is 64
 
-    util::logger("Testing iterator");
+    essentials::logger("Testing iterator");
     auto it = seq.begin();
     uint64_t j = 0;
     for (uint64_t i = 0; i < n; ++i) {
@@ -120,9 +121,9 @@ int main(int argc, char** argv) {
                     values[i], "value");
     }
     assert(j == pointer_ranges.size() - 1);
-    util::logger("OK");
+    essentials::logger("OK");
 
-    util::logger("Testing uniform_pef_sequence::find()");
+    essentials::logger("Testing uniform_pef_sequence::find()");
     j = 0;
     for (uint64_t i = 0; i < n; ++i) {
         auto ptr_range = pointer_ranges[j];
@@ -135,7 +136,7 @@ int main(int argc, char** argv) {
         util::check(i, pos, i, "position");
     }
     assert(j == pointer_ranges.size() - 1);
-    util::logger("OK");
+    essentials::logger("OK");
 
     return 0;
 }

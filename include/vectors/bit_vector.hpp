@@ -65,7 +65,7 @@ private:
 
 struct bit_vector_builder {
     bit_vector_builder(uint64_t size = 0, bool init = 0) : m_size(size) {
-        m_bits.resize(util::words_for(size), uint64_t(-init));
+        m_bits.resize(essentials::words_for(size), uint64_t(-init));
         if (size) {
             m_cur_word = &m_bits.back();
             // clear padding bits
@@ -76,12 +76,12 @@ struct bit_vector_builder {
     }
 
     void reserve(uint64_t num_bits) {
-        m_bits.reserve(util::words_for(num_bits));
+        m_bits.reserve(essentials::words_for(num_bits));
     }
 
     inline void zero_extend(uint64_t n) {
         m_size += n;
-        uint64_t needed = util::words_for(m_size) - m_bits.size();
+        uint64_t needed = essentials::words_for(m_size) - m_bits.size();
         if (needed) {
             m_bits.insert(m_bits.end(), needed, 0);
             m_cur_word = &m_bits.back();
@@ -151,7 +151,7 @@ struct bit_vector_builder {
         uint64_t pos = m_bits.size();
         uint64_t shift = size() % 64;
         m_size = size() + rhs.size();
-        m_bits.resize(util::words_for(m_size));
+        m_bits.resize(essentials::words_for(m_size));
 
         if (shift == 0) {  // word-aligned, easy case
             std::copy(rhs.m_bits.begin(), rhs.m_bits.end(),
@@ -173,7 +173,7 @@ struct bit_vector_builder {
 
     void resize(uint64_t size) {
         m_size = size;
-        m_bits.resize(util::words_for(m_size));
+        m_bits.resize(essentials::words_for(m_size));
     }
 
     void swap(bit_vector_builder& other) {
@@ -295,13 +295,13 @@ struct bit_vector {
     }
 
     void save(std::ostream& os) const {
-        util::save_pod(os, &m_size);
-        util::save_vec(os, m_bits);
+        essentials::save_pod(os, m_size);
+        essentials::save_vec(os, m_bits);
     }
 
     void load(std::istream& is) {
-        util::load_pod(is, &m_size);
-        util::load_vec(is, m_bits);
+        essentials::load_pod(is, m_size);
+        essentials::load_vec(is, m_bits);
     }
 
     struct unary_iterator {

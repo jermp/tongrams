@@ -1,8 +1,10 @@
 #pragma once
 
+#include "utils/util.hpp"
 #include "state.hpp"
 #include "utils/iterators.hpp"
 #include "vectors/sorted_array.hpp"
+#include "../external/essentials/include/essentials.hpp"
 
 namespace tongrams {
 template <typename Vocabulary, typename Mapper, typename Values, typename Ranks,
@@ -44,8 +46,8 @@ struct trie_prob_lm {
                 backoffs.reserve(n);
 
                 m_arrays.push_back(sorted_array_type(n));
-                util::logger("Reading " + std::to_string(order) +
-                             "-grams probs/backoffs");
+                essentials::logger("Reading " + std::to_string(order) +
+                                   "-grams probs/backoffs");
                 ap.read_values(order, n, probs, backoffs);
                 assert(probs.size() == n);
 
@@ -62,7 +64,7 @@ struct trie_prob_lm {
             ap.parse_eof();
             std::vector<uint64_t> arpa_offsets = ap.offsets();
 
-            util::logger("Building vocabulary");
+            essentials::logger("Building vocabulary");
             build_vocabulary(arpa_offsets.front());
 
             for (uint8_t order = 2; order <= m_order; ++order) {
@@ -83,16 +85,16 @@ struct trie_prob_lm {
                 std::vector<uint64_t> pointers;
                 pointers.reserve(num_pointers);
 
-                util::logger("Building " + order_grams);
+                essentials::logger("Building " + order_grams);
                 build_ngrams(order, arpa_offsets[order - 1],
                              arpa_offsets[order - 2], probs_builder,
                              backoffs_builder, pointers, sa_builder);
                 assert(pointers.back() == n);
                 assert(pointers.size() == num_pointers);
-                util::logger("Writing " + order_grams);
+                essentials::logger("Writing " + order_grams);
                 sa_builder.build(m_arrays[order - 1], pointers, order,
                                  value_type::prob_backoff);
-                util::logger("Writing pointers");
+                essentials::logger("Writing pointers");
                 sorted_array_type::builder::build_pointers(m_arrays[order - 2],
                                                            pointers);
             }
@@ -409,9 +411,9 @@ struct trie_prob_lm {
     }
 
     void save(std::ostream& os) const {
-        util::save_pod(os, &m_order);
-        util::save_pod(os, &m_remapping_order);
-        util::save_pod(os, &m_unk_prob);
+        essentials::save_pod(os, m_order);
+        essentials::save_pod(os, m_remapping_order);
+        essentials::save_pod(os, m_unk_prob);
         m_probs_averages.save(os);
         m_backoffs_averages.save(os);
         m_vocab.save(os);
@@ -422,9 +424,9 @@ struct trie_prob_lm {
     }
 
     void load(std::istream& is) {
-        util::load_pod(is, &m_order);
-        util::load_pod(is, &m_remapping_order);
-        util::load_pod(is, &m_unk_prob);
+        essentials::load_pod(is, m_order);
+        essentials::load_pod(is, m_remapping_order);
+        essentials::load_pod(is, m_unk_prob);
         m_probs_averages.load(is, m_order - 1);
         m_backoffs_averages.load(is, m_order - 2);
         m_vocab.load(is);

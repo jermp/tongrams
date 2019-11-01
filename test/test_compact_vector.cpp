@@ -2,6 +2,7 @@
 
 #include "utils/util.hpp"
 #include "vectors/compact_vector.hpp"
+#include "../external/essentials/include/essentials.hpp"
 
 int main(int argc, char** argv) {
     using namespace tongrams;
@@ -39,23 +40,23 @@ int main(int argc, char** argv) {
     }
     compact_vector values(cvb);
 
-    util::logger("Checking random access");
+    essentials::logger("Checking random access");
     uint32_t i = 0;
     for (; i < n; ++i) {
         util::check(i, values[i], v[i], "value");
     }
 
-    util::logger("Checking size");
+    essentials::logger("Checking size");
     util::check(0, values.size(), n, "size");
 
-    util::logger("Checking iterator");
+    essentials::logger("Checking iterator");
     auto it = v.begin();
     i = 0;
     for (auto val : values) {
         util::check(i++, val, *it++, "value");
     }
 
-    util::logger("Checking sequential filler");
+    essentials::logger("Checking sequential filler");
 
     double tick = util::get_time_usecs();
     for (uint32_t j = 0; j < 10; ++j) {
@@ -71,27 +72,27 @@ int main(int argc, char** argv) {
     std::cout << "\ttook " << elapsed << " [secs] for 10 iterations"
               << std::endl;
 
-    util::logger("Writing to disk");
+    essentials::logger("Writing to disk");
     util::save(global::null_header, values, "./tmp.out");
 
-    util::logger("Loading from disk");
+    essentials::logger("Loading from disk");
     compact_vector loaded_values;
     size_t file_size = util::load(loaded_values, "./tmp.out");
-    util::logger("read " + std::to_string(file_size) + " bytes");
+    essentials::logger("read " + std::to_string(file_size) + " bytes");
 
-    util::logger("Checking loaded values");
+    essentials::logger("Checking loaded values");
     for (i = 0; i < loaded_values.size(); ++i) {
         util::check(i, loaded_values[i], v[i], "value");
     }
-    util::logger("OK");
+    essentials::logger("OK");
 
-    util::logger("Checking loaded iterator values");
+    essentials::logger("Checking loaded iterator values");
     it = v.begin();
     i = 0;
     for (auto val : loaded_values) {
         util::check(i++, val, *it++, "value");
     }
-    util::logger("OK");
+    essentials::logger("OK");
     std::remove("./tmp.out");
 
     return 0;

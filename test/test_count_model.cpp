@@ -2,6 +2,7 @@
 
 #include "utils/util.hpp"
 #include "lm_types.hpp"
+#include "../external/essentials/include/essentials.hpp"
 
 using namespace tongrams;
 
@@ -12,7 +13,7 @@ void check_model(Model& model, std::string const& input_folder) {
         std::string str_order = std::to_string(order);
         tongrams::grams_gzparser grams_parser(
             (input_folder + "/" + str_order + "-grams.sorted.gz").c_str());
-        util::logger("Checking " + str_order + "-grams");
+        essentials::logger("Checking " + str_order + "-grams");
         uint64_t i = 0;
         for (auto const& l : grams_parser) {
             uint64_t count = model.lookup(l.gram, adaptor);
@@ -25,7 +26,7 @@ void check_model(Model& model, std::string const& input_folder) {
             }
             ++i;
         }
-        util::logger("OK");
+        essentials::logger("OK");
     }
 }
 
@@ -51,7 +52,7 @@ int main(int argc, char** argv) {
     }                                                                         \
     else if (model_string_type == BOOST_PP_STRINGIZE(T)) {                    \
         T model;                                                              \
-        util::logger("Loading data structure");                               \
+        essentials::logger("Loading data structure");                         \
         size_t file_size = util::load(model, binary_filename);                \
         std::cout << "\tTotal bytes: " << file_size << "\n";                  \
         std::cout << "\tTotal ngrams: " << model.size() << "\n";              \

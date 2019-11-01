@@ -1,5 +1,6 @@
 #pragma once
 
+#include "utils/util.hpp"
 #include "sequences/darray.hpp"
 #include "vectors/bit_vector.hpp"
 #include "../external/emphf/common.hpp"
@@ -233,23 +234,23 @@ struct fast_ef_sequence {
     }
 
     void save(std::ostream& os) const {
-        util::save_pod(os, &m_size);
+        essentials::save_pod(os, m_size);
         m_offsets.save(os);
-        util::save_vec(os, m_samplings);
+        essentials::save_vec(os, m_samplings);
         m_high_bits.save(os);
         m_high_bits_d1.save(os);
         m_low_bits.save(os);
-        util::save_pod(os, &m_l);
+        essentials::save_pod(os, m_l);
     }
 
     void load(std::istream& is) {
-        util::load_pod(is, &m_size);
+        essentials::load_pod(is, m_size);
         m_offsets.load(is);
-        util::load_vec(is, m_samplings);
+        essentials::load_vec(is, m_samplings);
         m_high_bits.load(is);
         m_high_bits_d1.load(is);
         m_low_bits.load(is);
-        util::load_pod(is, &m_l);
+        essentials::load_pod(is, m_l);
     }
 
 private:

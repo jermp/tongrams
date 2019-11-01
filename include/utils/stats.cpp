@@ -6,13 +6,14 @@
 #include "mph_prob_lm.hpp"
 #include "trie_count_lm.hpp"
 #include "trie_prob_lm.hpp"
+#include "../external/essentials/include/essentials.hpp"
 
 namespace tongrams {
 
 template <typename Values, typename KeyRankSequence, typename BaseHasher>
 void mph_count_lm<Values, KeyRankSequence, BaseHasher>::print_stats(
     size_t bytes) const {
-    util::logger("========= MPH_COUNT_LM statistics =========");
+    essentials::logger("========= MPH_COUNT_LM statistics =========");
     uint64_t num_grams = size();
     std::cout << "order: " << order() << "\n";
     std::cout << "num. of grams: " << num_grams << "\n";
@@ -57,7 +58,7 @@ void mph_count_lm<Values, KeyRankSequence, BaseHasher>::print_stats(
 template <typename Values, typename KeyRankSequence, typename BaseHasher>
 void mph_prob_lm<Values, KeyRankSequence, BaseHasher>::print_stats(
     size_t bytes) const {
-    util::logger("========= MPH_PROB_LM statistics =========");
+    essentials::logger("========= MPH_PROB_LM statistics =========");
     uint64_t num_grams = size();
     std::cout << "order: " << order() << "\n";
     std::cout << "num. of grams: " << num_grams << "\n";
@@ -302,7 +303,7 @@ template <typename Vocabulary, typename Mapper, typename Values, typename Ranks,
           typename Grams, typename Pointers>
 void trie_count_lm<Vocabulary, Mapper, Values, Ranks, Grams,
                    Pointers>::print_stats(size_t bytes) const {
-    util::logger("========= TRIE_COUNT_LM statistics =========");
+    essentials::logger("========= TRIE_COUNT_LM statistics =========");
     uint64_t i = 1;
     uint64_t grams_bytes = 0;
     uint64_t counts_ranks_bytes = 0;
@@ -377,7 +378,7 @@ template <typename Vocabulary, typename Mapper, typename Values, typename Ranks,
           typename Grams, typename Pointers>
 void trie_prob_lm<Vocabulary, Mapper, Values, Ranks, Grams,
                   Pointers>::print_stats(size_t bytes) const {
-    util::logger("========= TRIE_PROB_LM statistics =========");
+    essentials::logger("========= TRIE_PROB_LM statistics =========");
     uint64_t i = 1;
     uint64_t grams_bytes = 0;
     uint64_t probs_backoffs_ranks_bytes = 0;

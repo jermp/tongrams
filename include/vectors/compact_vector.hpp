@@ -69,7 +69,7 @@ struct compact_vector {
             , m_back(0)
             , m_cur_block(0)
             , m_cur_shift(0)
-            , m_bits(util::words_for(m_size * m_width), 0) {
+            , m_bits(essentials::words_for(m_size * m_width), 0) {
             if (m_width > 64) {
                 std::cerr << "Error: width must be <= 64." << std::endl;
                 std::terminate();
@@ -84,7 +84,7 @@ struct compact_vector {
                 std::terminate();
             }
             m_mask = -(w == 64) | ((uint64_t(1) << w) - 1);
-            m_bits.resize(util::words_for(m_size * m_width), 0);
+            m_bits.resize(essentials::words_for(m_size * m_width), 0);
         }
 
         template <typename Iterator>
@@ -285,17 +285,17 @@ struct compact_vector {
     }
 
     void save(std::ostream& os) const {
-        util::save_pod(os, &m_size);
-        util::save_pod(os, &m_width);
-        util::save_pod(os, &m_mask);
-        util::save_vec(os, m_bits);
+        essentials::save_pod(os, m_size);
+        essentials::save_pod(os, m_width);
+        essentials::save_pod(os, m_mask);
+        essentials::save_vec(os, m_bits);
     }
 
     void load(std::istream& is) {
-        util::load_pod(is, &m_size);
-        util::load_pod(is, &m_width);
-        util::load_pod(is, &m_mask);
-        util::load_vec(is, m_bits);
+        essentials::load_pod(is, m_size);
+        essentials::load_pod(is, m_width);
+        essentials::load_pod(is, m_mask);
+        essentials::load_vec(is, m_bits);
     }
 
 private:

@@ -116,15 +116,15 @@ struct mphf {
     }
 
     void save(std::ostream& os) const {
-        util::save_pod(os, &m_n);
-        util::save_pod(os, &m_hash_domain);
+        essentials::save_pod(os, m_n);
+        essentials::save_pod(os, m_hash_domain);
         m_hasher.save(os);
         m_bv.save(os);
     }
 
     void load(std::istream& is) {
-        util::load_pod(is, &m_n);
-        util::load_pod(is, &m_hash_domain);
+        essentials::load_pod(is, m_n);
+        essentials::load_pod(is, m_hash_domain);
         m_hasher.load(is);
         m_bv.load(is);
     }

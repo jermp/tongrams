@@ -103,17 +103,17 @@ struct darray {
     }
 
     void save(std::ostream& os) const {
-        util::save_pod(os, &m_positions);
-        util::save_vec(os, m_block_inventory);
-        util::save_vec(os, m_subblock_inventory);
-        util::save_vec(os, m_overflow_positions);
+        essentials::save_pod(os, m_positions);
+        essentials::save_vec(os, m_block_inventory);
+        essentials::save_vec(os, m_subblock_inventory);
+        essentials::save_vec(os, m_overflow_positions);
     }
 
     void load(std::istream& is) {
-        util::load_pod(is, &m_positions);
-        util::load_vec(is, m_block_inventory);
-        util::load_vec(is, m_subblock_inventory);
-        util::load_vec(is, m_overflow_positions);
+        essentials::load_pod(is, m_positions);
+        essentials::load_vec(is, m_block_inventory);
+        essentials::load_vec(is, m_subblock_inventory);
+        essentials::load_vec(is, m_overflow_positions);
     }
 
 protected:

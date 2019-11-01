@@ -3,6 +3,7 @@
 #include <deque>
 
 #include "utils/util.hpp"
+#include "../external/essentials/include/essentials.hpp"
 
 namespace tongrams {
 
@@ -31,9 +32,9 @@ struct sorter {
         m_batch_size = n;
         std::cout << "batch size = " << m_batch_size << std::endl;
         std::string output_filename = next_tmp_filename();
-        util::logger("sorting " + output_filename);
+        essentials::logger("sorting " + output_filename);
         std::sort(begin, end, m_comparator);
-        util::logger("flushing " + output_filename);
+        essentials::logger("flushing " + output_filename);
         flush(begin, end, output_filename);
         m_files.push_back(output_filename);
     }
@@ -101,8 +102,8 @@ private:
 
     void merge(std::string const& filename1, std::string const& filename2,
                std::string const& output_filename) {
-        util::logger("merging files " + filename1 + " and " + filename2 +
-                     " into " + output_filename);
+        essentials::logger("merging files " + filename1 + " and " + filename2 +
+                           " into " + output_filename);
 
         std::ofstream os;
         os.open(output_filename.c_str(),

@@ -3,13 +3,14 @@
 #include "lm_types.hpp"
 #include "utils/util.hpp"
 #include "utils/stats.cpp"
+#include "../external/essentials/include/essentials.hpp"
 
 using namespace tongrams;
 
 template <typename T>
 void print_stats(const char* binary_filename) {
     T model;
-    util::logger("Loading data structure");
+    essentials::logger("Loading data structure");
     size_t bytes = util::load(model, binary_filename);
     model.print_stats(bytes);
 }

@@ -3,6 +3,7 @@
 #include "lm_types.hpp"
 #include "utils/util.hpp"
 #include "utils/pools.hpp"
+#include "../external/essentials/include/essentials.hpp"
 
 using namespace tongrams;
 
@@ -13,7 +14,7 @@ void perf_test(const char* query_filename, const char* binary_filename,
     std::vector<size_t> offsets;
     offsets.push_back(0);
 
-    util::logger("Loading strings in memory for faster lookup");
+    essentials::logger("Loading strings in memory for faster lookup");
     {
         emphf::file_lines lines(query_filename);
         for (auto& l : lines) {
@@ -27,7 +28,7 @@ void perf_test(const char* query_filename, const char* binary_filename,
     identity_adaptor adaptor;
 
     Model model;
-    util::logger("Loading data structure");
+    essentials::logger("Loading data structure");
     size_t file_size = util::load(model, binary_filename);
     std::cout << "\tTotal bytes: " << file_size << "\n";
     std::cout << "\tTotal ngrams: " << model.size() << "\n";
@@ -36,7 +37,7 @@ void perf_test(const char* query_filename, const char* binary_filename,
 
     uint8_t const* base_addr = sp.base_addr();
 
-    util::logger("Performing lookups");
+    essentials::logger("Performing lookups");
     std::vector<double> query_times;
     query_times.reserve(runs - 1);
 
@@ -45,11 +46,7 @@ void perf_test(const char* query_filename, const char* binary_filename,
         for (size_t i = 0; i < test_strings; ++i) {
             byte_range br = sp.get_bytes(base_addr, offsets[i], offsets[i + 1]);
             uint64_t count = model.lookup(br, adaptor);
-            util::do_not_optimize_away(count);
-            // if (count == global::not_found) {
-            //     std::cout << "'" << std::string(br.first, br.second)
-            //               << "' not found" << std::endl;
-            // }
+            essentials::do_not_optimize_away(count);
         }
         double elapsed = double(util::get_time_usecs() - tick);
         if (run) {  // first run is not timed
