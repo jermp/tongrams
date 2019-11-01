@@ -20,10 +20,10 @@ This guide is meant to provide a brief overview of the library and to illustrate
 
 Building the code
 -----------------
-The code has been tested on Linux Ubuntu with `gcc` 5.4.1 and Mac OS X El Capitan with `clang`.
-The following dependencies are needed for the build: `CMake` >= 2.8 and `Boost`.
+The code has been tested on Linux Ubuntu with `gcc` 5.4.1, 7.3.0 and 8.3.0; Mac OS X El Capitan with `clang` 7.3.0; Mac OS X Mojave with `clang` 10.0.0.
 
-The code depends on the [`emphf`](https://github.com/ot/emphf) git submodule.
+The following dependencies are needed for the build: [`CMake`](https://cmake.org) and [`Boost`](https://www.boost.org).
+
 If you have cloned the repository
 without `--recursive`, you will need to perform the following commands before
 building:
@@ -176,7 +176,8 @@ where `count_data_structure.bin` is the name of the data structure binary file a
 
 Benchmarks
 ----------
-For the examples in this section, we used a 2009 desktop machine running Mac OS X El Capitan, equipped with 2.4 GHz Intel Core 2 Duo and 8 GBs of RAM (referred to as *Desktop Mac*). The code was compiled with Apple LLVM version 7.0.2 `clang` (see section [Building the code](#building-the-code)) *without using* any intrinsic instructions. We additionally replicate some experiments on a 16 Intel Xeon E5-2630 v3 cores clocked at 2.4 Ghz, with 193 GBs of RAM, running Linux 3.13.0, 64 bits (the same machine for the experiments of Section 5 of [1], referred to as *Server Linux*). In this case the code was compiled with `gcc` 6.3.0, *using* hardware `popcnt` and `pdep` instructions.
+For the examples in this section, we used a desktop machine running Mac OS X Mojave, equipped with a 2.3 GHz Intel Core i5 processor (referred to as *Desktop Mac*). The code was compiled with Apple LLVM version 10.0.0 `clang` *with* all optimizations (see section [Building the code](#building-the-code)).
+We additionally replicate some experiments with an Intel(R) Core(TM) i9-9900K CPU @ 3.60 GHz, under Ubuntu 19.04, 64 bits (referred to as *Server Linux*). In this case the code was compiled with `gcc` 8.3.0.
 
 For a data structure storing frequency counts, we can test the speed of lookup queries by using the benchmark program `lookup_perf_test`.
 In the following example, we show how to build and benchmark three different data structures: **EF-Trie** with no remapping, **EF-RTrie** with remapping order 1 and **PEF-RTrie** with remapping order 2 (we use the same names for the data structures as presented in [1]). Each experiment is repeated 1,000 times over the test query file `queries.random.5K`. The benchmark program `lookup_perf_test` will show mean time per run and mean time per query (along with the total number of *N*-grams, total bytes of the data structure and bytes per *N*-gram).
@@ -193,10 +194,10 @@ In the following example, we show how to build and benchmark three different dat
 The results of this (micro) benchmark are summarized in the following table.
 
 |**Data structure** |**Remapping order** | **Bytes x gram**  | **µs x query** - Desktop Mac| **µs x query** - Server Linux|
-|-------------------|:------------------:|-------------------|-----------------|--------------------|
-|EF-Trie            |                   0|2.40               |      1.13       |      0.51          |
-|EF-RTrie           |                   1|1.93 (**-19.7%**)  |      1.53 (+26%)|      0.70 (+27.14%)|
-|PEF-RTrie          |                   2|1.75 (**-26.9%**)  |      1.65 (+32%)|      0.72 (+29.16%)|
+|-------------------|:------------------:|-------------------|--------------|------------|
+|EF-Trie            |                   0|2.40               |      0.435   |      0.316 |
+|EF-RTrie           |                   1|1.93 (**-19.7%**)  |      0.583   |      0.428 |
+|PEF-RTrie          |                   2|1.75 (**-26.9%**)  |      0.595   |      0.427 |
 
 For a data structure storing probabilities and backoffs, we can instead test the speed of scoring a text file by using the benchmark program `score`. A complete example follows.
 
@@ -207,12 +208,12 @@ The first command will build the data structure, the second one will score the t
 
 An examplar output could be (OOV stands for *Out Of Vocabulary*):
 
-    $ perplexity including OOVs = 493720.19
-      perplexity excluding OOVs = 1094.2574
-      OOVs = 55868
-      corpus tokens = 153583
-      corpus sentences = 6075
-      elapsed time: 0.081263 [sec]
+	perplexity including OOVs = 493720.19
+	perplexity excluding OOVs = 1094.2574
+	OOVs = 55868
+	corpus tokens = 153583
+	corpus sentences = 6075
+	elapsed time: 0.037301 [sec]
 
 Statistics
 ----------
