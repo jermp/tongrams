@@ -2,6 +2,7 @@
 
 #include <tuple>
 
+#include "../external/essentials/include/essentials.hpp"
 #include "utils/util_types.hpp"
 
 namespace tongrams {
@@ -63,7 +64,7 @@ struct grams_probs_pool {
                 byte_range(m_base_addr + begin, m_base_addr + end), record.prob,
                 record.backoff);
 
-            if (m_strings_pool.size() % GB == 0) {
+            if (m_strings_pool.size() % essentials::GB == 0) {
                 util::logger("Loaded " + std::to_string(m_strings_pool.size()) +
                              " bytes");
             }
@@ -117,7 +118,7 @@ struct grams_counts_pool {
                 byte_range(m_base_addr + begin, m_base_addr + end),
                 record.count);
 
-            if (m_strings_pool.size() % GB == 0) {
+            if (m_strings_pool.size() % essentials::GB == 0) {
                 util::logger("Loaded " + std::to_string(m_strings_pool.size()) +
                              " bytes");
             }

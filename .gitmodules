@@ -1,3 +1,6 @@
 [submodule "external/emphf"]
 	path = external/emphf
 	url = https://github.com/ot/emphf.git
+[submodule "external/essentials"]
+	path = external/essentials
+	url = https://github.com/jermp/essentials.git

@@ -6,6 +6,7 @@
 #include "utils/parsers.hpp"
 #include "utils/mph_tables.hpp"
 #include "utils/pools.hpp"
+#include "../external/essentials/include/essentials.hpp"
 
 using namespace tongrams;
 
@@ -57,7 +58,8 @@ int main(int argc, char** argv) {
     const char* ngrams_filename = argv[1];
     const char* vocab_filename = argv[2];
     const char* output_filename = argv[3];
-    std::string tmp_dir("./");
+    std::string default_tmp_dir("./");
+    std::string tmp_dir = default_tmp_dir;
 
     size_t available_ram = sysconf(_SC_PAGESIZE) * sysconf(_SC_PHYS_PAGES);
     size_t ram_percentage = available_ram;
@@ -73,7 +75,7 @@ int main(int argc, char** argv) {
             }
         } else if (argv[i] == std::string("--t")) {
             tmp_dir = std::string(argv[++i]);
-            building_util::create_directory(tmp_dir);
+            essentials::create_directory(tmp_dir);
         } else {
             std::cerr << "unknown option: '" << argv[i] << "'" << std::endl;
             return 1;
@@ -106,27 +108,36 @@ int main(int argc, char** argv) {
     typedef prefix_order_comparator(single_valued_mpht64, count_record)
         comparator_type;
     comparator_type cmp(vocab);
-    sorter<comparator_type, count_line_handler> sorter(n, cmp, output_filename,
-                                                       tmp_dir);
+    {
+        sorter<comparator_type, count_line_handler> sorter(
+            n, cmp, output_filename, tmp_dir);
 
-    for (uint64_t i = 0; i < n - 1;) {
-        auto const& l = *begin;
-        gp.append(count_record(l.gram, l.count));
-        ++begin;
-        while (begin != end) {
+        for (uint64_t i = 0; i < n - 1;) {
             auto const& l = *begin;
-            if (gp.append(count_record(l.gram, l.count))) {
-                ++i;
-                ++begin;
-            } else {
-                break;
+            gp.append(count_record(l.gram, l.count));
+            ++begin;
+            while (begin != end) {
+                auto const& l = *begin;
+                if (gp.append(count_record(l.gram, l.count))) {
+                    ++i;
+                    ++begin;
+                } else {
+                    break;
+                }
             }
-        }
 
-        auto& grams_index = gp.index();
-        sorter.sort(grams_index.begin(), grams_index.end());
-        gp.clear();
-        ++i;
+            auto& grams_index = gp.index();
+            sorter.sort(grams_index.begin(), grams_index.end());
+            gp.clear();
+            ++i;
+        }
+    }
+
+    if (tmp_dir != default_tmp_dir) {
+        if (!essentials::remove_directory(tmp_dir)) {
+            std::cerr << "directory '" << tmp_dir << "' not removed"
+                      << std::endl;
+        }
     }
 
     return 0;

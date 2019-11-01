@@ -46,7 +46,7 @@ if (UNIX)
 
 endif()
 
-find_package(Boost COMPONENTS iostreams system filesystem REQUIRED)
+find_package(Boost COMPONENTS iostreams REQUIRED)
 include_directories(${Boost_INCLUDE_DIRS})
 link_directories(${Boost_LIBRARY_DIRS})
 

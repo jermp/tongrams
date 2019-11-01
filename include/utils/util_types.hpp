@@ -2,10 +2,6 @@
 
 #include <vector>
 
-#define KB (1ull << 10)  // 1KB = 1024
-#define MB (1ull << 20)  // 1MB = 1048576
-#define GB (1ull << 30)  // 1GB = 1073741824
-
 namespace tongrams {
 
 struct pointer_range {

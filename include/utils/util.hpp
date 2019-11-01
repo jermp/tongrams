@@ -15,8 +15,6 @@
 #include <smmintrin.h>
 #endif
 
-#include <boost/filesystem.hpp>
-
 #include "utils/binary_header.hpp"
 
 #define LIKELY(x) __builtin_expect(!!(x), 1)
@@ -388,24 +386,6 @@ void print_general_info() {
 void unknown_type(std::string const& type) {
     std::cerr << "Error: unknown type "
               << "'" << type << "'" << std::endl;
-}
-
-void create_directory(std::string const& tmp_dir) {
-    boost::filesystem::path dir(tmp_dir.c_str());
-    if (!boost::filesystem::exists(dir)) {
-        if (!boost::filesystem::create_directory(dir)) {
-            std::cerr << "directory creation failed" << std::endl;
-            std::abort();
-        }
-    } else {
-        boost::filesystem::recursive_directory_iterator begin(dir);
-        boost::filesystem::recursive_directory_iterator end;
-        if (begin != end) {
-            std::cerr << "Warning: " << tmp_dir
-                      << " already exists and it is not empty." << std::endl;
-            std::abort();
-        }
-    }
 }
 
 bool is_empty(std::ifstream& is) {
