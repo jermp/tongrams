@@ -86,32 +86,15 @@ For the following examples, we assume to work with the sample data contained in 
 
 Building the data structures
 ----------------------------
-The two executables `build_trie_lm` and `build_mph_lm` must be used to build trie-based and (minimal perfect) hash-based language models respectively. By running the executables without any arguments, or with the flag `--help`, the detailed list of expected input parameters is shown, along with their meanings. For example, by doing
+The two executables `build_trie` and `build_hash` are used to build trie-based and (minimal perfect) hash-based language models, respectively. Run the executables without any arguments to know about
+their usage.
 
-    $ ./build_trie_lm --help
-
-the following message will show up (plus additional details, here not reported for brevity):
-
-    $ Usage ./build_trie_lm:
-        data_structure_type
-        order
-        value_type
-        [--dir input_dir]
-        [--remapping order]
-        [--ranks type]
-        [--u value]
-        [--p value]
-        [--b value]
-        [--arpa arpa_filename]
-        [--out output_filename]
-
-For the available `data_structure_type`(s), `value_type`(s) and `rank_type`(s) see also the file `utils/util_types.hpp`.
 We now show some examples.
 
 ##### Example 1.
 The command
 
-    $ ./build_trie_lm ef_trie 5 count --dir ../test_data --out ef_trie.count.bin
+    $ ./build_trie ef_trie 5 count --dir ../test_data --out ef_trie.count.bin
 
 builds an Elias-Fano trie
 * of order 5;
@@ -124,7 +107,7 @@ builds an Elias-Fano trie
 ##### Example 2.
 The command
 
-    $ ./build_trie_lm pef_trie 5 count --dir ../test_data --remapping 1 --ranks PSEF  --out pef_trie.count.out
+    $ ./build_trie pef_trie 5 count --dir ../test_data --remapping 1 --ranks PSEF  --out pef_trie.count.out
 
 builds a partitioned Elias-Fano trie
 * of order 5;
@@ -137,7 +120,7 @@ builds a partitioned Elias-Fano trie
 ##### Example 3.
 The command
 
-    $ ./build_trie_lm ef_trie 5 prob_backoff --remapping 2 --u -20.0 --p 8 --b 8 --arpa ../test_data/arpa --out ef_trie.prob_backoff.bin
+    $ ./build_trie ef_trie 5 prob_backoff --remapping 2 --u -20.0 --p 8 --b 8 --arpa ../test_data/arpa --out ef_trie.prob_backoff.bin
 
 builds an Elias-Fano trie
 * of order 5;
@@ -150,7 +133,7 @@ builds an Elias-Fano trie
 ##### Example 4.
 The command
 
-    $ ./build_mph_lm 5 8 4 count --dir ../test_data --out hash.bin
+    $ ./build_hash 5 8 4 count --dir ../test_data --out hash.bin
 
 builds a MPH-based model
 * of order 5;
@@ -182,13 +165,13 @@ We additionally replicate some experiments with an Intel(R) Core(TM) i9-9900K CP
 For a data structure storing frequency counts, we can test the speed of lookup queries by using the benchmark program `lookup_perf_test`.
 In the following example, we show how to build and benchmark three different data structures: **EF-Trie** with no remapping, **EF-RTrie** with remapping order 1 and **PEF-RTrie** with remapping order 2 (we use the same names for the data structures as presented in [1]). Each experiment is repeated 1,000 times over the test query file `queries.random.5K`. The benchmark program `lookup_perf_test` will show mean time per run and mean time per query (along with the total number of *N*-grams, total bytes of the data structure and bytes per *N*-gram).
 
-    $ ./build_trie_lm ef_trie 5 count --dir ../test_data --out ef_trie.bin
+    $ ./build_trie ef_trie 5 count --dir ../test_data --out ef_trie.bin
     $ ./lookup_perf_test ef_trie.bin ../test_data/queries.random.5K 1000
 
-    $ ./build_trie_lm ef_trie 5 count --remapping 1 --dir ../test_data --out ef_trie.r1.bin
+    $ ./build_trie ef_trie 5 count --remapping 1 --dir ../test_data --out ef_trie.r1.bin
     $ ./lookup_perf_test ef_trie.r1.bin ../test_data/queries.random.5K 1000
 
-    $ ./build_trie_lm pef_trie 5 count --remapping 2 --dir ../test_data --out pef_trie.r2.bin
+    $ ./build_trie pef_trie 5 count --remapping 2 --dir ../test_data --out pef_trie.r2.bin
     $ ./lookup_perf_test pef_trie.r2.bin ../test_data/queries.random.5K 1000
 
 The results of this (micro) benchmark are summarized in the following table.
@@ -201,7 +184,7 @@ The results of this (micro) benchmark are summarized in the following table.
 
 For a data structure storing probabilities and backoffs, we can instead test the speed of scoring a text file by using the benchmark program `score`. A complete example follows.
 
-    $ ./build_trie_lm ef_trie 5 prob_backoff --u -10.0 --p 8 --b 8 --arpa ../test_data/arpa --out ef_trie.prob_backoff.8.8.bin
+    $ ./build_trie ef_trie 5 prob_backoff --u -10.0 --p 8 --b 8 --arpa ../test_data/arpa --out ef_trie.prob_backoff.8.8.bin
     $ ./score ef_trie.prob_backoff.8.8.bin ../test_data/sample_text
 
 The first command will build the data structure, the second one will score the text file `sample_text` contained in `test_data`. The input text file must contain one sentence per line, with words separated by spaces. During the scoring of the file, we do not wrap each sentence with markers `<s>` and `</s>`.
