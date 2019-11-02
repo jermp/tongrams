@@ -486,7 +486,7 @@ void save(uint8_t header, T const& data_structure,
 }
 
 template <typename T>
-size_t load(T& data_structure, char const* binary_filename) {
+size_t load(T& data_structure, std::string const& binary_filename) {
     std::ifstream is(binary_filename, std::ios::binary);
     if (!is.good()) {
         throw std::runtime_error(
@@ -501,7 +501,7 @@ size_t load(T& data_structure, char const* binary_filename) {
     return bytes;
 }
 
-std::string get_model_type(char const* binary_filename) {
+std::string get_model_type(std::string const& binary_filename) {
     std::ifstream is(binary_filename, std::ios::binary);
     if (!is.good()) {
         throw std::runtime_error(
@@ -510,7 +510,7 @@ std::string get_model_type(char const* binary_filename) {
     uint8_t header = 0;
     essentials::load_pod(is, header);
     binary_header bin_header;
-    bool verbose = true;
+    static constexpr bool verbose = true;
     auto model_string_type = bin_header.parse(header, verbose);
     is.close();
     return model_string_type;

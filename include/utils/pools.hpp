@@ -108,9 +108,7 @@ struct grams_counts_pool {
         size_t gram_bytes = gram.second - gram.first;
 
         if (gram_bytes) {
-            if (m_strings_pool.size() + gram_bytes > m_max_bytes) {
-                return false;
-            }
+            if (m_strings_pool.size() + gram_bytes > m_max_bytes) return false;
 
             m_strings_pool.insert(m_strings_pool.end(), gram.first,
                                   gram.second);

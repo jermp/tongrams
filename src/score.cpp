@@ -6,16 +6,17 @@
 #include "utils/iterators.hpp"
 #include "lm_types.hpp"
 #include "../external/essentials/include/essentials.hpp"
+#include "../external/cmd_line_parser/include/parser.hpp"
 
 using namespace tongrams;
 
 template <typename Model>
-void score_corpus(const char* binary_filename, const char* corpus_filename) {
+void score_corpus(std::string const& index_filename,
+                  std::string const& corpus_filename) {
     Model model;
     essentials::logger("Loading data structure");
-    util::load(model, binary_filename);
-
-    text_lines corpus(corpus_filename);
+    util::load(model, index_filename);
+    text_lines corpus(corpus_filename.c_str());
 
     uint64_t tot_OOVs = 0;
     uint64_t corpus_tokens = 0;
@@ -91,26 +92,20 @@ void score_corpus(const char* binary_filename, const char* corpus_filename) {
 }
 
 int main(int argc, char** argv) {
-    if (argc < 3 || building_util::request_help(argc, argv)) {
-        building_util::display_legend();
-        std::cout << "Usage " << argv[0] << ":\n"
-                  << "\t" << style::bold << style::underline
-                  << "binary_filename" << style::off << "\n"
-                  << "\t" << style::bold << style::underline
-                  << "corpus_filename" << style::off << std::endl;
-        return 1;
-    }
+    cmd_line_parser::parser parser(argc, argv);
+    parser.add("index_filename", "Index filename.");
+    parser.add("corpus_filename", "Corpus filename.");
+    if (!parser.parse()) return 1;
 
-    const char* binary_filename = argv[1];
-    const char* corpus_filename = argv[2];
-
-    auto model_string_type = util::get_model_type(binary_filename);
+    auto index_filename = parser.get<std::string>("index_filename");
+    auto corpus_filename = parser.get<std::string>("corpus_filename");
+    auto model_string_type = util::get_model_type(index_filename);
 
     if (false) {
 #define LOOP_BODY(R, DATA, T)                              \
     }                                                      \
     else if (model_string_type == BOOST_PP_STRINGIZE(T)) { \
-        score_corpus<T>(binary_filename, corpus_filename);
+        score_corpus<T>(index_filename, corpus_filename);
 
         BOOST_PP_SEQ_FOR_EACH(LOOP_BODY, _, SXLM_SCORE_TYPES);
 #undef LOOP_BODY

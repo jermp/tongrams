@@ -7,6 +7,7 @@
 #include "utils/mph_tables.hpp"
 #include "utils/pools.hpp"
 #include "../external/essentials/include/essentials.hpp"
+#include "../external/cmd_line_parser/include/parser.hpp"
 
 using namespace tongrams;
 
@@ -21,67 +22,36 @@ void build_vocabulary(grams_counts_pool& pool, single_valued_mpht64& vocab) {
         bytes.push_back(record.gram);
         ids.push_back(id++);
     }
-
-    // NOTE: build vocabulary excluding null terminators
-    // from unigrams strings so that we can lookup
-    // for any substring of a n-gram
-    // without allocating a std::string
     single_valued_mpht64::builder builder(bytes, compact_vector(ids),
                                           identity_adaptor());
     builder.build(vocab);
 }
 
 int main(int argc, char** argv) {
-    if (argc < 4 || building_util::request_help(argc, argv)) {
-        building_util::display_legend();
-        std::cerr << "Usage " << argv[0] << ":\n"
-                  << "\t" << style::bold << style::underline
-                  << "ngrams_filename" << style::off << "\n"
-                  << "\t" << style::bold << style::underline << "vocab_filename"
-                  << style::off << "\n"
-                  << "\t" << style::bold << style::underline
-                  << "output_filename" << style::off << "\n"
-                  << "\t[--t " << style::underline << "tmp_dir" << style::off
-                  << "]\n"
-                  << "\t[--ram " << style::underline << "percentage"
-                  << style::off << "]" << std::endl;
-        std::cerr << "---------------------------------------------------------"
-                     "-------\n"
-                  << style::bold << style::underline << "tmp_dir" << style::off
-                  << " is the directory for temporaries.\n"
-                  << "If omitted is assumed to be the current directory.\n"
-                  << "RAM percentage is expressed as real in (0.0, 100.0]."
-                  << std::endl;
-        return 1;
-    }
+    cmd_line_parser::parser parser(argc, argv);
+    parser.add("ngrams_filename", "Input filename to sort.");
+    parser.add("vocab_filename", "Vocabulary filename.");
+    parser.add("output_filename", "Output filename.");
+    parser.add("tmp_dir", "Temporary directory for sorting.", "--tmp", false);
+    parser.add("ram", "Percentage of RAM to use. It must be in (0,100].",
+               "--ram", false);
+    if (!parser.parse()) return 1;
 
-    const char* ngrams_filename = argv[1];
-    const char* vocab_filename = argv[2];
-    const char* output_filename = argv[3];
+    auto ngrams_filename = parser.get<std::string>("ngrams_filename");
+    auto vocab_filename = parser.get<std::string>("vocab_filename");
+    auto output_filename = parser.get<std::string>("output_filename");
+
     std::string default_tmp_dir("./");
     std::string tmp_dir = default_tmp_dir;
+    if (parser.parsed("tmp_dir")) {
+        tmp_dir = parser.get<std::string>("tmp_dir");
+        essentials::create_directory(tmp_dir);
+    }
 
     size_t available_ram = sysconf(_SC_PAGESIZE) * sysconf(_SC_PHYS_PAGES);
     size_t ram_percentage = available_ram;
     double perc = 100.0;
-
-    for (int i = 4; i < argc; ++i) {
-        if (argv[i] == std::string("--ram")) {
-            perc = std::stod(argv[++i]);
-            if (perc <= 0.0 || perc > 100.0) {
-                std::cerr << "percentage must be a vaue within (0.0, 100.0]"
-                          << std::endl;
-                return 1;
-            }
-        } else if (argv[i] == std::string("--t")) {
-            tmp_dir = std::string(argv[++i]);
-            essentials::create_directory(tmp_dir);
-        } else {
-            std::cerr << "unknown option: '" << argv[i] << "'" << std::endl;
-            return 1;
-        }
-    }
-
+    if (parser.parsed("ram")) perc = parser.get<double>("ram");
     ram_percentage *= perc / 100;
     std::cout << "Sorting with " << perc << "\% of available RAM"
               << " (" << ram_percentage << "/" << available_ram << ")"
@@ -91,22 +61,19 @@ int main(int argc, char** argv) {
     {
         // assume unigrams fit in memory
         grams_counts_pool unigrams_pool(available_ram);
-        unigrams_pool.load_from<grams_gzparser>(vocab_filename);
+        unigrams_pool.load_from<grams_gzparser>(vocab_filename.c_str());
         essentials::logger("Building vocabulary");
         build_vocabulary(unigrams_pool, vocab);
     }
 
-    grams_gzparser parser(ngrams_filename);
-
-    auto n = parser.num_lines();
+    grams_gzparser input(ngrams_filename.c_str());
+    auto n = input.num_lines();
     grams_counts_pool gp(n, ram_percentage);
+    auto begin = input.begin();
+    auto const end = input.end();
 
-    auto begin = parser.begin();
-    auto const end = parser.end();
-
-    // ngrams are sorted in PREFIX order
     typedef prefix_order_comparator(single_valued_mpht64, count_record)
-        comparator_type;
+        comparator_type;  // NOTE: prefix order
     comparator_type cmp(vocab);
     {
         sorter<comparator_type, count_line_handler> sorter(

@@ -4,19 +4,20 @@
 #include "utils/util.hpp"
 #include "utils/pools.hpp"
 #include "../external/essentials/include/essentials.hpp"
+#include "../external/cmd_line_parser/include/parser.hpp"
 
 using namespace tongrams;
 
 template <typename Model>
-void perf_test(const char* query_filename, const char* binary_filename,
-               uint32_t runs) {
+void perf_test(std::string const& index_filename,
+               std::string const& query_filename, uint32_t runs) {
     strings_pool sp;
     std::vector<size_t> offsets;
     offsets.push_back(0);
 
     essentials::logger("Loading strings in memory for faster lookup");
     {
-        emphf::file_lines lines(query_filename);
+        emphf::file_lines lines(query_filename.c_str());
         for (auto& l : lines) {
             auto br = bytes::split_upon_check_end(l, '\t');
             sp.append(br);
@@ -29,7 +30,7 @@ void perf_test(const char* query_filename, const char* binary_filename,
 
     Model model;
     essentials::logger("Loading data structure");
-    size_t file_size = util::load(model, binary_filename);
+    size_t file_size = util::load(model, index_filename);
     std::cout << "\tTotal bytes: " << file_size << "\n";
     std::cout << "\tTotal ngrams: " << model.size() << "\n";
     std::cout << "\tBytes per gram: " << double(file_size) / model.size()
@@ -70,21 +71,16 @@ void perf_test(const char* query_filename, const char* binary_filename,
 }
 
 int main(int argc, char** argv) {
-    if (argc < 4 || building_util::request_help(argc, argv)) {
-        building_util::display_legend();
-        std::cout << "Usage " << argv[0] << ":\n"
-                  << "\t" << style::bold << style::underline
-                  << "binary_filename" << style::off << "\n"
-                  << "\t" << style::bold << style::underline << "query_filename"
-                  << style::off << "\n"
-                  << "\t" << style::bold << style::underline << "runs"
-                  << style::off << std::endl;
-        return 1;
-    }
+    cmd_line_parser::parser parser(argc, argv);
+    parser.add("index_filename", "Index filename.");
+    parser.add("query_filename", "Query filename.");
+    parser.add("runs",
+               "Number of runs for the benchmark. Must be greater than 1.");
+    if (!parser.parse()) return 1;
 
-    const char* binary_filename = argv[1];
-    const char* query_filename = argv[2];
-    uint32_t runs = std::atoi(argv[3]);
+    auto index_filename = parser.get<std::string>("index_filename");
+    auto query_filename = parser.get<std::string>("query_filename");
+    auto runs = parser.get<uint32_t>("runs");
 
     if (runs < 2) {
         std::cerr << "Error: number of runs must be greater than 1."
@@ -92,13 +88,13 @@ int main(int argc, char** argv) {
         return 1;
     }
 
-    auto model_string_type = util::get_model_type(binary_filename);
+    auto model_string_type = util::get_model_type(index_filename);
 
     if (false) {
 #define LOOP_BODY(R, DATA, T)                              \
     }                                                      \
     else if (model_string_type == BOOST_PP_STRINGIZE(T)) { \
-        perf_test<T>(query_filename, binary_filename, runs);
+        perf_test<T>(index_filename, query_filename, runs);
 
         BOOST_PP_SEQ_FOR_EACH(LOOP_BODY, _, SXLM_COUNT_TYPES);
 #undef LOOP_BODY

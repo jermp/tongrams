@@ -4,3 +4,6 @@
 [submodule "external/essentials"]
 	path = external/essentials
 	url = https://github.com/jermp/essentials.git
+[submodule "external/cmd_line_parser"]
+	path = external/cmd_line_parser
+	url = https://github.com/jermp/cmd_line_parser.git
