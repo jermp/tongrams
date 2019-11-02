@@ -2,60 +2,57 @@
 
 #include "utils/util.hpp"
 #include "lm_types.hpp"
+#include "../external/cmd_line_parser/include/parser.hpp"
 
 int main(int argc, char** argv) {
     using namespace tongrams;
-    if (argc < 5 || building_util::request_help(argc, argv)) {
-        building_util::display_legend();
-        std::cout << "Usage " << argv[0] << ":\n"
-                  << "\t" << style::bold << style::underline << "order"
-                  << style::off << "\n"
-                  << "\t" << style::bold << style::underline << "hash_key_bytes"
-                  << style::off << "\n"
-                  << "\t" << style::bold << style::underline << "count_bytes"
-                  << style::off << "\n"
-                  << "\t" << style::bold << style::underline << "value_type"
-                  << style::off << "\n"
-                  << "\t[--dir " << style::underline << "input_dir"
-                  << style::off << "]" << std::endl;
-        building_util::print_general_params();
-        building_util::print_general_info();
-        std::cout << style::underline << "input_dir" << style::off
-                  << " is the directory containing the N-gram counts files. "
-                  << "If omitted is assumed to be the current directory."
-                  << std::endl;
-        std::cout << style::bold << style::underline << "hash_key_bytes"
-                  << style::off
-                  << " specifies the number of bytes used for the hash keys: "
-                     "it must be 4 or 8."
-                  << std::endl;
-        std::cout << style::bold << style::underline << "count_bytes"
-                  << style::off
-                  << " specifies the number of bytes used for the distinct "
-                     "counts: it must be 4 or 8."
-                  << std::endl;
-        return 1;
-    }
+    cmd_line_parser::parser parser(argc, argv);
 
-    uint64_t order = std::stoull(argv[1]);
+    parser.add("order", "Language model order. It must be either > 0 and <= " +
+                            std::to_string(global::max_order) + ".");
+    parser.add("hash_key_bytes",
+               "Number of bytes for hash keys: either 4 or 8.");
+    parser.add("count_bytes",
+               "Number of bytes for distinct counts: either 4 or 8.");
+    parser.add("value_type",
+               "Value type. It must be either 'count' or 'prob_backoff'.");
+    parser.add("dir",
+               "Input directory for n-gram counts. Valid if 'count' value "
+               "type is specified.",
+               "--dir", false);
+    parser.add(
+        "arpa",
+        "Input ARPA filename. Valid if 'prob_backoff' value type is specified.",
+        "--arpa", false);
+    parser.add("p",
+               "Probability quantization bits. Valid if 'prob_backoff' value "
+               "type is specified.",
+               "--p", false);
+    parser.add("b",
+               "Backoff quantization bits. Valid if 'prob_backoff' value "
+               "type is specified.",
+               "--b", false);
+    parser.add("unk",
+               "log10 probability for the unknown <unk> word. Valid if "
+               "'prob_backoff' value "
+               "type is specified.",
+               "--u", false);
+    parser.add("out", "Output filename.", "--out", false);
+
+    if (!parser.parse()) return 1;
+
+    auto order = parser.get<uint64_t>("order");
     building_util::check_order(order);
-    uint64_t hash_key_bytes = std::stoull(argv[2]);
-    uint64_t count_bytes = std::stoull(argv[3]);
-    float unk_prob = global::default_unk_prob;
-    uint8_t probs_quantization_bits = global::default_probs_quantization_bits;
-    uint8_t backoffs_quantization_bits =
-        global::default_backoffs_quantization_bits;
-    char const* input_dir = "./";
-    char const* arpa_filename = nullptr;
-    char const* output_filename = nullptr;
+    auto hash_key_bytes = parser.get<uint64_t>("hash_key_bytes");
+    auto count_bytes = parser.get<uint64_t>("count_bytes");
+    auto value_type = parser.get<std::string>("value_type");
 
-    if (hash_key_bytes != 4 && hash_key_bytes != 8) {
+    if (hash_key_bytes != 4 and hash_key_bytes != 8) {
         std::cerr << "Error: invalid number of bytes for hash keys.\n"
                   << "It must be 4 or 8." << std::endl;
         return 1;
     }
-
-    if (count_bytes != 4 && count_bytes != 8) {
+    if (count_bytes != 4 and count_bytes != 8) {
         std::cerr << "Error: invalid number of bytes for distinct counts.\n"
                   << "It must be 4 or 8." << std::endl;
         return 1;
@@ -66,32 +63,11 @@ int main(int argc, char** argv) {
     bin_header.hash_key_bytes = hash_key_bytes;
     bin_header.hash_count_bytes = count_bytes;
 
-    for (int i = 4; i < argc; ++i) {
-        if (argv[i] == std::string("count")) {
-            bin_header.value_t = value_type::count;
-        } else if (argv[i] == std::string("prob_backoff")) {
-            bin_header.value_t = value_type::prob_backoff;
-        } else if (argv[i] == std::string("--u")) {
-            unk_prob = std::stof(argv[++i]);
-            building_util::check_unk_logprob(unk_prob);
-            std::cout << "substituting <unk> probability with: " << unk_prob
-                      << std::endl;
-        } else if (argv[i] == std::string("--p")) {
-            probs_quantization_bits = std::stoull(argv[++i]);
-        } else if (argv[i] == std::string("--b")) {
-            backoffs_quantization_bits = std::stoull(argv[++i]);
-        } else if (argv[i] == std::string("--arpa")) {
-            arpa_filename = argv[++i];
-        } else if (argv[i] == std::string("--dir")) {
-            input_dir = argv[++i];
-        } else if (argv[i] == std::string("--out")) {
-            output_filename = argv[++i];
-        } else {
-            std::cerr << "unknown option: '" << argv[i] << "'" << std::endl;
-            return 1;
-        }
+    if (value_type == "count") {
+        bin_header.value_t = value_type::count;
+    } else if (value_type == "prob_backoff") {
+        bin_header.value_t = value_type::prob_backoff;
     }
-
     if (binary_header::is_invalid(bin_header.value_t)) {
         std::cerr << "Error: invalid data type.\n"
                   << "Either 'count' or 'prob_backoff' must be specified."
@@ -99,20 +75,51 @@ int main(int argc, char** argv) {
         return 1;
     }
 
-    if (bin_header.value_t == value_type::count && arpa_filename != nullptr) {
-        std::cerr << "warning: option '--arpa' ignored with data type 'count' "
-                     "specified."
-                  << std::endl
+    float unk_prob = global::default_unk_prob;
+    uint8_t probs_quantization_bits = global::default_probs_quantization_bits;
+    uint8_t backoffs_quantization_bits =
+        global::default_backoffs_quantization_bits;
+    const char* input_dir = ".";
+    const char* arpa_filename = nullptr;
+    const char* output_filename = nullptr;
+
+    if (parser.parsed("unk")) {
+        unk_prob = parser.get<float>("unk");
+        building_util::check_unk_logprob(unk_prob);
+        std::cout << "substituting <unk> probability with: " << unk_prob
                   << std::endl;
+    }
+    if (parser.parsed("p")) {
+        probs_quantization_bits = parser.get<uint8_t>("p");
+    }
+    if (parser.parsed("b")) {
+        backoffs_quantization_bits = parser.get<uint8_t>("b");
+    }
+
+    auto dir = parser.get<std::string>("dir");
+    if (parser.parsed("dir")) {
+        input_dir = dir.c_str();
+    }
+
+    auto arpa = parser.get<std::string>("arpa");
+    if (parser.parsed("arpa")) {
+        arpa_filename = arpa.c_str();
     }
 
     uint8_t header = bin_header.get();
     auto model_string_type = bin_header.parse(header);
 
-    auto out_filename = model_string_type;
-    if (output_filename == nullptr) {  // assign default output filename
-        out_filename += std::string(".out");
-        output_filename = out_filename.c_str();
+    auto default_out_filename = model_string_type + std::string(".out");
+    output_filename = default_out_filename.c_str();
+    auto out = parser.get<std::string>("out");
+    if (parser.parsed("out")) {
+        output_filename = out.c_str();
+    }
+
+    if (bin_header.value_t == value_type::count and arpa_filename != nullptr) {
+        std::cerr << "warning: option '--arpa' ignored with data type 'count' "
+                     "specified."
+                  << std::endl;
     }
 
     if (bin_header.value_t == value_type::count) {

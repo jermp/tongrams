@@ -63,20 +63,6 @@ static const uint8_t default_probs_quantization_bits = 8;
 static const uint8_t default_backoffs_quantization_bits = 8;
 }  // namespace global
 
-namespace style {
-std::ostream& bold(std::ostream& os) {
-    return os << "\e[1m";
-}
-
-std::ostream& underline(std::ostream& os) {
-    return os << "\e[4m";
-}
-
-std::ostream& off(std::ostream& os) {
-    return os << "\e[0m";
-}
-}  // namespace style
-
 namespace bytes {
 // if s is formatted as: X separator Y
 // the bytes dedicated to X are from begin to pos,
@@ -324,64 +310,6 @@ void check_unk_logprob(float unk_logprob) {
     if (unk_logprob >= 0.0) {
         throw std::invalid_argument("log probability of <unk> must be < 0.0");
     }
-}
-
-void check_num_threads(uint64_t num_threads) {
-    if (!num_threads) {
-        throw std::invalid_argument("number of threads must be > 0");
-    }
-}
-
-bool request_help(int argc, char** argv) {
-    for (int i = 0; i < argc; ++i) {
-        if (argv[i] == std::string("--help")) {
-            return true;
-        }
-    }
-    return false;
-}
-
-void display_legend() {
-    std::cout << "Legend:\n"
-              << "  " << style::bold << "bold     " << style::off
-              << "  means mandatory argument\n"
-              << "  " << style::underline << "underline" << style::off
-              << "  means replaceable argument\n"
-              << "  []         means optional argument" << std::endl
-              << std::endl;
-}
-
-void print_general_params() {
-    std::cout << "\t[--u " << style::underline << "value" << style::off << "]\n"
-              << "\t[--p " << style::underline << "value" << style::off << "]\n"
-              << "\t[--b " << style::underline << "value" << style::off << "]\n"
-              << "\t[--arpa " << style::underline << "arpa_filename"
-              << style::off << "]\n"
-              << "\t[--out " << style::underline << "output_filename"
-              << style::off << "]" << std::endl;
-}
-
-void print_general_info() {
-    std::cout << "-------------------------------------------------------------"
-                 "------------------------------------------\n"
-              << style::bold << style::underline << "order" << style::off
-              << " defines the maximum-order of the grams.\n"
-              << style::bold << style::underline << "value_type" << style::off
-              << " is either 'count' or 'prob_backoff'.\n"
-              << "'--u' specifies the log10 probability of the unknown word.\n"
-              << "'--p' specifies the number of quantization bits for "
-                 "probability values (default is 8).\n"
-              << "'--b' specifies the number of quantization bits for backoff "
-                 "values (default is 8).\n"
-              << "'--arpa' specifies the input arpa file.\n"
-              << "'--out' specifies the output binary filename. If omitted it "
-                 "will be given the name of the model type.\n"
-              << "If 'count' is specified as " << style::bold
-              << style::underline << "value_type" << style::off
-              << ", then '--arpa' option will be ignored.\n"
-              << "If '--p' and '--b' are only valid with 'prob_backoff' "
-              << style::bold << style::underline << "value_type" << style::off
-              << " specified." << std::endl;
 }
 
 void unknown_type(std::string const& type) {

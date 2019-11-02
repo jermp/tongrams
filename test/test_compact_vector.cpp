@@ -3,26 +3,25 @@
 #include "utils/util.hpp"
 #include "vectors/compact_vector.hpp"
 #include "../external/essentials/include/essentials.hpp"
+#include "../external/cmd_line_parser/include/parser.hpp"
 
 int main(int argc, char** argv) {
     using namespace tongrams;
-    if (argc < 3 || building_util::request_help(argc, argv)) {
-        building_util::display_legend();
-        std::cout << "Usage " << argv[0] << ":\n"
-                  << "\t" << style::bold << style::underline << "num_of_values"
-                  << style::off << "\n"
-                  << "\t" << style::bold << style::underline << "bits_per_value"
-                  << style::off << std::endl;
+    cmd_line_parser::parser parser(argc, argv);
+    parser.add("num_of_values", "Number of values.");
+    parser.add("bits_per_value", "Bits per value.");
+    if (!parser.parse()) return 1;
+
+    uint64_t n = parser.get<uint64_t>("num_of_values");
+    uint64_t w = parser.get<uint64_t>("bits_per_value");
+    if (w > 64) {
+        std::cerr << "w must be < 64" << std::endl;
         return 1;
     }
-
-    uint64_t n = util::toull(argv[1]);
-    if (!n) {
-        std::cerr << "Error: number of values must be non-zero." << std::endl;
-        std::terminate();
+    if (n == 0 or w == 0) {
+        std::cerr << "Arguments must be both non zero." << std::endl;
+        return 1;
     }
-
-    uint64_t w = util::toull(argv[2]);
 
     std::vector<uint64_t> v;
     v.reserve(n);
@@ -30,7 +29,6 @@ int main(int argc, char** argv) {
     std::random_device rd;
     std::mt19937 rng(rd());
     std::uniform_int_distribution<uint64_t> distr(0, std::pow(2, w - 1));
-
     compact_vector::builder cvb(n, w);
 
     for (uint64_t i = 0; i < n; ++i) {

@@ -4,6 +4,7 @@
 #include "utils/util.hpp"
 #include "vectors/hash_compact_vector.hpp"
 #include "../external/essentials/include/essentials.hpp"
+#include "../external/cmd_line_parser/include/parser.hpp"
 
 using namespace tongrams;
 
@@ -57,29 +58,22 @@ void perf_test(uint64_t n, uint64_t w) {
 }
 
 int main(int argc, char** argv) {
-    if (argc < 4 || building_util::request_help(argc, argv)) {
-        building_util::display_legend();
-        std::cout << "Usage " << argv[0] << ":\n"
-                  << "\t" << style::bold << style::underline << "num_of_values"
-                  << style::off << "\n"
-                  << "\t" << style::bold << style::underline << "bits_per_hash"
-                  << style::off << "\n"
-                  << "\t" << style::bold << style::underline << "bits_per_value"
-                  << style::off << std::endl;
-        std::cout << "----------------------------------------" << std::endl;
-        std::cout << style::bold << style::underline << "bits_per_hash"
-                  << style::off << " must be 32 or 64." << std::endl;
-        return 1;
-    }
+    using namespace tongrams;
+    cmd_line_parser::parser parser(argc, argv);
+    parser.add("num_of_values", "Number of values.");
+    parser.add("bits_per_hash",
+               "Bits per hash key. It must be either 32 or 64.");
+    parser.add("bits_per_value", "Bits per value.");
+    if (!parser.parse()) return 1;
 
-    uint64_t n = util::toull(argv[1]);
+    uint64_t n = parser.get<uint64_t>("num_of_values");
     if (!n) {
         std::cerr << "Error: number of values must be non-zero." << std::endl;
         std::terminate();
     }
 
-    uint64_t hash_width = util::toull(argv[2]);
-    uint64_t w = util::toull(argv[3]);
+    uint64_t hash_width = parser.get<uint64_t>("bits_per_hash");
+    uint64_t w = parser.get<uint64_t>("bits_per_value");
 
     if (hash_width == 32) {
         perf_test<uint32_t>(n, w);

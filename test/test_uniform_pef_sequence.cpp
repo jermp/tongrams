@@ -4,29 +4,20 @@
 #include "utils/util.hpp"
 #include "sequences/uniform_pef_sequence.hpp"
 #include "../external/essentials/include/essentials.hpp"
+#include "../external/cmd_line_parser/include/parser.hpp"
 
 int main(int argc, char** argv) {
     using namespace tongrams;
-    if (argc < 3 || building_util::request_help(argc, argv)) {
-        building_util::display_legend();
-        std::cout << "Usage " << argv[0] << ":\n"
-                  << "\t" << style::bold << style::underline << "num_of_values"
-                  << style::off << "\n"
-                  << "\t" << style::bold << style::underline << "max_range_len"
-                  << style::off << std::endl;
-        return 1;
-    }
+    cmd_line_parser::parser parser(argc, argv);
+    parser.add("num_of_values", "Number of values.");
+    parser.add("max_range_len", "Maximum range length.");
+    if (!parser.parse()) return 1;
 
-    uint64_t n = util::toull(argv[1]);
-    if (!n) {
-        std::cerr << "Error: number of values must be non-zero." << std::endl;
-        return 1;
-    }
-
-    uint64_t max_range_len = util::toull(argv[2]);
-    if (!max_range_len) {
-        std::cerr << "Error: max_range_len must be non-zero." << std::endl;
-        return 1;
+    uint64_t n = parser.get<uint64_t>("num_of_values");
+    uint64_t max_range_len = parser.get<uint64_t>("max_range_len");
+    if (n == 0 or max_range_len == 0) {
+        std::cerr << "Arguments must be both non zero." << std::endl;
+        std::terminate();
     }
 
     std::random_device rd;

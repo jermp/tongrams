@@ -2,131 +2,148 @@
 
 #include "utils/util.hpp"
 #include "lm_types.hpp"
+#include "../external/cmd_line_parser/include/parser.hpp"
 
 int main(int argc, char** argv) {
     using namespace tongrams;
-    if (argc < 4 || building_util::request_help(argc, argv)) {
-        building_util::display_legend();
-        std::cout << "Usage " << argv[0] << ":\n"
-                  << "\t" << style::bold << style::underline
-                  << "data_structure_type" << style::off << "\n"
-                  << "\t" << style::bold << style::underline << "order"
-                  << style::off << "\n"
-                  << "\t" << style::bold << style::underline << "value_type"
-                  << style::off << "\n"
-                  << "\t[--dir " << style::underline << "input_dir"
-                  << style::off << "]\n"
-                  << "\t[--remapping " << style::underline << "order"
-                  << style::off << "]\n"
-                  << "\t[--ranks " << style::underline << "type" << style::off
-                  << "]" << std::endl;
-        building_util::print_general_params();
-        building_util::print_general_info();
-        std::cout << style::underline << "input_dir" << style::off
-                  << " is the directory containing the N-gram counts files. "
-                  << "If omitted is assumed to be the current directory."
-                  << std::endl;
-        std::cout << "Remapping " << style::underline << "order" << style::off
-                  << " must be an integer in [0, 3). "
-                  << "If omitted is given a default value of 0." << std::endl;
-        std::cout << "Ranks " << style::underline << "type" << style::off
-                  << " must be either 'IC', 'PSEF' or 'PSPEF'. "
-                  << "If omitted is assigned 'IC' by default.\n"
-                  << "See also the file 'utils/util_types.hpp'." << std::endl;
-        return 1;
-    }
+    cmd_line_parser::parser parser(argc, argv);
 
-    std::string data_structure_t = argv[1];
-    uint64_t order = std::stoull(argv[2]);
+    parser.add(
+        "data_structure_type",
+        "Data structure type. It must be either 'ef_trie' or 'pef_trie'.");
+    parser.add("order", "Language model order. It must be either > 0 and <= " +
+                            std::to_string(global::max_order) + ".");
+    parser.add("value_type",
+               "Value type. It must be either 'count' or 'prob_backoff'.");
+    parser.add("remapping",
+               "Remapping order. It must be an integer in [0," +
+                   std::to_string(global::max_remapping_order) + "].",
+               "--remapping", false);
+    parser.add("dir",
+               "Input directory for n-gram counts. Valid if 'count' value "
+               "type is specified.",
+               "--dir", false);
+    parser.add(
+        "arpa",
+        "Input ARPA filename. Valid if 'prob_backoff' value type is specified.",
+        "--arpa", false);
+
+    parser.add("p",
+               "Probability quantization bits. Valid if 'prob_backoff' value "
+               "type is specified.",
+               "--p", false);
+    parser.add("b",
+               "Backoff quantization bits. Valid if 'prob_backoff' value "
+               "type is specified.",
+               "--b", false);
+    parser.add("unk",
+               "log10 probability for the unknown <unk> word. Valid if "
+               "'prob_backoff' value "
+               "type is specified.",
+               "--u", false);
+    parser.add("ranks",
+               "Ranks type. It must be either 'IC', 'PSEF' or 'PSPEF'. Valid "
+               "if 'count' value type is specified.",
+               "--ranks", false);
+    parser.add("out", "Output filename.", "--out", false);
+
+    if (!parser.parse()) return 1;
+
+    auto data_structure_type = parser.get<std::string>("data_structure_type");
+    auto order = parser.get<uint64_t>("order");
     building_util::check_order(order);
-    float unk_prob = global::default_unk_prob;
-    uint8_t probs_quantization_bits = global::default_probs_quantization_bits;
-    uint8_t backoffs_quantization_bits =
-        global::default_backoffs_quantization_bits;
-    uint64_t remapping_order = 0;
-    char const* input_dir = "./";
-    char const* arpa_filename = nullptr;
-    char const* output_filename = nullptr;
+    auto value_type = parser.get<std::string>("value_type");
 
     binary_header bin_header;
     bin_header.remapping_order = 0;       // default remapping order
     bin_header.ranks_t = ranks_type::IC;  // default ranks_type
 
-    if (data_structure_t == std::string("ef_trie")) {
+    if (data_structure_type == "ef_trie") {
         bin_header.data_structure_t = data_structure_type::ef_trie;
-    }
-    if (data_structure_t == std::string("pef_trie")) {
+    } else if (data_structure_type == "pef_trie") {
         bin_header.data_structure_t = data_structure_type::pef_trie;
     }
-
     if (binary_header::is_invalid(bin_header.data_structure_t)) {
-        std::cerr << "Error: invalid data structure type.\n"
-                  << "Either 'ef_trie' or 'pef_trie' must be specified."
+        std::cerr << "Error: invalid data structure type.\n";
+        std::cerr << "Either 'ef_trie' or 'pef_trie' must be specified."
                   << std::endl;
         return 1;
     }
 
-    for (int i = 3; i < argc; ++i) {
-        if (argv[i] == std::string("count")) {
-            bin_header.value_t = value_type::count;
-        } else if (argv[i] == std::string("prob_backoff")) {
-            bin_header.value_t = value_type::prob_backoff;
-        } else if (argv[i] == std::string("--p")) {
-            probs_quantization_bits = std::stoull(argv[++i]);
-        } else if (argv[i] == std::string("--b")) {
-            backoffs_quantization_bits = std::stoull(argv[++i]);
-        } else if (argv[i] == std::string("--u")) {
-            unk_prob = std::stof(argv[++i]);
-            building_util::check_unk_logprob(unk_prob);
-            std::cout << "sustituting <unk> probability with: " << unk_prob
-                      << std::endl;
-        } else if (argv[i] == std::string("--remapping")) {
-            remapping_order = std::stoull(argv[++i]);
-            building_util::check_remapping_order(remapping_order);
-            bin_header.remapping_order = remapping_order;
-        } else if (argv[i] == std::string("--ranks")) {
-            ++i;
-            if (argv[i] == std::string("IC")) {
-                bin_header.ranks_t = ranks_type::IC;
-            }
-            if (argv[i] == std::string("PSEF")) {
-                bin_header.ranks_t = ranks_type::PSEF;
-            }
-            if (argv[i] == std::string("PSPEF")) {
-                bin_header.ranks_t = ranks_type::PSPEF;
-            }
-        } else if (argv[i] == std::string("--arpa")) {
-            arpa_filename = argv[++i];
-        } else if (argv[i] == std::string("--dir")) {
-            input_dir = argv[++i];
-        } else if (argv[i] == std::string("--out")) {
-            output_filename = argv[++i];
-        } else {
-            std::cerr << "Unknown option: '" << argv[i] << "'" << std::endl;
-            return 1;
-        }
+    if (value_type == "count") {
+        bin_header.value_t = value_type::count;
+    } else if (value_type == "prob_backoff") {
+        bin_header.value_t = value_type::prob_backoff;
     }
-
     if (binary_header::is_invalid(bin_header.value_t)) {
         std::cerr << "Error: invalid data type.\n"
-                  << "Either 'count' or 'prob' must be specified." << std::endl;
+                  << "Either 'count' or 'prob_backoff' must be specified."
+                  << std::endl;
         return 1;
     }
 
-    if (bin_header.value_t == value_type::count && arpa_filename != nullptr) {
-        std::cerr << "warning: option '--arpa' ignored with data type 'count' "
-                     "specified."
-                  << std::endl
+    float unk_prob = global::default_unk_prob;
+    uint8_t probs_quantization_bits = global::default_probs_quantization_bits;
+    uint8_t backoffs_quantization_bits =
+        global::default_backoffs_quantization_bits;
+    uint64_t remapping_order = 0;
+    const char* input_dir = ".";
+    const char* arpa_filename = nullptr;
+    const char* output_filename = nullptr;
+
+    if (parser.parsed("unk")) {
+        unk_prob = parser.get<float>("unk");
+        building_util::check_unk_logprob(unk_prob);
+        std::cout << "substituting <unk> probability with: " << unk_prob
                   << std::endl;
+    }
+    if (parser.parsed("p")) {
+        probs_quantization_bits = parser.get<uint8_t>("p");
+    }
+    if (parser.parsed("b")) {
+        backoffs_quantization_bits = parser.get<uint8_t>("b");
+    }
+    if (parser.parsed("remapping")) {
+        remapping_order = parser.get<uint64_t>("remapping");
+        building_util::check_remapping_order(remapping_order);
+        bin_header.remapping_order = remapping_order;
+    }
+
+    auto dir = parser.get<std::string>("dir");
+    if (parser.parsed("dir")) {
+        input_dir = dir.c_str();
+    }
+
+    auto arpa = parser.get<std::string>("arpa");
+    if (parser.parsed("arpa")) {
+        arpa_filename = arpa.c_str();
+    }
+
+    if (parser.parsed("ranks")) {
+        auto ranks_type = parser.get<std::string>("ranks");
+        if (ranks_type == "IC") {
+            bin_header.ranks_t = ranks_type::IC;
+        } else if (ranks_type == "PSEF") {
+            bin_header.ranks_t = ranks_type::PSEF;
+        } else if (ranks_type == "PSPEF") {
+            bin_header.ranks_t = ranks_type::PSPEF;
+        }
     }
 
     uint8_t header = bin_header.get();
     auto model_string_type = bin_header.parse(header);
 
-    auto out_filename = model_string_type;
-    if (output_filename == nullptr) {  // assign default output filename
-        out_filename += std::string(".out");
-        output_filename = out_filename.c_str();
+    auto default_out_filename = model_string_type + std::string(".out");
+    output_filename = default_out_filename.c_str();
+    auto out = parser.get<std::string>("out");
+    if (parser.parsed("out")) {
+        output_filename = out.c_str();
+    }
+
+    if (bin_header.value_t == value_type::count and arpa_filename != nullptr) {
+        std::cerr << "warning: option '--arpa' ignored with data type 'count' "
+                     "specified."
+                  << std::endl;
     }
 
     if (bin_header.value_t == value_type::count) {
