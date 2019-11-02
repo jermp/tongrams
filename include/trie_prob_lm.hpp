@@ -300,13 +300,13 @@ struct trie_prob_lm {
         return state_type(order());
     }
 
-    void score(state_type& state, byte_range const& word, bool& is_OOV,
-               float& prob) {
+    float score(state_type& state, byte_range const word, bool& is_OOV) {
         uint64_pair word_id = m_vocab.lookup_pair(word, identity_adaptor());
         state.add_word(word_id.first);
 
         uint8_t longest_matching_history_len = 0;
         uint64_t order_m1 = 1;
+        float prob = 0.0;
 
         // STEP (1): determine longest matching history
         if (word_id.first != global::not_found) {
@@ -390,6 +390,7 @@ struct trie_prob_lm {
         state.length = longest_matching_history_len;
         state.finalize();
         assert(prob < 0.0);
+        return prob;
     }
 
     inline uint64_t order() const {

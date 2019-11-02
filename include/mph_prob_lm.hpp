@@ -188,13 +188,13 @@ struct mph_prob_lm {
         return state_type(order());
     }
 
-    void score(state_type& state, byte_range const& word, bool& is_OOV,
-               float& prob) {
+    float score(state_type& state, byte_range const word, bool& is_OOV) {
         uint64_t value = m_tables[0].lookup(word, identity_adaptor());
         state.add_word(word.first);  // save beginning of word
 
         uint8_t longest_matching_history_len = 0;
         uint64_t order_m1 = 1;
+        float prob = 0.0;
 
         // STEP (1): determine longest matching history
         if (value != global::not_found) {
@@ -256,6 +256,7 @@ struct mph_prob_lm {
         state.length = longest_matching_history_len;
         state.finalize();
         assert(prob < 0.0);
+        return prob;
     }
 
     void print_stats(size_t bytes) const;

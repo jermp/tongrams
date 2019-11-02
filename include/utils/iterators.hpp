@@ -24,7 +24,7 @@ struct text_lines {
         }
     }
 
-    void next_word(byte_range& word) {
+    byte_range next_word() {
         uint64_t pos = m_pos;
         for (; m_data[pos] != ' '; ++pos) {
             if (m_data[pos] == '\n') {
@@ -33,9 +33,9 @@ struct text_lines {
             }
         }
         ++m_num_words;
-        word.first = &m_data[m_pos];
-        word.second = &m_data[pos];
+        byte_range word{&m_data[m_pos], &m_data[pos]};
         m_pos = pos + 1;
+        return word;
     }
 
     void begin_line() {
@@ -99,6 +99,10 @@ struct forward_byte_range_iterator {
 
     uint64_t spaces() const {
         return std::count(m_begin, m_end, ' ');
+    }
+
+    bool has_next() {
+        return m_cur_pos < m_end;
     }
 
     byte_range next() {

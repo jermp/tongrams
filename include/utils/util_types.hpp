@@ -29,7 +29,7 @@ typedef std::tuple<uint64_t, uint64_t, uint64_t> uint64_triplet;
 
 typedef std::vector<uint64_pair> pairs_vector;
 
-typedef std::pair<const uint8_t*, const uint8_t*> byte_range;
+typedef std::pair<uint8_t const*, uint8_t const*> byte_range;
 
 struct count_record {
     count_record() : count(0) {}

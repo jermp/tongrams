@@ -1,16 +1,15 @@
 To install the python wrapper simply run
 
-    $ bash build_install.sh
+    $ bash install.sh
 
 To test it, first create some indexes.
 
 For example, run the following commands from within a `build` directory
-where the library was compiler.
+where the library was compiled.
 
-    $ ./build_trie_lm pef_trie 5 count --dir ../test_data/ --ranks PSEF --out pef_trie.count.bin
-    $ ./build_trie_lm pef_trie 5 prob_backoff --arpa ../test_data/arpa --out pef_trie.prob_backoff.bin
+    $ ./build_trie_lm ef_trie 5 count --dir ../test_data --out ef_trie.count.bin
+    $ ./build_trie_lm ef_trie 5 prob_backoff --u -10.0 --arpa ../test_data/arpa --out ef_trie.prob_backoff.bin
 
-And then execute the example tests.
+And then execute the example
 
-    $ python test_trie_count.py
-    $ python test_trie_prob.py
+    $ python3 example.py

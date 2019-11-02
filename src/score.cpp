@@ -19,34 +19,25 @@ void score_corpus(std::string const& index_filename,
     text_lines corpus(corpus_filename.c_str());
 
     uint64_t tot_OOVs = 0;
-    uint64_t corpus_tokens = 0;
     uint64_t corpus_sentences = 0;
     float tot_log10_prob = 0.0;
     float tot_log10_prob_only_OOVs = 0.0;
 
-    float sentence_log10_prob;
-    bool is_OOV;
-    float log10_prob = 0.0;
-
     auto state = model.state();
-    byte_range word;
-
     essentials::logger("Scoring");
+
     auto tick = util::get_time_usecs();
-
     while (!corpus.end_of_file()) {  // assume one sentence per line
-
         state.init();
-
-        sentence_log10_prob = 0.0;
-        is_OOV = false;
+        float sentence_log10_prob = 0.0;
+        bool is_OOV = false;
 
         // std::cerr << "{";
 
         corpus.begin_line();
         while (!corpus.end_of_line()) {
-            corpus.next_word(word);
-            model.score(state, word, is_OOV, log10_prob);
+            auto word = corpus.next_word();
+            float log10_prob = model.score(state, word, is_OOV);
 
             // std::cerr << "\"word\" : \"" << std::string(word.first,
             // word.second) << "\", "
@@ -66,10 +57,9 @@ void score_corpus(std::string const& index_filename,
         tot_log10_prob += sentence_log10_prob;
         ++corpus_sentences;
     }
-
     double elapsed = double(util::get_time_usecs() - tick);
 
-    corpus_tokens = corpus.num_words();
+    uint64_t corpus_tokens = corpus.num_words();
     std::cout.precision(8);
     std::cout << "tot_log10_prob = " << tot_log10_prob << std::endl;
     std::cout << "tot_log10_prob_only_OOVs = " << tot_log10_prob_only_OOVs
