@@ -10,7 +10,7 @@ using namespace tongrams;
 
 template <typename Model>
 void perf_test(std::string const& index_filename,
-               std::string const& query_filename, uint32_t runs) {
+               std::string const& query_filename, uint64_t runs) {
     strings_pool sp;
     std::vector<size_t> offsets;
     offsets.push_back(0);
@@ -25,7 +25,7 @@ void perf_test(std::string const& index_filename,
         }
     }
 
-    size_t test_strings = offsets.size() - 1;
+    size_t queries = offsets.size() - 1;
     identity_adaptor adaptor;
 
     Model model;
@@ -42,32 +42,21 @@ void perf_test(std::string const& index_filename,
     std::vector<double> query_times;
     query_times.reserve(runs - 1);
 
-    for (size_t run = 0; run < runs; ++run) {
-        auto tick = util::get_time_usecs();
-        for (size_t i = 0; i < test_strings; ++i) {
-            byte_range br = sp.get_bytes(base_addr, offsets[i], offsets[i + 1]);
+    essentials::timer_type timer;
+    timer.start();
+    for (size_t run = 0; run != runs; ++run) {
+        for (size_t i = 0; i != queries; ++i) {
+            auto br = sp.get_bytes(base_addr, offsets[i], offsets[i + 1]);
             uint64_t count = model.lookup(br, adaptor);
             essentials::do_not_optimize_away(count);
         }
-        double elapsed = double(util::get_time_usecs() - tick);
-        if (run) {  // first run is not timed
-            query_times.push_back(elapsed);
-        }
     }
-
-    if (false) {
-        for (auto t : query_times) {
-            std::cout << (t / 1000) << std::endl;
-        }
-    } else {
-        double avg =
-            std::accumulate(query_times.begin(), query_times.end(), 0.0) /
-            query_times.size();
-        std::cout << "\tMean per run: " << avg / 1000000 << " [sec]"
-                  << std::endl;
-        std::cout << "\tMean per query: " << avg / test_strings << " [musec]"
-                  << std::endl;
-    }
+    timer.stop();
+    double elapsed = timer.elapsed();
+    std::cout << "\tMean per run: " << elapsed / (1000000 * runs) << " [sec]"
+              << std::endl;
+    std::cout << "\tMean per query: " << elapsed / (queries * runs)
+              << " [musec]" << std::endl;
 }
 
 int main(int argc, char** argv) {
@@ -80,10 +69,10 @@ int main(int argc, char** argv) {
 
     auto index_filename = parser.get<std::string>("index_filename");
     auto query_filename = parser.get<std::string>("query_filename");
-    auto runs = parser.get<uint32_t>("runs");
+    auto runs = parser.get<uint64_t>("runs");
 
-    if (runs < 2) {
-        std::cerr << "Error: number of runs must be greater than 1."
+    if (runs == 0) {
+        std::cerr << "Error: number of runs must be greater than 0."
                   << std::endl;
         return 1;
     }

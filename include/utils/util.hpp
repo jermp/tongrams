@@ -344,12 +344,6 @@ inline static uint64_t toull(const char* s) {
     return std::strtoull(s, nullptr, 10);
 }
 
-inline double get_time_usecs() {
-    timeval tv;
-    gettimeofday(&tv, NULL);
-    return double(tv.tv_sec) * 1000000 + double(tv.tv_usec);
-}
-
 template <typename T>
 inline void prefetch(T const* ptr) {
     _mm_prefetch((const char*)ptr, _MM_HINT_T0);

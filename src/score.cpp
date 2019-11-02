@@ -26,7 +26,8 @@ void score_corpus(std::string const& index_filename,
     auto state = model.state();
     essentials::logger("Scoring");
 
-    auto tick = util::get_time_usecs();
+    essentials::timer_type timer;
+    timer.start();
     while (!corpus.end_of_file()) {  // assume one sentence per line
         state.init();
         float sentence_log10_prob = 0.0;
@@ -57,8 +58,7 @@ void score_corpus(std::string const& index_filename,
         tot_log10_prob += sentence_log10_prob;
         ++corpus_sentences;
     }
-    double elapsed = double(util::get_time_usecs() - tick);
-
+    timer.stop();
     uint64_t corpus_tokens = corpus.num_words();
     std::cout.precision(8);
     std::cout << "tot_log10_prob = " << tot_log10_prob << std::endl;
@@ -78,7 +78,8 @@ void score_corpus(std::string const& index_filename,
     std::cout << "OOVs = " << tot_OOVs << "\n"
               << "corpus tokens = " << corpus_tokens << "\n"
               << "corpus sentences = " << corpus_sentences << "\n"
-              << "elapsed time: " << elapsed / 1000000 << " [sec]" << std::endl;
+              << "elapsed time: " << timer.elapsed() / 1000000 << " [sec]"
+              << std::endl;
 }
 
 int main(int argc, char** argv) {

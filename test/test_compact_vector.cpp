@@ -1,4 +1,4 @@
-#include <random>
+#include <iostream>
 
 #include "utils/util.hpp"
 #include "vectors/compact_vector.hpp"
@@ -25,14 +25,12 @@ int main(int argc, char** argv) {
 
     std::vector<uint64_t> v;
     v.reserve(n);
-
-    std::random_device rd;
-    std::mt19937 rng(rd());
-    std::uniform_int_distribution<uint64_t> distr(0, std::pow(2, w - 1));
+    essentials::uniform_int_rng<uint64_t> distr(0, std::pow(2, w - 1),
+                                                essentials::get_random_seed());
     compact_vector::builder cvb(n, w);
 
     for (uint64_t i = 0; i < n; ++i) {
-        uint64_t x = distr(rng);
+        uint64_t x = distr.gen();
         v.push_back(x);
         cvb.push_back(x);
     }
@@ -56,7 +54,8 @@ int main(int argc, char** argv) {
 
     essentials::logger("Checking sequential filler");
 
-    double tick = util::get_time_usecs();
+    essentials::timer_type timer;
+    timer.start();
     for (uint32_t j = 0; j < 10; ++j) {
         compact_vector::builder cvb(v.begin(), n, w);
         values.build(cvb);
@@ -66,9 +65,9 @@ int main(int argc, char** argv) {
             util::check(i++, val, *it++, "value");
         }
     }
-    double elapsed = (util::get_time_usecs() - tick) / 1000000;
-    std::cout << "\ttook " << elapsed << " [secs] for 10 iterations"
-              << std::endl;
+    timer.stop();
+    std::cout << "\ttook " << timer.elapsed() / 1000
+              << " [ms] for 10 iterations" << std::endl;
 
     essentials::logger("Writing to disk");
     util::save(global::null_header, values, "./tmp.out");

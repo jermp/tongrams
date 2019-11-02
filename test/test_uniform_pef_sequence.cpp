@@ -1,5 +1,4 @@
-#include <numeric>
-#include <random>
+#include <iostream>
 
 #include "utils/util.hpp"
 #include "sequences/uniform_pef_sequence.hpp"
@@ -24,15 +23,15 @@ int main(int argc, char** argv) {
     std::mt19937 rng(rd());
 
     {
-        std::uniform_int_distribution<uint64_t> value_distr(
+        essentials::uniform_int_rng<uint64_t> value_distr(
             0,  // sequence is not strictly increasing
-            100);
+            100, essentials::get_random_seed());
 
         std::vector<uint64_t> values;
         values.reserve(n);
         uint64_t last_value = 0;
         for (uint64_t i = 0; i < n; ++i) {
-            values.push_back(last_value + value_distr(rng));
+            values.push_back(last_value + value_distr.gen());
             last_value = values.back();
         }
         assert(values.size() == n);
@@ -77,9 +76,9 @@ int main(int argc, char** argv) {
     std::cout << "number of created ranges: " << pointer_ranges.size()
               << std::endl;
 
-    std::uniform_int_distribution<uint64_t> value_distr(
+    essentials::uniform_int_rng<uint64_t> value_distr(
         1,  // elements are distinct within a range
-        50);
+        50, essentials::get_random_seed());
 
     std::vector<uint64_t> values;
     values.reserve(n);
@@ -88,7 +87,7 @@ int main(int argc, char** argv) {
         values.push_back(
             last_value);  // make first element of each range equal to 0
         for (uint64_t k = ptr_range.begin + 1; k < ptr_range.end; ++k) {
-            values.push_back(last_value + value_distr(rng));
+            values.push_back(last_value + value_distr.gen());
             last_value = values.back();
         }
     }

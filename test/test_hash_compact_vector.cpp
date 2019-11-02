@@ -1,5 +1,4 @@
-#include <random>
-#include <cmath>
+#include <iostream>
 
 #include "utils/util.hpp"
 #include "vectors/hash_compact_vector.hpp"
@@ -17,14 +16,12 @@ void perf_test(uint64_t n, uint64_t w) {
     values.reserve(n);
 
     typename hash_compact_vector<hash_t>::builder hcvb(n, w);
-    std::random_device rd;
-    std::mt19937 eng(rd());
-    std::uniform_int_distribution<uint64_t> distr(0, std::pow(2, w - 1));
-
+    essentials::uniform_int_rng<uint64_t> distr(0, std::pow(2, w - 1),
+                                                essentials::get_random_seed());
     essentials::logger("Generating random (key, value) pairs");
     for (uint64_t i = 0; i < n; ++i) {
-        hash_t k = distr(eng);
-        uint64_t v = distr(eng);
+        hash_t k = distr.gen();
+        uint64_t v = distr.gen();
         keys.push_back(k);
         values.push_back(v);
         hcvb.set(i, k, v);

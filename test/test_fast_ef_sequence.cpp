@@ -1,5 +1,4 @@
-#include <numeric>
-#include <random>
+#include <iostream>
 
 #include "utils/util.hpp"
 #include "sequences/fast_ef_sequence.hpp"
@@ -25,20 +24,19 @@ int main(int argc, char** argv) {
         return 1;
     }
 
-    std::random_device rd;
-    std::mt19937 rng(rd());
-    std::uniform_int_distribution<uint64_t> range_distr(1,  // not empty ranges
-                                                        max_range_len);
-    std::uniform_int_distribution<uint64_t> value_distr(
+    essentials::uniform_int_rng<uint64_t> range_distr(
+        1,  // not empty ranges
+        max_range_len, essentials::get_random_seed());
+    essentials::uniform_int_rng<uint64_t> value_distr(
         1,  // elements are distinct within a range
-        50);
+        50, essentials::get_random_seed());
 
     std::vector<uint64_t> pointers;
     pointers.push_back(0);
     std::vector<pointer_range> pointer_ranges;
     uint64_t last_offset = 0;
     for (uint64_t offset = 0; offset < n;) {
-        uint64_t range = range_distr(rng);
+        uint64_t range = range_distr.gen();
         offset += range;
         if (offset > n) {
             offset = n;
@@ -58,7 +56,7 @@ int main(int argc, char** argv) {
         values.push_back(
             last_value);  // make first element of each range equal to 0
         for (uint64_t k = ptr_range.begin + 1; k < ptr_range.end; ++k) {
-            values.push_back(last_value + value_distr(rng));
+            values.push_back(last_value + value_distr.gen());
             last_value = values.back();
         }
     }
