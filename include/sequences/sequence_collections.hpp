@@ -15,6 +15,18 @@ struct quantized_sequence_collection {
             m_sequences.reserve(n);
         }
 
+        void resize(size_t n) {
+            m_quantization_bits.resize(n);
+            m_sequences.resize(n);
+        }
+
+        void add_sequence(uint8_t order, uint8_t quantization_bits,
+                          std::vector<float>& averages) {
+            check_quantization_bits(quantization_bits, averages.size());
+            m_quantization_bits[order - 1] = quantization_bits;
+            m_sequences[order - 1].swap(averages);
+        }
+
         uint64_t rank(uint8_t order_m1, float value, size_t reserved) const {
             // NOTE: in order to return the same results as KenLM
             if (reserved == 1  // value is a backoff

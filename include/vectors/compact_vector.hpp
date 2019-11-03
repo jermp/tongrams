@@ -146,6 +146,17 @@ struct compact_vector {
             }
         }
 
+        inline uint64_t operator[](uint64_t i) const {
+            assert(i < size());
+            uint64_t pos = i * m_width;
+            uint64_t block = pos >> 6;
+            uint64_t shift = pos & 63;
+            return shift + m_width <= 64
+                       ? m_bits[block] >> shift & m_mask
+                       : (m_bits[block] >> shift) |
+                             (m_bits[block + 1] << (64 - shift) & m_mask);
+        }
+
         friend struct iterator<builder>;
 
         typedef iterator<builder> iterator_type;
@@ -156,6 +167,14 @@ struct compact_vector {
 
         iterator_type end() const {
             return iterator_type(this, m_size);
+        }
+
+        void build(compact_vector& cv) {
+            cv.m_size = m_size;
+            cv.m_width = m_width;
+            cv.m_mask = m_mask;
+            cv.m_bits.swap(m_bits);
+            compact_vector::builder().swap(*this);
         }
 
         void swap(compact_vector::builder& other) {

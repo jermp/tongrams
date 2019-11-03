@@ -27,26 +27,27 @@ namespace tongrams {
 
 namespace bits {
 
-typedef union {
+template <typename UintType>
+union reinterpret {
     float float_value;
-    uint64_t uint64_value;
-} reinterpret;
+    UintType uint_value;
+};
 
 void pack(uint64_t& packed, float prob, float backoff) {
-    reinterpret reint;
-    reint.uint64_value = 0;  // set all bits to 0
+    reinterpret<uint64_t> reint;
+    reint.uint_value = 0;  // set all bits to 0
     reint.float_value = backoff;
-    packed = reint.uint64_value << 32;
+    packed = reint.uint_value << 32;
     reint.float_value = prob;
-    packed |= reint.uint64_value;
+    packed |= reint.uint_value;
 }
 
 inline void unpack(uint64_t packed, float& prob, float& backoff) {
     const static uint64_t mask = (uint64_t(1) << 32) - 1;
-    reinterpret reint;
-    reint.uint64_value = packed & mask;
+    reinterpret<uint64_t> reint;
+    reint.uint_value = packed & mask;
     prob = reint.float_value;
-    reint.uint64_value = packed >> 32;
+    reint.uint_value = packed >> 32;
     backoff = reint.float_value;
 }
 

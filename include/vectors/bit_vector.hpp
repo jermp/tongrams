@@ -75,6 +75,11 @@ struct bit_vector_builder {
         }
     }
 
+    void init() {
+        m_size = 0;
+        m_bits.clear();
+    }
+
     void reserve(uint64_t num_bits) {
         m_bits.reserve(essentials::words_for(num_bits));
     }
@@ -99,8 +104,7 @@ struct bit_vector_builder {
         assert(pos + len <= size());
         // check there are no spurious bits
         assert(len == 64 || (bits >> len) == 0);
-        if (!len)
-            return;
+        if (!len) return;
         uint64_t mask = (len == 64) ? uint64_t(-1) : ((uint64_t(1) << len) - 1);
         uint64_t word = pos >> 6;
         uint64_t pos_in_word = pos & 63;
@@ -118,8 +122,7 @@ struct bit_vector_builder {
     inline void append_bits(uint64_t bits, size_t len) {
         // check there are no spurious bits
         assert(len == 64 || (bits >> len) == 0);
-        if (!len)
-            return;
+        if (!len) return;
         uint64_t pos_in_word = m_size & 63;
         m_size += len;
         if (pos_in_word == 0) {
@@ -145,8 +148,7 @@ struct bit_vector_builder {
     }
 
     void append(bit_vector_builder const& rhs) {
-        if (!rhs.size())
-            return;
+        if (!rhs.size()) return;
 
         uint64_t pos = m_bits.size();
         uint64_t shift = size() % 64;

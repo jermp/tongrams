@@ -32,6 +32,14 @@ struct strings_pool {
         return {base_addr + begin, base_addr + end};
     }
 
+    void swap(strings_pool& other) {
+        m_data.swap(other.m_data);
+    }
+
+    void shrink_to_fit() {
+        m_data.shrink_to_fit();
+    }
+
 private:
     std::vector<uint8_t> m_data;
 };
