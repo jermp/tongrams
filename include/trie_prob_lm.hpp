@@ -167,7 +167,7 @@ struct trie_prob_lm {
 
                 unigrams_pool.append(gram);
                 offsets.push_back(unigrams_pool.bytes());
-                uint64_t packed;
+                uint64_t packed = 0;
                 bits::pack(packed, prob, backoff);
                 values_cvb.push_back(packed);
             }

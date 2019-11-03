@@ -20,7 +20,7 @@ This guide is meant to provide a brief overview of the library and to illustrate
 
 Building the code
 -----------------
-The code has been tested on Linux Ubuntu with `gcc` 5.4.1, 7.3.0 and 8.3.0; Mac OS X El Capitan with `clang` 7.3.0; Mac OS X Mojave with `clang` 10.0.0.
+The code has been tested on Linux Ubuntu with `gcc` 5.4.1, 7.3.0, 8.3.0, 9.0.0; Mac OS X El Capitan with `clang` 7.3.0; Mac OS X Mojave with `clang` 10.0.0.
 
 The following dependencies are needed for the build: [`CMake`](https://cmake.org) and [`Boost`](https://www.boost.org).
 

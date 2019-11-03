@@ -83,10 +83,10 @@ int main(int argc, char** argv) {
     }
 
     float unk_prob = global::default_unk_prob;
-    uint8_t probs_quantization_bits = global::default_probs_quantization_bits;
-    uint8_t backoffs_quantization_bits =
+    uint32_t probs_quantization_bits = global::default_probs_quantization_bits;
+    uint32_t backoffs_quantization_bits =
         global::default_backoffs_quantization_bits;
-    uint64_t remapping_order = 0;
+    uint32_t remapping_order = 0;
     const char* input_dir = ".";
     const char* arpa_filename = nullptr;
     const char* output_filename = nullptr;
@@ -98,13 +98,13 @@ int main(int argc, char** argv) {
                   << std::endl;
     }
     if (parser.parsed("p")) {
-        probs_quantization_bits = parser.get<uint8_t>("p");
+        probs_quantization_bits = parser.get<uint32_t>("p");
     }
     if (parser.parsed("b")) {
-        backoffs_quantization_bits = parser.get<uint8_t>("b");
+        backoffs_quantization_bits = parser.get<uint32_t>("b");
     }
     if (parser.parsed("remapping")) {
-        remapping_order = parser.get<uint64_t>("remapping");
+        remapping_order = parser.get<uint32_t>("remapping");
         building_util::check_remapping_order(remapping_order);
         bin_header.remapping_order = remapping_order;
     }

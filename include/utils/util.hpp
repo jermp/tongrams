@@ -26,15 +26,15 @@
 namespace tongrams {
 
 namespace bits {
-// NOTE: for union punning
+
 typedef union {
     float float_value;
     uint64_t uint64_value;
 } reinterpret;
 
-// pack 2 floats into 1 unit64_t
 void pack(uint64_t& packed, float prob, float backoff) {
     reinterpret reint;
+    reint.uint64_value = 0;  // set all bits to 0
     reint.float_value = backoff;
     packed = reint.uint64_value << 32;
     reint.float_value = prob;
@@ -49,6 +49,7 @@ inline void unpack(uint64_t packed, float& prob, float& backoff) {
     reint.uint64_value = packed >> 32;
     backoff = reint.float_value;
 }
+
 }  // namespace bits
 
 namespace global {
