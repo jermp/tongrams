@@ -8,7 +8,7 @@ int main(int argc, char** argv) {
     using namespace tongrams;
     cmd_line_parser::parser parser(argc, argv);
 
-    parser.add("order", "Language model order. It must be either > 0 and <= " +
+    parser.add("order", "Language model order. It must be > 0 and <= " +
                             std::to_string(global::max_order) + ".");
     parser.add("hash_key_bytes",
                "Number of bytes for hash keys: either 4 or 8.");

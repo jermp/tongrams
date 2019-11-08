@@ -11,7 +11,7 @@ int main(int argc, char** argv) {
     parser.add(
         "data_structure_type",
         "Data structure type. It must be either 'ef_trie' or 'pef_trie'.");
-    parser.add("order", "Language model order. It must be either > 0 and <= " +
+    parser.add("order", "Language model order. It must be > 0 and <= " +
                             std::to_string(global::max_order) + ".");
     parser.add("value_type",
                "Value type. It must be either 'count' or 'prob_backoff'.");

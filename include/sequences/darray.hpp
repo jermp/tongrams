@@ -4,8 +4,8 @@
 #include "utils/util.hpp"
 
 namespace tongrams {
-
 namespace detail {
+
 template <typename WordGetter>
 struct darray {
     darray() : m_positions() {}
@@ -24,11 +24,8 @@ struct darray {
             while (util::lsb(cur_word, l)) {
                 cur_pos += l;
                 cur_word >>= l;
-                if (cur_pos >= bv.size())
-                    break;
-
+                if (cur_pos >= bv.size()) break;
                 cur_block_positions.push_back(cur_pos);
-
                 if (cur_block_positions.size() == block_size) {
                     flush_cur_block(cur_block_positions, block_inventory,
                                     subblock_inventory, overflow_positions);
@@ -81,8 +78,7 @@ struct darray {
 
             while (true) {
                 size_t popcnt = util::popcount(word);
-                if (reminder < popcnt)
-                    break;
+                if (reminder < popcnt) break;
                 reminder -= popcnt;
                 word = WordGetter()(data, ++word_idx);
             }
@@ -96,10 +92,9 @@ struct darray {
     }
 
     uint64_t bytes() const {
-        return sizeof(m_positions) +
-               m_block_inventory.size() * sizeof(m_block_inventory[0]) +
-               m_subblock_inventory.size() * sizeof(m_subblock_inventory[0]) +
-               m_overflow_positions.size() * sizeof(m_overflow_positions[0]);
+        return sizeof(m_positions) + essentials::vec_bytes(m_block_inventory) +
+               essentials::vec_bytes(m_subblock_inventory) +
+               essentials::vec_bytes(m_overflow_positions);
     }
 
     void save(std::ostream& os) const {
@@ -163,8 +158,10 @@ struct negating_getter {
         return ~data[idx];
     }
 };
+
 }  // namespace detail
 
 typedef detail::darray<detail::identity_getter> darray1;
 typedef detail::darray<detail::negating_getter> darray0;
+
 }  // namespace tongrams
