@@ -5,6 +5,7 @@
 #include "utils/util.hpp"
 #include "utils/iterators.hpp"
 #include "lm_types.hpp"
+#include "score.hpp"
 #include "../external/essentials/include/essentials.hpp"
 #include "../external/cmd_line_parser/include/parser.hpp"
 
