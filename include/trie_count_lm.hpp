@@ -88,8 +88,7 @@ struct trie_count_lm {
             counts_builder.build(m_distinct_counts);
         }
 
-        void build(trie_count_lm<Vocabulary, Mapper, Values, Ranks, Grams,
-                                 Pointers>& trie) {
+        void build(trie_count_lm& trie) {
             trie.m_order = m_order;
             trie.m_remapping_order = m_remapping_order;
             trie.m_distinct_counts.swap(m_distinct_counts);

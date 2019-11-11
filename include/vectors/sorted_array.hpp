@@ -6,6 +6,31 @@
 namespace tongrams {
 template <typename Grams, typename Ranks, typename Pointers>
 struct sorted_array {
+    struct estimation_builder {
+        estimation_builder() {}
+
+        template <typename T>
+        void build_word_ids(uint8_t order, sorted_array& sa, T& partition) {
+            sa.m_grams.build(word_ids.begin(), word_ids.size(), partition,
+                             order);
+            compact_vector::builder().swap(word_ids);
+        }
+
+        void build_probs_backoffs_ranks(sorted_array& sa) {
+            probs_backoffs_ranks.build(sa.m_probs_backoffs_ranks);
+            compact_vector::builder().swap(probs_backoffs_ranks);
+        }
+
+        void build_pointers(sorted_array& sa) {
+            sa.m_pointers.build(pointers);
+            compact_vector::builder().swap(pointers);
+        }
+
+        compact_vector::builder word_ids;
+        compact_vector::builder probs_backoffs_ranks;
+        compact_vector::builder pointers;
+    };
+
     struct builder {
         builder() {}
 

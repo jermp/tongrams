@@ -12,6 +12,9 @@ template <typename Vocabulary, typename Mapper, typename Values, typename Ranks,
           typename Grams, typename Pointers>
 struct trie_prob_lm {
     typedef sorted_array<Grams, Ranks, Pointers> sorted_array_type;
+
+    struct estimation_builder;
+
     struct builder {
         builder() {}
 
@@ -104,8 +107,7 @@ struct trie_prob_lm {
             backoffs_builder.build(m_backoffs_averages);
         }
 
-        void build(trie_prob_lm<Vocabulary, Mapper, Values, Ranks, Grams,
-                                Pointers>& trie) {
+        void build(trie_prob_lm& trie) {
             trie.m_order = m_order;
             trie.m_remapping_order = m_remapping_order;
             trie.m_unk_prob = m_unk_prob;

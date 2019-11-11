@@ -110,7 +110,7 @@ struct mph_prob_lm {
             backoffs_builder.build(m_backoffs_averages);
         }
 
-        void build(mph_prob_lm<Values, KeyRankSequence, BaseHasher>& mph) {
+        void build(mph_prob_lm& mph) {
             mph.m_order = m_order;
             mph.m_unk_prob = m_unk_prob;
             mph.m_probs_averages.swap(m_probs_averages);
