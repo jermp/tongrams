@@ -7,9 +7,10 @@
 #include "utils/util.hpp"
 
 namespace tongrams {
+
 template <typename Values, typename KeyRankSequence, typename BaseHasher>
 struct mph_count_lm {
-    typedef single_valued_mpht<KeyRankSequence, BaseHasher> hash_table;
+    typedef single_valued_mpht<KeyRankSequence, BaseHasher> hash_table_type;
 
     mph_count_lm() : m_order(0) {}
 
@@ -31,10 +32,10 @@ struct mph_count_lm {
             essentials::logger("Reading " + std::to_string(order) +
                                "-grams counts");
             for (auto const& l : gp) {
-                counts.push_back(l.count);
+                counts_builder.eat_value(l.count);
             }
 
-            counts_builder.build_sequence(counts.begin(), counts.size());
+            counts_builder.build_sequence();
         }
 
         size_t available_ram = sysconf(_SC_PAGESIZE) * sysconf(_SC_PHYS_PAGES);
@@ -58,7 +59,7 @@ struct mph_count_lm {
                 counts_ranks_cvb.push_back(rank);
             }
 
-            typename hash_table::builder builder(
+            typename hash_table_type::builder builder(
                 byte_ranges, compact_vector(counts_ranks_cvb),
                 identity_adaptor());
             m_tables.emplace_back(builder);
@@ -110,6 +111,7 @@ struct mph_count_lm {
 private:
     uint8_t m_order;
     Values m_distinct_counts;
-    std::vector<hash_table> m_tables;
+    std::vector<hash_table_type> m_tables;
 };
+
 }  // namespace tongrams

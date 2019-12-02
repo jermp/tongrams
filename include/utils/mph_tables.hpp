@@ -54,7 +54,7 @@ struct single_valued_mpht {
             }
         }
 
-        void build(single_valued_mpht<KeyValueSequence, BaseHasher>& mpht) {
+        void build(single_valued_mpht& mpht) {
             mpht.m_h.swap(m_h);
             mpht.m_data.build(m_data_builder);
             builder().swap(*this);

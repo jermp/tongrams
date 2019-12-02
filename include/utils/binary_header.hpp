@@ -2,6 +2,8 @@
 
 #include "utils/util_types.hpp"
 
+namespace tongrams {
+
 namespace version {
 static const uint8_t version_number = 10;  // xy read as 'x.y'
 
@@ -12,27 +14,24 @@ std::string lib_version() {
 }
 }  // namespace version
 
-namespace tongrams {
 struct binary_header {
     /*
                             2 bits           2 bits      1 bit      2 bits
-                      -----------------------------------------------------------
+                      ---------------------------------------------------------
         trie_count    |   ranks_type |remapping_order|value_t|data_structure_t|
-                      -----------------------------------------------------------
-                                       ------------------------------------------
+                      ---------------------------------------------------------
+                  ------------------------------------------
         trie_prob |remapping_order|value_t|data_structure_t|
-                                       ------------------------------------------
+                  ------------------------------------------
 
 
-                            1 bits           1 bits      1 bit      2 bits
-                      -----------------------------------------------------------
-        hash_count    |hash_count_bytes|
-       hash_key_bytes|value_t|data_structure_t|
-                      -----------------------------------------------------------
-                                       ------------------------------------------
-        hash_prob                      |
-       hash_key_bytes|value_t|data_structure_t|
-                                       ------------------------------------------
+                           1 bits      1 bit      2 bits
+                      -----------------------------------------
+        hash_count    |hash_key_bytes|value_t|data_structure_t|
+                      -----------------------------------------
+                    -----------------------------------------
+        hash_prob   |hash_key_bytes|value_t|data_structure_t|
+                    -----------------------------------------
     */
 
     static const int invalid = -1;
@@ -42,7 +41,6 @@ struct binary_header {
         , value_t(invalid)
         , remapping_order(invalid)
         , hash_key_bytes(invalid)
-        , hash_count_bytes(invalid)
         , ranks_t(invalid) {}
 
     static bool is_invalid(int param) {
@@ -70,11 +68,6 @@ struct binary_header {
         if (data_structure_t == data_structure_type::hash) {
             check_is_valid(hash_key_bytes);
             header |= (hash_key_bytes / 4 - 1) << position;
-            if (value_t == value_type::count) {
-                ++position;
-                check_is_valid(hash_count_bytes);
-                header |= (hash_count_bytes / 4 - 1) << position;
-            }
         } else {
             check_is_valid(remapping_order);
             header |= remapping_order << position;
@@ -124,17 +117,6 @@ struct binary_header {
             if (verbose) {
                 std::cout << "hash_key_bytes: " << hash_key_bytes << "\n";
             }
-
-            if (value_t == value_type::count) {
-                header >>= 1;
-                int hash_count_bytes = ((header & 1) + 1) * 4;
-                model_string_type += hash_count_bytes == 4 ? "32" : "64";
-                if (verbose) {
-                    std::cout << "hash_count_bytes: " << hash_count_bytes
-                              << "\n";
-                }
-            }
-
         } else {
             int remapping_order = header & 3;
             header >>= 2;
@@ -210,7 +192,7 @@ struct binary_header {
     int value_t;
     int remapping_order;
     int hash_key_bytes;
-    int hash_count_bytes;
     int ranks_t;
 };
+
 }  // namespace tongrams

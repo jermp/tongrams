@@ -12,8 +12,6 @@ int main(int argc, char** argv) {
                             std::to_string(global::max_order) + ".");
     parser.add("hash_key_bytes",
                "Number of bytes for hash keys: either 4 or 8.");
-    parser.add("count_bytes",
-               "Number of bytes for distinct counts: either 4 or 8.");
     parser.add("value_type",
                "Value type. It must be either 'count' or 'prob_backoff'.");
     parser.add("dir",
@@ -44,7 +42,6 @@ int main(int argc, char** argv) {
     auto order = parser.get<uint64_t>("order");
     building_util::check_order(order);
     auto hash_key_bytes = parser.get<uint64_t>("hash_key_bytes");
-    auto count_bytes = parser.get<uint64_t>("count_bytes");
     auto value_type = parser.get<std::string>("value_type");
 
     if (hash_key_bytes != 4 and hash_key_bytes != 8) {
@@ -52,16 +49,10 @@ int main(int argc, char** argv) {
                   << "It must be 4 or 8." << std::endl;
         return 1;
     }
-    if (count_bytes != 4 and count_bytes != 8) {
-        std::cerr << "Error: invalid number of bytes for distinct counts.\n"
-                  << "It must be 4 or 8." << std::endl;
-        return 1;
-    }
 
     binary_header bin_header;
     bin_header.data_structure_t = data_structure_type::hash;
     bin_header.hash_key_bytes = hash_key_bytes;
-    bin_header.hash_count_bytes = count_bytes;
 
     if (value_type == "count") {
         bin_header.value_t = value_type::count;

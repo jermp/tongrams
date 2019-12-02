@@ -30,7 +30,7 @@ struct quantized_sequence_collection {
         uint64_t rank(uint8_t order_m1, float value, size_t reserved) const {
             // NOTE: in order to return the same results as KenLM
             if (reserved == 1  // value is a backoff
-                && value == 0.0) {
+                and value == 0.0) {
                 return 0;
             }
 
@@ -39,12 +39,8 @@ struct quantized_sequence_collection {
 
             auto above =
                 std::lower_bound(data.begin() + reserved, data.end(), value);
-            if (above == data.begin() + reserved) {
-                return reserved;
-            }
-            if (above == data.end()) {
-                return data.end() - data.begin() - 1;
-            }
+            if (above == data.begin() + reserved) return reserved;
+            if (above == data.end()) return data.end() - data.begin() - 1;
             auto prev_above = above;
             --prev_above;
             auto to_ret =
@@ -78,7 +74,7 @@ struct quantized_sequence_collection {
                     "quantization bits must be in [2, 32]");
             }
             uint64_t num_bins = uint64_t(1) << quantization_bits;
-            if (n && n < num_bins) {
+            if (n > 0 and n < num_bins) {
                 std::cerr
                     << "too many quantization bits used: these must be in [2, "
                     << util::ceil_log2(n) << "]" << std::endl;
@@ -190,146 +186,6 @@ private:
     std::vector<std::vector<float>> m_sequences;
 };
 
-template <typename CountType>
-struct byte_aligned_sequence_collection {
-    struct builder {
-        struct adaptor {
-            uint64_t first(pairs_vector const& s, uint64_t i) const {
-                return s[i].first;
-            }
-
-            uint64_t second(pairs_vector const& s, uint64_t i) const {
-                return s[i].second;
-            }
-        };
-
-        builder(size_t n = 0) {
-            m_pairs_sequences.reserve(n);
-            m_sequences.reserve(n);
-        }
-
-        template <typename Iterator>
-        void build_sequence(Iterator begin, uint64_t n) {
-            if (n) {
-                std::unordered_map<uint64_t, uint64_t> x;
-                auto end = x.end();
-                uint64_t max = 0;
-                for (uint64_t i = 0; i < n; ++i, ++begin) {
-                    uint64_t v = *begin;
-                    if (v > max) {
-                        max = v;
-                    }
-                    if (x.find(v) != end) {
-                        ++x[v];
-                    } else {
-                        x.emplace(v, 1);
-                    }
-                }
-
-                uint64_t num_distinct_values = x.size();
-                pairs_vector sorted_x;
-                sorted_x.reserve(num_distinct_values);
-                for (auto v : x) {
-                    sorted_x.emplace_back(v.first, v.second);
-                }
-
-                // sort on frequency of counters
-                std::sort(sorted_x.begin(), sorted_x.end(),
-                          [&](uint64_pair const& x, uint64_pair const& y) {
-                              return x.second > y.second;
-                          });
-
-                // assign ranks
-                std::vector<CountType> distinct_values;
-                distinct_values.reserve(num_distinct_values);
-                for (uint64_t i = 0; i < num_distinct_values; ++i) {
-                    auto& p = sorted_x[i];
-                    distinct_values.push_back(p.first);
-                    p.second = i;
-                }
-                m_sequences.push_back(std::move(distinct_values));
-
-                // sort on values to enable binary search
-                std::sort(sorted_x.begin(), sorted_x.end(),
-                          [&](uint64_pair const& x, uint64_pair const& y) {
-                              return x.first < y.first;
-                          });
-                m_pairs_sequences.push_back(std::move(sorted_x));
-            } else {  // push empty sequences
-                m_sequences.push_back(std::vector<CountType>());
-                m_pairs_sequences.push_back(pairs_vector());
-            }
-        }
-
-        uint64_t rank(uint8_t order_m1, uint64_t value) const {
-            assert(order_m1 < m_pairs_sequences.size());
-            auto const& distinct_values = m_pairs_sequences[order_m1];
-            uint64_t rank = 0;
-            if (!util::binary_search(distinct_values, distinct_values.size(),
-                                     value, rank, adaptor())) {
-                throw std::runtime_error("value not found");
-            }
-            return rank;
-        }
-
-        size_t size(uint64_t order_m1) const {
-            return m_sequences[order_m1].size();
-        }
-
-        void swap(builder& other) {
-            m_sequences.swap(other.m_sequences);
-        }
-
-        void build(byte_aligned_sequence_collection& sc) {
-            sc.m_sequences.swap(m_sequences);
-            builder().swap(*this);
-        }
-
-    private:
-        std::vector<pairs_vector> m_pairs_sequences;
-        std::vector<std::vector<CountType>> m_sequences;
-    };
-
-    byte_aligned_sequence_collection() {}
-
-    inline uint64_t access(uint64_t order_m1, uint64_t i) const {
-        assert(order_m1 < m_sequences.size());
-        return m_sequences[order_m1][i];
-    }
-
-    size_t bytes() const {
-        size_t bytes = 0;
-        for (auto const& s : m_sequences) {
-            bytes += s.size() * sizeof(CountType);
-        }
-        return bytes;
-    }
-
-    size_t size(uint64_t order_m1) const {
-        return m_sequences[order_m1].size();
-    }
-
-    void swap(byte_aligned_sequence_collection& other) {
-        m_sequences.swap(other.m_sequences);
-    }
-
-    void save(std::ostream& os) const {
-        for (auto const& s : m_sequences) {
-            essentials::save_vec(os, s);
-        }
-    }
-
-    void load(std::istream& is, uint8_t order) {
-        m_sequences.resize(order);
-        for (auto& s : m_sequences) {
-            essentials::load_vec(is, s);
-        }
-    }
-
-private:
-    std::vector<std::vector<CountType>> m_sequences;
-};
-
 struct sequence_collection {
     struct builder {
         struct adaptor {
@@ -347,56 +203,55 @@ struct sequence_collection {
             m_sequences.reserve(n);
         }
 
-        template <typename Iterator>
-        void build_sequence(Iterator begin, uint64_t n) {
-            if (n) {
-                std::unordered_map<uint64_t, uint64_t> x;
-                auto end = x.end();
-                uint64_t max = 0;
-                for (uint64_t i = 0; i < n; ++i, ++begin) {
-                    uint64_t v = *begin;
-                    if (v > max) {
-                        max = v;
-                    }
-                    if (x.find(v) != end) {
-                        ++x[v];
-                    } else {
-                        x.emplace(v, 1);
-                    }
-                }
+        void eat_value(uint64_t val) {
+            if (m_distinct_counts.find(val) != m_distinct_counts.end()) {
+                ++m_distinct_counts[val];
+            } else {
+                m_distinct_counts.emplace(val, 1);
+            }
+        }
 
-                uint64_t m = x.size();
-                pairs_vector sorted_x;
-                sorted_x.reserve(m);
-                for (auto v : x) {
-                    sorted_x.emplace_back(v.first, v.second);
-                }
-
-                // sort on frequency of counters
-                std::sort(sorted_x.begin(), sorted_x.end(),
-                          [&](uint64_pair const& x, uint64_pair const& y) {
-                              return x.second > y.second;
-                          });
-
-                // assign ranks
-                compact_vector::builder cvb(m, util::ceil_log2(max + 1));
-                for (uint64_t i = 0; i < m; ++i) {
-                    auto& p = sorted_x[i];
-                    cvb.push_back(p.first);
-                    p.second = i;
-                }
-                m_sequences.emplace_back(cvb);
-
-                // sort on values to enable binary search
-                std::sort(sorted_x.begin(), sorted_x.end(),
-                          [&](uint64_pair const& x, uint64_pair const& y) {
-                              return x.first < y.first;
-                          });
-                m_pairs_sequences.push_back(std::move(sorted_x));
-            } else {  // push empty sequences
+        // template <typename Iterator>
+        void build_sequence() {
+            if (m_distinct_counts.empty()) {
                 m_sequences.push_back(compact_vector());
                 m_pairs_sequences.push_back(pairs_vector());
+                return;
             }
+
+            uint64_t n = m_distinct_counts.size();
+            uint64_t max_count = 0;
+            pairs_vector sorted;
+            sorted.reserve(n);
+            for (auto const val : m_distinct_counts) {
+                if (val.first > max_count) max_count = val.first;
+                sorted.emplace_back(val.first, val.second);
+            }
+
+            // reset
+            m_distinct_counts.clear();
+
+            // sort on frequency of counts
+            std::sort(sorted.begin(), sorted.end(),
+                      [&](uint64_pair const x, uint64_pair const y) {
+                          return x.second > y.second;
+                      });
+
+            // assign ranks
+            compact_vector::builder cvb(n, util::ceil_log2(max_count + 1));
+            for (uint64_t i = 0; i != n; ++i) {
+                auto& p = sorted[i];
+                cvb.push_back(p.first);
+                p.second = i;
+            }
+            m_sequences.emplace_back(cvb);
+
+            // sort on values to enable binary search
+            std::sort(sorted.begin(), sorted.end(),
+                      [&](uint64_pair const x, uint64_pair const y) {
+                          return x.first < y.first;
+                      });
+            m_pairs_sequences.push_back(std::move(sorted));
         }
 
         uint64_t rank(uint8_t order_m1, uint64_t value) const {
@@ -424,6 +279,7 @@ struct sequence_collection {
         }
 
     private:
+        std::unordered_map<uint64_t, uint64_t> m_distinct_counts;
         std::vector<pairs_vector> m_pairs_sequences;
         std::vector<compact_vector> m_sequences;
     };

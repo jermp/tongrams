@@ -17,6 +17,9 @@ struct trie_count_lm {
             : m_input_dir(input_dir)
             , m_order(order)
             , m_remapping_order(remapping_order) {
+            essentials::timer_type timer;
+            timer.start();
+
             building_util::check_order(m_order);
             building_util::check_remapping_order(m_remapping_order);
             m_arrays.reserve(m_order);
@@ -29,17 +32,13 @@ struct trie_count_lm {
                 util::check_filename(filename);
                 grams_gzparser gp(filename.c_str());
 
-                std::vector<uint64_t> counts;
-                counts.reserve(gp.num_lines());
-
                 m_arrays.push_back(sorted_array_type(gp.num_lines()));
                 essentials::logger("Reading " + std::to_string(order) +
                                    "-grams counts");
                 for (auto const& l : gp) {
-                    counts.push_back(l.count);
+                    counts_builder.eat_value(l.count);
                 }
-
-                counts_builder.build_sequence(counts.begin(), counts.size());
+                counts_builder.build_sequence();
             }
 
             essentials::logger("Building vocabulary");
@@ -86,6 +85,10 @@ struct trie_count_lm {
             }
 
             counts_builder.build(m_distinct_counts);
+
+            timer.stop();
+            std::cout << "data structure built in " << timer.elapsed() / 1000000
+                      << " seconds" << std::endl;
         }
 
         void build(trie_count_lm& trie) {
@@ -322,4 +325,5 @@ private:
     Vocabulary m_vocab;
     std::vector<sorted_array_type> m_arrays;
 };
+
 }  // namespace tongrams
