@@ -1,38 +1,13 @@
 #include <unistd.h>
 
 #include "sorters/sorter.hpp"
-#include "sorters/comparators.hpp"
+#include "sorters/sorter_common.hpp"
 #include "lm_types.hpp"
 #include "utils/parsers.hpp"
-#include "utils/mph_tables.hpp"
-#include "utils/pools.hpp"
 #include "../external/essentials/include/essentials.hpp"
 #include "../external/cmd_line_parser/include/parser.hpp"
 
 using namespace tongrams;
-
-void build_vocabulary(char const* vocab_filename, single_valued_mpht64& vocab,
-                      size_t available_ram) {
-    // assume unigrams fit in memory
-    grams_counts_pool unigrams(available_ram);
-    unigrams.load_from<grams_gzparser>(vocab_filename);
-    auto& unigrams_pool_index = unigrams.index();
-    uint64_t n = unigrams_pool_index.size();
-
-    std::vector<byte_range> bytes;
-    bytes.reserve(n);
-    for (auto const& record : unigrams_pool_index) {
-        bytes.push_back(record.gram);
-    }
-
-    compact_vector::builder cvb(n, util::ceil_log2(n + 1));
-    for (uint64_t id = 0; id < n; ++id) {
-        cvb.push_back(id);
-    }
-    single_valued_mpht64::builder builder(bytes, compact_vector(cvb),
-                                          identity_adaptor());
-    builder.build(vocab);
-}
 
 int main(int argc, char** argv) {
     cmd_line_parser::parser parser(argc, argv);

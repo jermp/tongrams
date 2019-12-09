@@ -1,8 +1,33 @@
 #pragma once
 
+#include "../external/emphf/base_hash.hpp"
+#include "utils/mph_tables.hpp"
+#include "utils/pools.hpp"
 #include "utils/iterators.hpp"
 
 namespace tongrams {
+
+void build_vocabulary(char const* vocab_filename, single_valued_mpht64& vocab,
+                      size_t bytes) {
+    grams_counts_pool unigrams(bytes);
+    unigrams.load_from<grams_gzparser>(vocab_filename);
+    auto& unigrams_pool_index = unigrams.index();
+    uint64_t n = unigrams_pool_index.size();
+
+    std::vector<byte_range> byte_ranges;
+    byte_ranges.reserve(n);
+    for (auto const& record : unigrams_pool_index) {
+        byte_ranges.push_back(record.gram);
+    }
+
+    compact_vector::builder cvb(n, util::ceil_log2(n + 1));
+    for (uint64_t id = 0; id != n; ++id) {
+        cvb.push_back(id);
+    }
+    single_valued_mpht64::builder builder(byte_ranges, compact_vector(cvb),
+                                          identity_adaptor());
+    builder.build(vocab);
+}
 
 template <typename Vocabulary, typename Record, typename Iterator>
 struct comparator {

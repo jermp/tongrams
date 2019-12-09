@@ -12,8 +12,6 @@ struct sorter {
     sorter(uint64_t n, Comparator& comparator,
            std::string const& output_filename, std::string const& tmp_dir)
         : m_n(n)
-        , m_batch_size(0)
-        , m_cur_filename(0)
         , m_comparator(comparator)
         , m_output_filename(output_filename)
         , m_tmp_dir(tmp_dir) {}
@@ -24,14 +22,11 @@ struct sorter {
 
     template <typename Iterator>
     void sort(Iterator begin, Iterator end) {
-        if (begin == end) {
-            return;
-        }
-
+        if (begin == end) return;
         size_t n = end - begin;
-        m_batch_size = n;
-        std::cout << "batch size = " << m_batch_size << std::endl;
-        std::string output_filename = next_tmp_filename();
+        std::cout << "sorting " << n << " records" << std::endl;
+        auto output_filename =
+            n == m_n ? m_output_filename : next_tmp_filename();
         essentials::logger("sorting " + output_filename);
         std::sort(begin, end, m_comparator);
         essentials::logger("flushing " + output_filename);
@@ -41,41 +36,31 @@ struct sorter {
 
 private:
     uint64_t m_n;
-    uint64_t m_batch_size;
-    uint64_t m_cur_filename;
     Comparator& m_comparator;
     std::string m_output_filename;
     std::deque<std::string> m_files;
     std::string m_tmp_dir;
 
     std::string next_tmp_filename() {
-        return m_tmp_dir + "/.XXX." + std::to_string(m_cur_filename++);
+        return m_tmp_dir + "/.XXX." +
+               std::to_string(essentials::get_random_seed());
     }
 
     void merge_batches() {
-        assert(m_files.size());
-
-        if (m_files.size() == 1) {
-            auto fn = m_files.front();
-            merge(fn, next_tmp_filename(), m_output_filename);
-            std::remove(fn.c_str());
-        }
+        assert(m_files.size() > 0);
+        if (m_files.size() == 1) return;
 
         while (m_files.size() > 1) {
             auto fn1 = m_files.front();
             m_files.pop_front();
             auto fn2 = m_files.front();
             m_files.pop_front();
-
-            std::string output_filename(m_files.empty() ? m_output_filename
-                                                        : next_tmp_filename());
+            auto output_filename =
+                m_files.empty() ? m_output_filename : next_tmp_filename();
             merge(fn1, fn2, output_filename);
-
             std::remove(fn1.c_str());
             std::remove(fn2.c_str());
-
             m_files.push_back(output_filename);
-            ++m_cur_filename;
         }
 
         assert(m_files.size() == 1);
@@ -89,12 +74,14 @@ private:
         uint64_t n = uint64_t(end - begin);
 
         if (LineHandler::value_t == value_type::count) {
-            building_util::write(os, std::to_string(n) + "\n");
+            building_util::write(os, std::to_string(n));
+            os << '\n';
         }
 
         for (auto it = begin; it != end; ++it) {
             LineHandler::format_line(*it, line_to_write);
-            building_util::write(os, line_to_write + "\n");
+            building_util::write(os, line_to_write);
+            os << '\n';
         }
 
         os.close();
@@ -124,7 +111,8 @@ private:
                 num_grams += std::stoull(line2);
             }
             if (num_grams) {
-                building_util::write(os, std::to_string(num_grams) += "\n");
+                building_util::write(os, std::to_string(num_grams));
+                os << '\n';
             } else {
                 throw std::runtime_error("num of grams must be > 0");
             }
@@ -139,19 +127,23 @@ private:
 
             while (true) {
                 if (m_comparator(t1, t2)) {
-                    building_util::write(os, line1 += "\n");
+                    building_util::write(os, line1);
+                    os << '\n';
                     if (std::getline(input1, line1)) {
                         t1 = LineHandler::parse_line(line1);
                     } else {
-                        building_util::write(os, line2 += "\n");
+                        building_util::write(os, line2);
+                        os << '\n';
                         break;
                     }
                 } else {
-                    building_util::write(os, line2 += "\n");
+                    building_util::write(os, line2);
+                    os << '\n';
                     if (std::getline(input2, line2)) {
                         t2 = LineHandler::parse_line(line2);
                     } else {
-                        building_util::write(os, line1 += "\n");
+                        building_util::write(os, line1);
+                        os << '\n';
                         break;
                     }
                 }
@@ -160,15 +152,18 @@ private:
 
         if (input1.eof()) {
             while (std::getline(input2, line2)) {
-                building_util::write(os, line2 += "\n");
+                building_util::write(os, line2);
+                os << '\n';
             }
         } else {
             while (std::getline(input1, line1)) {
-                building_util::write(os, line1 += "\n");
+                building_util::write(os, line1);
+                os << '\n';
             }
         }
 
         os.close();
     }
 };
+
 }  // namespace tongrams

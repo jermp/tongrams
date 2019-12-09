@@ -168,7 +168,7 @@ struct trie_count_lm {
             pointers.push_back(0);
             identity_adaptor adaptor;
 
-            uint64_t pos = 0;
+            uint64_t pointer = 0;
             auto prv_order_begin = gp_prv_order.begin();
             auto prv_order_end = gp_prv_order.end();
 
@@ -181,23 +181,27 @@ struct trie_count_lm {
                 // in a FORWARD trie, 'pattern' is the predecessor of 'gram'
                 // and 'token' is the last token of 'gram'
                 byte_range pattern = bytes::predecessor(gram);
+                assert(pattern.first != pattern.second);
                 byte_range token(pattern.second + 1, gram.second);
 
-                while (
-                    prv_order_begin !=
-                        prv_order_end  // NOTE:
-                                       // this test is here only to
-                                       // guarantee termination in
-                                       // case of wrong data:
-                                       // 'pattern' should ALWAYS
-                                       // be found within previous order grams
-                    and !bytes::equal_bytes(pattern, (*prv_order_begin).gram)) {
-                    pointers.push_back(pos);
+                while (prv_order_begin != prv_order_end and
+                       !bytes::equal_bytes(pattern, (*prv_order_begin).gram)) {
+                    // NOTE:
+                    // this test is here only to
+                    // guarantee termination in
+                    // case of wrong data:
+                    // 'pattern' should ALWAYS
+                    // be found within previous order grams
+                    pointers.push_back(pointer);
                     ++prv_order_begin;
                 }
 
-                // correctness check
-                if (prv_order_begin == prv_order_end) {
+                if (prv_order_begin == prv_order_end) {  // correctness check
+                    std::cerr << "Error at line: " << pointer << "/"
+                              << gp_cur_order.num_lines() << std::endl;
+                    std::cerr << "gram is: '"
+                              << std::string(gram.first, gram.second) << "'"
+                              << std::endl;
                     std::cerr << int(order) << "-grams file is incomplete:\n";
                     std::cerr
                         << "\t'" << std::string(pattern.first, pattern.second)
@@ -207,7 +211,7 @@ struct trie_count_lm {
                     exit(1);
                 }
 
-                ++pos;
+                ++pointer;
 
                 uint64_t token_id = m_vocab.lookup(token, adaptor);
 
@@ -218,8 +222,7 @@ struct trie_count_lm {
                                         &m_arrays.front(), m_remapping_order,
                                         false);  // FORWARD trie
 
-                    // correctness check
-                    if (token_id == global::not_found) {
+                    if (token_id == global::not_found) {  // correctness check
                         std::cerr << int(order)
                                   << "-grams file is incomplete:\n";
                         std::cerr
@@ -233,19 +236,13 @@ struct trie_count_lm {
                 }
 
                 sa_builder.add_gram(token_id);
-
                 uint64_t rank = counts_builder.rank(order - 1, l.count);
                 sa_builder.add_count_rank(rank);
-
-                // TODO: here keep track of the topk nodes
-                // using a topk queue, then after a range is exhausted,
-                // verify whether we have to write them or not based on the
-                // range's length
             }
 
             // set remaining pointers (if any)
             for (; prv_order_begin != prv_order_end; ++prv_order_begin) {
-                pointers.push_back(pos);
+                pointers.push_back(pointer);
             }
         }
     };

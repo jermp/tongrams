@@ -1,11 +1,9 @@
 #include <unistd.h>
 
 #include "sorters/sorter.hpp"
-#include "sorters/comparators.hpp"
+#include "sorters/sorter_common.hpp"
 #include "lm_types.hpp"
 #include "utils/parsers.hpp"
-#include "utils/mph_tables.hpp"
-#include "utils/pools.hpp"
 #include "../external/essentials/include/essentials.hpp"
 #include "../external/cmd_line_parser/include/parser.hpp"
 
@@ -58,13 +56,8 @@ int main(int argc, char** argv) {
               << std::endl;
 
     single_valued_mpht64 vocab;
-    {
-        // assume unigrams fit in memory
-        grams_counts_pool unigrams_pool(available_ram);
-        unigrams_pool.load_from<grams_gzparser>(vocab_filename.c_str());
-        essentials::logger("Building vocabulary");
-        build_vocabulary(unigrams_pool, vocab);
-    }
+    essentials::logger("Building vocabulary");
+    build_vocabulary(vocab_filename.c_str(), vocab, available_ram);
 
     grams_gzparser input(ngrams_filename.c_str());
     auto n = input.num_lines();
