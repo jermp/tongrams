@@ -52,7 +52,7 @@ int main(int argc, char** argv) {
 
         single_valued_mpht64 vocab;
         essentials::logger("Building vocabulary");
-        build_vocabulary(vocab_filename.c_str(), vocab, available_ram);
+        build_vocabulary(vocab_filename.c_str(), vocab, available_ram * 0.8);
 
         ap.read_line();
 

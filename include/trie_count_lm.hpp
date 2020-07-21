@@ -120,7 +120,7 @@ struct trie_count_lm {
         void build_vocabulary(typename Values::builder const& counts_builder) {
             size_t available_ram =
                 sysconf(_SC_PAGESIZE) * sysconf(_SC_PHYS_PAGES);
-            grams_counts_pool unigrams_pool(available_ram);
+            grams_counts_pool unigrams_pool(available_ram * 0.8);
 
             std::string filename;
             util::input_filename(m_input_dir, 1, filename);

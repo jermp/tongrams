@@ -41,19 +41,19 @@ struct mph_count_lm {
         size_t available_ram = sysconf(_SC_PAGESIZE) * sysconf(_SC_PHYS_PAGES);
         for (uint8_t order = 1; order <= m_order; ++order) {
             essentials::logger("Building " + std::to_string(order) + "-grams");
-            grams_counts_pool unigrams_pool(available_ram);
+            grams_counts_pool pool(available_ram * 0.8);
             std::string filename;
             util::input_filename(input_dir, order, filename);
-            unigrams_pool.load_from<grams_gzparser>(filename.c_str());
+            pool.load_from<grams_gzparser>(filename.c_str());
 
-            auto& unigrams_pool_index = unigrams_pool.index();
-            uint64_t n = unigrams_pool_index.size();
+            auto& pool_index = pool.index();
+            uint64_t n = pool_index.size();
             compact_vector::builder counts_ranks_cvb(
                 n, util::ceil_log2(counts_builder.size(order - 1) + 1));
 
             std::vector<byte_range> byte_ranges;
             byte_ranges.reserve(n);
-            for (auto const& record : unigrams_pool_index) {
+            for (auto const& record : pool_index) {
                 byte_ranges.push_back(record.gram);
                 uint64_t rank = counts_builder.rank(order - 1, record.count);
                 counts_ranks_cvb.push_back(rank);

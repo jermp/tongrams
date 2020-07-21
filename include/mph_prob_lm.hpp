@@ -48,7 +48,7 @@ struct mph_prob_lm {
                 assert(probs.size() == n);
 
                 if (order !=
-                    1) {  // need scan uni-grams anyway to set arpa offsets
+                    1) {  // need to scan unigrams anyway to set arpa offsets
                     probs_builder.build_probs_sequence(probs,
                                                        probs_quantization_bits);
                     if (order != m_order) {
@@ -72,7 +72,7 @@ struct mph_prob_lm {
                 arpa_iterator it(m_arpa_filename, order,
                                  arpa_offsets[order - 1]);
                 uint64_t n = it.num_grams();
-                grams_probs_pool pool(n, available_ram);
+                grams_probs_pool pool(n, available_ram * 0.8);
 
                 for (uint64_t i = 0; i < n; ++i) {
                     auto const& tuple = it.next();
@@ -144,7 +144,7 @@ struct mph_prob_lm {
 
             size_t available_ram =
                 sysconf(_SC_PAGESIZE) * sysconf(_SC_PHYS_PAGES);
-            grams_probs_pool pool(n, available_ram);
+            grams_probs_pool pool(n, available_ram * 0.8);
 
             for (uint64_t i = 0; i < n; ++i) {
                 auto const& record = it.next();

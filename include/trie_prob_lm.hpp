@@ -144,8 +144,8 @@ struct trie_prob_lm {
             uint64_t n = it.num_grams();
 
             strings_pool unigrams_pool;
-            unigrams_pool.reserve(sysconf(_SC_PAGESIZE) *
-                                  sysconf(_SC_PHYS_PAGES));
+            unigrams_pool.reserve(
+                (sysconf(_SC_PAGESIZE) * sysconf(_SC_PHYS_PAGES)) * 0.8);
             std::vector<size_t> offsets;
             offsets.reserve(n);
             offsets.push_back(0);
