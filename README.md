@@ -3,10 +3,14 @@
 
 **NEWS: check the language model estimation library [here](https://github.com/jermp/tongrams_estimation)!**
 
-`tongrams` is a C++ library implementing the compressed data structures described in the paper [*Efficient Data Structures for Massive N-Gram Datasets*](http://pages.di.unipi.it/pibiri/papers/SIGIR17.pdf), by Giulio Ermanno Pibiri and Rossano Venturini, published in ACM SIGIR 2017 [1]. The proposed data structures can be used to map *N*-grams to their corresponding (integer) frequency counts or to (floating point) probabilities and backoffs for backoff-interpolated [Knenser-Ney](https://en.wikipedia.org/wiki/Kneser%E2%80%93Ney_smoothing) models.
+`tongrams` is a C++ library to index and query large language models
+in compressed space. It is the result of some research papers [1,2] by Giulio Ermanno Pibiri
+and Rossano Venturini.
 
-The library features a compressed trie data structure in which *N*-grams are assigned integer identifiers (IDs) and compressed with *Elias-Fano* (Subsection 3.1 of [1]) as to support efficient searches within compressed space. The *context-based remapping* of such identifiers (Subsection 3.2 of [1]) permits to encode a word following a context of fixed length _k_, i.e., its preceding _k_ words, with an integer whose value is bounded by the number of words that follow such context and _not_ by the size of the whole vocabulary (number of uni-grams).
-Additionally to the trie data structure, the library allows to build models based on *minimal perfect hashing* (MPH), for constant-time retrieval (Section 4 of [1]).
+More specifically, the implemented data structures can be used to map *N*-grams to their corresponding (integer) frequency counts or to (floating point) probabilities and backoffs for backoff-interpolated [Knenser-Ney](https://en.wikipedia.org/wiki/Kneser%E2%80%93Ney_smoothing) models.
+
+The library features a compressed trie data structure in which *N*-grams are assigned integer identifiers (IDs) and compressed with *Elias-Fano* as to support efficient searches within compressed space. The *context-based remapping* of such identifiers permits to encode a word following a context of fixed length _k_, i.e., its preceding _k_ words, with an integer whose value is bounded by the number of words that follow such context and _not_ by the size of the whole vocabulary (number of uni-grams).
+Additionally to the trie data structure, the library allows to build models based on *minimal perfect hashing* (MPH), for constant-time retrieval.
 
 When used to store frequency counts, the data structures support a `lookup()` operation that returns the number of occurrences of the specified *N*-gram. Differently, when used to store probabilities and backoffs, the data structures implement a `score()` function that, given a text as input, computes the [perplexity](https://en.wikipedia.org/wiki/Perplexity) score of the text.
 
@@ -18,6 +22,7 @@ This guide is meant to provide a brief overview of the library and to illustrate
 * [Tests](#tests)
 * [Benchmarks](#benchmarks)
 * [Statistics](#statistics)
+* [Python Wrapper](#pytongrams)
 * [Authors](#authors)
 * [Bibliography](#bibliography)
 
@@ -31,27 +36,27 @@ If you have cloned the repository
 without `--recursive`, you will need to perform the following commands before
 building:
 
-    $ git submodule init
-    $ git submodule update
+    git submodule init
+    git submodule update
 
 To build the code on Unix systems (see file `CMakeLists.txt` for the used compilation flags), it is sufficient to do the following.
 
-    $ mkdir build
-    $ cd build
-    $ cmake ..
-    $ make
+    mkdir build
+    cd build
+    cmake ..
+    make
 
 You can enable parallel compilation by specifying some jobs: `make -j4`.
 
 For best of performace, compile as follows.
 
-    $ cmake .. -DCMAKE_BUILD_TYPE=Release  -DTONGRAMS_USE_SANITIZERS=OFF -DEMPHF_USE_POPCOUNT=ON -DTONGRAMS_USE_POPCNT=ON -DTONGRAMS_USE_PDEP=ON
-    $ make
+    cmake .. -DCMAKE_BUILD_TYPE=Release  -DTONGRAMS_USE_SANITIZERS=OFF -DEMPHF_USE_POPCOUNT=ON -DTONGRAMS_USE_POPCNT=ON -DTONGRAMS_USE_PDEP=ON
+    make
 
 For a debug environment, compile as follows instead.
 
-    $ cmake .. -DCMAKE_BUILD_TYPE=Debug -DTONGRAMS_USE_SANITIZERS=ON
-    $ make
+    cmake .. -DCMAKE_BUILD_TYPE=Debug -DTONGRAMS_USE_SANITIZERS=ON
+    make
 
 Unless otherwise specified, for the rest of this guide we assume that we type the terminal commands of the following examples from the created directory `build`.
 
@@ -97,7 +102,7 @@ We now show some examples.
 ##### Example 1.
 The command
 
-    $ ./build_trie ef_trie 5 count --dir ../test_data --out ef_trie.count.bin
+    ./build_trie ef_trie 5 count --dir ../test_data --out ef_trie.count.bin
 
 builds an Elias-Fano trie
 * of order 5;
@@ -110,7 +115,7 @@ builds an Elias-Fano trie
 ##### Example 2.
 The command
 
-    $ ./build_trie pef_trie 5 count --dir ../test_data --remapping 1 --ranks PSEF  --out pef_trie.count.out
+    ./build_trie pef_trie 5 count --dir ../test_data --remapping 1 --ranks PSEF  --out pef_trie.count.out
 
 builds a partitioned Elias-Fano trie
 * of order 5;
@@ -123,7 +128,7 @@ builds a partitioned Elias-Fano trie
 ##### Example 3.
 The command
 
-    $ ./build_trie ef_trie 5 prob_backoff --remapping 2 --u -20.0 --p 8 --b 8 --arpa ../test_data/arpa --out ef_trie.prob_backoff.bin
+    ./build_trie ef_trie 5 prob_backoff --remapping 2 --u -20.0 --p 8 --b 8 --arpa ../test_data/arpa --out ef_trie.prob_backoff.bin
 
 builds an Elias-Fano trie
 * of order 5;
@@ -136,7 +141,7 @@ builds an Elias-Fano trie
 ##### Example 4.
 The command
 
-    $ ./build_hash 5 8 4 count --dir ../test_data --out hash.bin
+    ./build_hash 5 8 4 count --dir ../test_data --out hash.bin
 
 builds a MPH-based model
 * of order 5;
@@ -150,13 +155,13 @@ Tests
 The `test` directory contains the unit tests of some of the fundamental building blocks used by the implemented data structures. As usual, running the executables without any arguments will show the list of their expected input parameters.
 Examples:
 
-    $ ./compact_vector_test 10000 13
-    $ ./fast_ef_sequence_test 1000000 128
+    ./compact_vector_test 10000 13
+    ./fast_ef_sequence_test 1000000 128
 
 The directory also contains the unit test for the data structures storing frequency counts, named `check_count_model`, which validates the implementation by checking that each count stored in the data structure is the same as the one provided in the input files from which the data structure was previously built.
 Example:
 
-    $ ./check_count_model count_data_structure.bin ../test_data
+    ./check_count_model count_data_structure.bin ../test_data
 
 where `count_data_structure.bin` is the name of the data structure binary file and `test_data` is the name of the folder containing the input *N*-gram counts files.
 
@@ -168,14 +173,14 @@ We additionally replicate some experiments with an Intel(R) Core(TM) i9-9900K CP
 For a data structure storing frequency counts, we can test the speed of lookup queries by using the benchmark program `lookup_perf_test`.
 In the following example, we show how to build and benchmark three different data structures: **EF-Trie** with no remapping, **EF-RTrie** with remapping order 1 and **PEF-RTrie** with remapping order 2 (we use the same names for the data structures as presented in [1]). Each experiment is repeated 1,000 times over the test query file `queries.random.5K`. The benchmark program `lookup_perf_test` will show mean time per run and mean time per query (along with the total number of *N*-grams, total bytes of the data structure and bytes per *N*-gram).
 
-    $ ./build_trie ef_trie 5 count --dir ../test_data --out ef_trie.bin
-    $ ./lookup_perf_test ef_trie.bin ../test_data/queries.random.5K 1000
+    ./build_trie ef_trie 5 count --dir ../test_data --out ef_trie.bin
+    ./lookup_perf_test ef_trie.bin ../test_data/queries.random.5K 1000
 
-    $ ./build_trie ef_trie 5 count --remapping 1 --dir ../test_data --out ef_trie.r1.bin
-    $ ./lookup_perf_test ef_trie.r1.bin ../test_data/queries.random.5K 1000
+    ./build_trie ef_trie 5 count --remapping 1 --dir ../test_data --out ef_trie.r1.bin
+    ./lookup_perf_test ef_trie.r1.bin ../test_data/queries.random.5K 1000
 
-    $ ./build_trie pef_trie 5 count --remapping 2 --dir ../test_data --out pef_trie.r2.bin
-    $ ./lookup_perf_test pef_trie.r2.bin ../test_data/queries.random.5K 1000
+    ./build_trie pef_trie 5 count --remapping 2 --dir ../test_data --out pef_trie.r2.bin
+    ./lookup_perf_test pef_trie.r2.bin ../test_data/queries.random.5K 1000
 
 The results of this (micro) benchmark are summarized in the following table.
 
@@ -187,8 +192,8 @@ The results of this (micro) benchmark are summarized in the following table.
 
 For a data structure storing probabilities and backoffs, we can instead test the speed of scoring a text file by using the benchmark program `score`. A complete example follows.
 
-    $ ./build_trie ef_trie 5 prob_backoff --u -10.0 --p 8 --b 8 --arpa ../test_data/arpa --out ef_trie.prob_backoff.8.8.bin
-    $ ./score ef_trie.prob_backoff.8.8.bin ../test_data/sample_text
+    ./build_trie ef_trie 5 prob_backoff --u -10.0 --p 8 --b 8 --arpa ../test_data/arpa --out ef_trie.prob_backoff.8.8.bin
+    ./score ef_trie.prob_backoff.8.8.bin ../test_data/sample_text
 
 The first command will build the data structure, the second one will score the text file `sample_text` contained in `test_data`. The input text file must contain one sentence per line, with words separated by spaces. During the scoring of the file, we do not wrap each sentence with markers `<s>` and `</s>`.
 
@@ -207,9 +212,15 @@ The executable `print_stats` can be used to gather useful statistics regarding t
 
 As an example, the following command:
 
-    $ ./print_stats data_structure.bin
+    ./print_stats data_structure.bin
 
 will show the statistics for the data structure serialized to the file `data_structure.bin`.
+
+Python Wrapper
+--------------
+
+The directory `python` includes a simple python wrapper with some examples.
+Check this out!
 
 Authors
 -------
@@ -218,4 +229,5 @@ Authors
 
 Bibliography
 ------------
-* [1] Giulio Ermanno Pibiri and Rossano Venturini, *Efficient Data Structures for Massive N-Gram Datasets*. In the Proceedings of the 40-th ACM Conference on Research and Development in Information Retrieval (SIGIR 2017).
+* [1] Giulio Ermanno Pibiri and Rossano Venturini *Efficient Data Structures for Massive N-Gram Datasets*. In the Proceedings of the 40-th ACM Conference on Research and Development in Information Retrieval (SIGIR 2017): 615-624.
+* [2] Giulio Ermanno Pibiri and Rossano Venturini. *Handling Massive N-Gram Datasets Efficiently.* ACM Transactions on Information Systems (TOIS) 37.2 (2019): 1-41. 
