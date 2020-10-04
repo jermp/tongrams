@@ -30,7 +30,7 @@ int main(int argc, char** argv) {
     else if (model_string_type == BOOST_PP_STRINGIZE(T)) { \
         print_stats<T>(index_filename);
 
-        BOOST_PP_SEQ_FOR_EACH(LOOP_BODY, _, SXLM_TYPES);
+        BOOST_PP_SEQ_FOR_EACH(LOOP_BODY, _, TONGRAMS_TYPES);
 #undef LOOP_BODY
     } else {
         building_util::unknown_type(model_string_type);

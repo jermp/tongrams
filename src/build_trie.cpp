@@ -156,7 +156,7 @@ int main(int argc, char** argv) {
         builder.build(model);                                  \
         util::save(header, model, output_filename);
 
-            BOOST_PP_SEQ_FOR_EACH(LOOP_BODY, _, SXLM_TRIE_COUNT_TYPES);
+            BOOST_PP_SEQ_FOR_EACH(LOOP_BODY, _, TONGRAMS_TRIE_COUNT_TYPES);
 #undef LOOP_BODY
         } else {
             building_util::unknown_type(model_string_type);
@@ -173,7 +173,7 @@ int main(int argc, char** argv) {
         builder.build(model);                                               \
         util::save(header, model, output_filename);
 
-            BOOST_PP_SEQ_FOR_EACH(LOOP_BODY, _, SXLM_TRIE_PROB_TYPES);
+            BOOST_PP_SEQ_FOR_EACH(LOOP_BODY, _, TONGRAMS_TRIE_PROB_TYPES);
 #undef LOOP_BODY
         } else {
             building_util::unknown_type(model_string_type);

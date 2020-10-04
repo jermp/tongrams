@@ -99,7 +99,7 @@ int main(int argc, char** argv) {
     else if (model_string_type == BOOST_PP_STRINGIZE(T)) { \
         score_corpus<T>(index_filename, corpus_filename);
 
-        BOOST_PP_SEQ_FOR_EACH(LOOP_BODY, _, SXLM_SCORE_TYPES);
+        BOOST_PP_SEQ_FOR_EACH(LOOP_BODY, _, TONGRAMS_SCORE_TYPES);
 #undef LOOP_BODY
     } else {
         std::cerr << "Error: score() not supported with type "

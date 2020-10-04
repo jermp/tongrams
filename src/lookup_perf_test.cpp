@@ -85,7 +85,7 @@ int main(int argc, char** argv) {
     else if (model_string_type == BOOST_PP_STRINGIZE(T)) { \
         perf_test<T>(index_filename, query_filename, runs);
 
-        BOOST_PP_SEQ_FOR_EACH(LOOP_BODY, _, SXLM_COUNT_TYPES);
+        BOOST_PP_SEQ_FOR_EACH(LOOP_BODY, _, TONGRAMS_COUNT_TYPES);
 #undef LOOP_BODY
     } else {
         std::cerr << "Error: lookup() not supported with type "

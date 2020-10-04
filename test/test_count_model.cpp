@@ -54,7 +54,7 @@ int main(int argc, char** argv) {
                   << std::endl;                                               \
         check_model<T>(model, input_folder);
 
-        BOOST_PP_SEQ_FOR_EACH(LOOP_BODY, _, SXLM_COUNT_TYPES);
+        BOOST_PP_SEQ_FOR_EACH(LOOP_BODY, _, TONGRAMS_COUNT_TYPES);
 #undef LOOP_BODY
     } else {
         std::cerr << "Error: check not supported with type "
