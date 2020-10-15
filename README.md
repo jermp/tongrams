@@ -22,7 +22,7 @@ This guide is meant to provide a brief overview of the library and to illustrate
 * [Tests](#tests)
 * [Benchmarks](#benchmarks)
 * [Statistics](#statistics)
-* [Python Wrapper](#pytongrams)
+* [Python Wrapper](#python-wrapper)
 * [Authors](#authors)
 * [Bibliography](#bibliography)
 
