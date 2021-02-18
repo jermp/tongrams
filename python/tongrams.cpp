@@ -1,6 +1,7 @@
 #include <Python.h>
 
 #include "lm_types.hpp"
+#include "score.hpp"
 #include "utils/util.hpp"
 
 using namespace tongrams;
