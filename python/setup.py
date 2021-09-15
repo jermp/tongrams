@@ -9,7 +9,4 @@ module = Extension('tongrams',
                     extra_compile_args=['-std=c++17'],
                     sources = ['tongrams.cpp'])
 
-setup(name = 'tongrams',
-      version = '1.0',
-      description = 'Tons of N-Grams',
-      ext_modules = [module])
+setup(ext_modules = [module])
