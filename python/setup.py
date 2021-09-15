@@ -1,4 +1,5 @@
-from distutils.core import setup, Extension
+from setuptools import setup
+from distutils.core import Extension
 
 module = Extension('tongrams',
                     define_macros = [('MAJOR_VERSION', '1'),
