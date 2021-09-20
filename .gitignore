@@ -1,5 +1,6 @@
+.DS_Store
 /build
 /dist
 /*.egg-info
-
-.DS_Store
+/python/build
+/python/files.txt

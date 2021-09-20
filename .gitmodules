@@ -7,6 +7,3 @@
 [submodule "external/cmd_line_parser"]
 	path = external/cmd_line_parser
 	url = https://github.com/jermp/cmd_line_parser.git
-[submodule "cmake/thirdParty/Boilerplate"]
-	path = cmake/thirdParty/Boilerplate
-	url = https://github.com/KOLANICH-libs/Boilerplate.cmake

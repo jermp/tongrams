@@ -1,12 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
 project(TONGRAMS)
 
-set(OUR_CMAKE_MODULES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
-set(OUR_CMAKE_3PARTY_MODULES_DIR "${OUR_CMAKE_MODULES_DIR}/thirdParty")
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${OUR_CMAKE_MODULES_DIR}" "${OUR_CMAKE_3PARTY_MODULES_DIR}" "${OUR_CMAKE_3PARTY_MODULES_DIR}/Boilerplate" "${OUR_CMAKE_3PARTY_MODULES_DIR}/DoxygenUtils")
-
-include(Boilerplate)
-
 if(CMAKE_BUILD_TYPE MATCHES Debug)
   MESSAGE(STATUS "DEBUG defined")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DDEBUG")
@@ -35,11 +29,19 @@ if(TONGRAMS_USE_PDEP)
   endif()
 endif()
 
+if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
+endif ()
+
 if (UNIX)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ggdb")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wno-missing-braces")
 
   if(TONGRAMS_USE_SANITIZERS)
-    set(SANITIZE_ADDRESS ON)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -fno-omit-frame-pointer")
   endif()
 
 endif()
@@ -56,8 +58,6 @@ file(GLOB SRC_SOURCES src/*.cpp)
 foreach(SRC ${SRC_SOURCES})
   get_filename_component (SRC_NAME ${SRC} NAME_WE) # without extension
   add_executable(${SRC_NAME} ${SRC})
-  add_sanitizers(${SRC_NAME})
-  harden(${SRC_NAME})
   target_link_libraries(${SRC_NAME} ${Boost_LIBRARIES})
 endforeach(SRC)
 
@@ -65,7 +65,5 @@ file(GLOB TEST_SOURCES test/test_*.cpp)
 foreach(TEST_SRC ${TEST_SOURCES})
   get_filename_component (TEST_SRC_NAME ${TEST_SRC} NAME_WE) # without extension
   add_executable(${TEST_SRC_NAME} ${TEST_SRC})
-  add_sanitizers(${TEST_SRC_NAME})
-  harden(${TEST_SRC_NAME})
   target_link_libraries(${TEST_SRC_NAME} ${Boost_LIBRARIES})
 endforeach(TEST_SRC)
