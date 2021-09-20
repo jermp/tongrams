@@ -6,9 +6,9 @@ The wrapper is realized using the standard approach of [extending Python with C+
 
 ### Installation
 
-To install the wrapper just run
+To install the wrapper just run (from the parent directory of the project)
 
-    bash install.sh
+    bash python/install.sh
 
 ### Example
 
