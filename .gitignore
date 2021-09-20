@@ -2,5 +2,3 @@
 /build
 /dist
 /*.egg-info
-/python/build
-/python/files.txt

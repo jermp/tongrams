@@ -1,9 +1,16 @@
 PyTongrams
 ----------
 
-To install the python wrapper simply run
+PyTongrams is a Python wrapper around the C++ library Tongrams.
+The wrapper is realized using the standard approach of [extending Python with C++ modules](https://docs.python.org/3/extending/extending.html), via the `Python.h` API.
+
+### Installation
+
+To install the wrapper just run
 
     bash install.sh
+
+### Example
 
 To use `tongrams` from Python, first create some indexes.
 
