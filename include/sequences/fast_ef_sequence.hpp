@@ -407,12 +407,12 @@ private:
             uint64_t nodes = uint64_t(1) << h;
             for (uint64_t i = 0; i < nodes; ++i) {
                 auto r = ranges.pop_front();
-                uint64_t lo = r.first;
-                uint64_t hi = r.second;
-                size_t mid = (lo + hi) >> 1;
+                uint64_t l = r.first;
+                uint64_t h = r.second;
+                size_t mid = (l + h) >> 1;
                 samplings.push_back(it[mid]);
-                range_t left(lo, mid);
-                range_t right(mid + 1, hi);
+                range_t left(l, mid);
+                range_t right(mid + 1, h);
                 ranges.push_back(left);
                 ranges.push_back(right);
             }

@@ -20,16 +20,16 @@ struct mph_count_lm {
 
         typename Values::builder counts_builder(m_order);
 
-        for (uint8_t order = 1; order <= m_order; ++order) {
+        for (uint8_t ord = 1; ord <= m_order; ++ord) {
             std::string filename;
-            util::input_filename(input_dir, order, filename);
+            util::input_filename(input_dir, ord, filename);
             util::check_filename(filename);
             grams_gzparser gp(filename.c_str());
 
             std::vector<uint64_t> counts;
             counts.reserve(gp.num_lines());
 
-            essentials::logger("Reading " + std::to_string(order) +
+            essentials::logger("Reading " + std::to_string(ord) +
                                "-grams counts");
             for (auto const& l : gp) {
                 counts_builder.eat_value(l.count);
@@ -39,23 +39,23 @@ struct mph_count_lm {
         }
 
         size_t available_ram = sysconf(_SC_PAGESIZE) * sysconf(_SC_PHYS_PAGES);
-        for (uint8_t order = 1; order <= m_order; ++order) {
-            essentials::logger("Building " + std::to_string(order) + "-grams");
+        for (uint8_t ord = 1; ord <= m_order; ++ord) {
+            essentials::logger("Building " + std::to_string(ord) + "-grams");
             grams_counts_pool pool(available_ram * 0.8);
             std::string filename;
-            util::input_filename(input_dir, order, filename);
+            util::input_filename(input_dir, ord, filename);
             pool.load_from<grams_gzparser>(filename.c_str());
 
             auto& pool_index = pool.index();
             uint64_t n = pool_index.size();
             compact_vector::builder counts_ranks_cvb(
-                n, util::ceil_log2(counts_builder.size(order - 1) + 1));
+                n, util::ceil_log2(counts_builder.size(ord - 1) + 1));
 
             std::vector<byte_range> byte_ranges;
             byte_ranges.reserve(n);
             for (auto const& record : pool_index) {
                 byte_ranges.push_back(record.gram);
-                uint64_t rank = counts_builder.rank(order - 1, record.count);
+                uint64_t rank = counts_builder.rank(ord - 1, record.count);
                 counts_ranks_cvb.push_back(rank);
             }
 

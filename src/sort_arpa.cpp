@@ -57,7 +57,8 @@ int main(int argc, char** argv) {
         ap.read_line();
 
         // skip to specified order
-        for (uint8_t i = 0; i < order - 1; ++i) {
+        assert(order > 0);
+        for (uint32_t i = 0; i != order - 1; ++i) {
             while (ap.read_line())
                 ;
             ap.read_line();

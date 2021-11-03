@@ -37,21 +37,21 @@ struct mph_prob_lm {
                     "specified order exceeds arpa file order");
             }
 
-            for (uint8_t order = 1; order <= m_order; ++order) {
+            for (uint8_t ord = 1; ord <= m_order; ++ord) {
                 std::vector<float> probs;
                 std::vector<float> backoffs;
-                uint64_t n = counts[order - 1];
+                uint64_t n = counts[ord - 1];
                 probs.reserve(n);
                 backoffs.reserve(n);
 
-                ap.read_values(order, n, probs, backoffs);
+                ap.read_values(ord, n, probs, backoffs);
                 assert(probs.size() == n);
 
-                if (order !=
+                if (ord !=
                     1) {  // need to scan unigrams anyway to set arpa offsets
                     probs_builder.build_probs_sequence(probs,
                                                        probs_quantization_bits);
-                    if (order != m_order) {
+                    if (ord != m_order) {
                         backoffs_builder.build_backoffs_sequence(
                             backoffs, backoffs_quantization_bits);
                     }
@@ -66,11 +66,10 @@ struct mph_prob_lm {
 
             size_t available_ram =
                 sysconf(_SC_PAGESIZE) * sysconf(_SC_PHYS_PAGES);
-            for (uint8_t order = 2; order <= m_order; ++order) {
-                essentials::logger("Building " + std::to_string(order) +
+            for (uint8_t ord = 2; ord <= m_order; ++ord) {
+                essentials::logger("Building " + std::to_string(ord) +
                                    "-grams");
-                arpa_iterator it(m_arpa_filename, order,
-                                 arpa_offsets[order - 1]);
+                arpa_iterator it(m_arpa_filename, ord, arpa_offsets[ord - 1]);
                 uint64_t n = it.num_grams();
                 grams_probs_pool pool(n, available_ram * 0.8);
 
@@ -85,18 +84,18 @@ struct mph_prob_lm {
 
                 compact_vector::builder cvb(
                     n, probs_quantization_bits +
-                           (order != m_order ? backoffs_quantization_bits : 0));
+                           (ord != m_order ? backoffs_quantization_bits : 0));
 
                 for (auto const& record : pool_index) {
                     bytes.push_back(record.gram);
                     float prob = record.prob;
                     float backoff = record.backoff;
                     // store interleaved ranks
-                    uint64_t prob_rank = probs_builder.rank(order - 2, prob, 0);
+                    uint64_t prob_rank = probs_builder.rank(ord - 2, prob, 0);
                     uint64_t packed = prob_rank;
-                    if (order != m_order) {
+                    if (ord != m_order) {
                         uint64_t backoff_rank =
-                            backoffs_builder.rank(order - 2, backoff, 1);
+                            backoffs_builder.rank(ord - 2, backoff, 1);
                         packed |= backoff_rank << probs_quantization_bits;
                     }
                     cvb.push_back(packed);

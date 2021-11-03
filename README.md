@@ -1,9 +1,9 @@
-`tongrams` - Tons of *N*-Grams
-----------
+Tongrams - Tons of *N*-Grams
+==============================
 
 **NEWS: check the language model estimation library [here](https://github.com/jermp/tongrams_estimation)!**
 
-`tongrams` is a C++ library to index and query large language models
+Tongrams is a C++ library to index and query large language models
 in compressed space. It is the result of some research papers [1,2] by Giulio Ermanno Pibiri
 and Rossano Venturini.
 
@@ -99,12 +99,13 @@ their usage.
 
 We now show some examples.
 
-##### Example 1.
+##### Example 1
 The command
 
     ./build_trie ef_trie 5 count --dir ../test_data --out ef_trie.count.bin
 
 builds an Elias-Fano trie
+
 * of order 5;
 * that stores frequency counts;
 * from the *N*-gram counts files contained in the directory `test_data`;
@@ -112,12 +113,13 @@ builds an Elias-Fano trie
 * whose counts ranks are encoded with the indexed codewords (IC) technique (default);
 * that is serialized to the binary file `ef_trie.count.bin`.
 
-##### Example 2.
+##### Example 2
 The command
 
     ./build_trie pef_trie 5 count --dir ../test_data --remapping 1 --ranks PSEF  --out pef_trie.count.out
 
 builds a partitioned Elias-Fano trie
+
 * of order 5;
 * that stores frequency counts;
 * from the *N*-gram counts files contained in the directory `test_data`;
@@ -125,12 +127,13 @@ builds a partitioned Elias-Fano trie
 * whose counts ranks are encoded with prefix sums (PS) + Elias-Fano (EF);
 * that is serialized to the binary file `pef_trie.count.out`.
 
-##### Example 3.
+##### Example 3
 The command
 
     ./build_trie ef_trie 5 prob_backoff --remapping 2 --u -20.0 --p 8 --b 8 --arpa ../test_data/arpa --out ef_trie.prob_backoff.bin
 
 builds an Elias-Fano trie
+
 * of order 5;
 * that stores probabilities and backoffs;
 * with context-based remapping of order 2;
@@ -138,14 +141,15 @@ builds an Elias-Fano trie
 * from the arpa file named `arpa`;
 * that is serialized to the binary file `ef_trie.prob_backoff.bin`.
 
-##### Example 4.
+##### Example 4
 The command
 
-    ./build_hash 5 8 4 count --dir ../test_data --out hash.bin
+    ./build_hash 5 8 count --dir ../test_data --out hash.bin
 
 builds a MPH-based model
+
 * of order 5;
-* that uses 8 bytes per hash key and 4 bytes per unique count;
+* that uses 8 bytes per hash key;
 * that stores frequency counts;
 * from the *N*-gram counts files contained in the directory `test_data`;
 * that is serialized to the binary file `hash.bin`.
@@ -155,15 +159,15 @@ Tests
 The `test` directory contains the unit tests of some of the fundamental building blocks used by the implemented data structures. As usual, running the executables without any arguments will show the list of their expected input parameters.
 Examples:
 
-    ./compact_vector_test 10000 13
-    ./fast_ef_sequence_test 1000000 128
+    ./test_compact_vector 10000 13
+    ./test_fast_ef_sequence 1000000 128
 
 The directory also contains the unit test for the data structures storing frequency counts, named `check_count_model`, which validates the implementation by checking that each count stored in the data structure is the same as the one provided in the input files from which the data structure was previously built.
 Example:
 
-    ./check_count_model count_data_structure.bin ../test_data
+    ./test_count_model ef_trie.count.bin ../test_data
 
-where `count_data_structure.bin` is the name of the data structure binary file and `test_data` is the name of the folder containing the input *N*-gram counts files.
+where `ef_trie.count.bin` is the name of the data structure binary file (maybe built with the command shown in Example 1) and `test_data` is the name of the folder containing the input *N*-gram counts files.
 
 Benchmarks
 ----------
