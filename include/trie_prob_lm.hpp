@@ -42,23 +42,23 @@ struct trie_prob_lm {
                     "specified order exceeds arpa file order");
             }
 
-            for (uint8_t order = 1; order <= m_order; ++order) {
+            for (uint8_t ord = 1; ord <= m_order; ++ord) {
                 std::vector<float> probs;
                 std::vector<float> backoffs;
-                uint64_t n = counts[order - 1];
+                uint64_t n = counts[ord - 1];
                 probs.reserve(n);
                 backoffs.reserve(n);
 
                 m_arrays.push_back(sorted_array_type(n));
-                essentials::logger("Reading " + std::to_string(order) +
+                essentials::logger("Reading " + std::to_string(ord) +
                                    "-grams probs/backoffs");
-                ap.read_values(order, n, probs, backoffs);
+                ap.read_values(ord, n, probs, backoffs);
                 assert(probs.size() == n);
 
-                if (order != 1) {  // unigrams are NOT quantized
+                if (ord != 1) {  // unigrams are NOT quantized
                     probs_builder.build_probs_sequence(probs,
                                                        probs_quantization_bits);
-                    if (order != m_order) {
+                    if (ord != m_order) {
                         backoffs_builder.build_backoffs_sequence(
                             backoffs, backoffs_quantization_bits);
                     }
@@ -71,17 +71,17 @@ struct trie_prob_lm {
             essentials::logger("Building vocabulary");
             build_vocabulary(arpa_offsets.front());
 
-            for (uint8_t order = 2; order <= m_order; ++order) {
-                std::string order_grams(std::to_string(order) + "-grams");
-                uint64_t n = counts[order - 1];
+            for (uint8_t ord = 2; ord <= m_order; ++ord) {
+                std::string order_grams(std::to_string(ord) + "-grams");
+                uint64_t n = counts[ord - 1];
 
                 typename sorted_array_type::builder sa_builder(
                     n,
                     m_vocab.size(),            // max_gram_id
                     0,                         // max_count_rank not used
                     probs_quantization_bits +  // quantization_bits
-                        (order != m_order ? backoffs_quantization_bits : 0));
-                uint64_t num_pointers = counts[order - 2] + 1;
+                        (ord != m_order ? backoffs_quantization_bits : 0));
+                uint64_t num_pointers = counts[ord - 2] + 1;
 
                 // NOTE: we could use this to save pointers' space at building
                 // time compact_vector::builder pointers(num_pointers,
@@ -90,16 +90,16 @@ struct trie_prob_lm {
                 pointers.reserve(num_pointers);
 
                 essentials::logger("Building " + order_grams);
-                build_ngrams(order, arpa_offsets[order - 1],
-                             arpa_offsets[order - 2], probs_builder,
-                             backoffs_builder, pointers, sa_builder);
+                build_ngrams(ord, arpa_offsets[ord - 1], arpa_offsets[ord - 2],
+                             probs_builder, backoffs_builder, pointers,
+                             sa_builder);
                 assert(pointers.back() == n);
                 assert(pointers.size() == num_pointers);
                 essentials::logger("Writing " + order_grams);
-                sa_builder.build(m_arrays[order - 1], pointers, order,
+                sa_builder.build(m_arrays[ord - 1], pointers, ord,
                                  value_type::prob_backoff);
                 essentials::logger("Writing pointers");
-                sorted_array_type::builder::build_pointers(m_arrays[order - 2],
+                sorted_array_type::builder::build_pointers(m_arrays[ord - 2],
                                                            pointers);
             }
 
@@ -150,9 +150,8 @@ struct trie_prob_lm {
             offsets.reserve(n);
             offsets.push_back(0);
 
-            compact_vector::builder
-                // unigrams' values are not quantized
-                values_cvb(n, 64);
+            // unigrams' values are not quantized
+            compact_vector::builder values_cvb(n, 64);
 
             for (uint64_t i = 0; i < n; ++i) {
                 auto const& record = it.next();

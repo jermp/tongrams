@@ -26,14 +26,14 @@ struct trie_count_lm {
 
             typename Values::builder counts_builder(m_order);
 
-            for (uint8_t order = 1; order <= m_order; ++order) {
+            for (uint8_t ord = 1; ord <= m_order; ++ord) {
                 std::string filename;
-                util::input_filename(m_input_dir, order, filename);
+                util::input_filename(m_input_dir, ord, filename);
                 util::check_filename(filename);
                 grams_gzparser gp(filename.c_str());
 
                 m_arrays.push_back(sorted_array_type(gp.num_lines()));
-                essentials::logger("Reading " + std::to_string(order) +
+                essentials::logger("Reading " + std::to_string(ord) +
                                    "-grams counts");
                 for (auto const& l : gp) {
                     counts_builder.eat_value(l.count);
@@ -44,13 +44,12 @@ struct trie_count_lm {
             essentials::logger("Building vocabulary");
             build_vocabulary(counts_builder);
 
-            for (uint8_t order = 2; order <= m_order; ++order) {
-                std::string order_grams(std::to_string(order) + "-grams");
+            for (uint8_t ord = 2; ord <= m_order; ++ord) {
+                std::string order_grams(std::to_string(ord) + "-grams");
                 std::string prv_order_filename;
                 std::string cur_order_filename;
-                util::input_filename(m_input_dir, order - 1,
-                                     prv_order_filename);
-                util::input_filename(m_input_dir, order, cur_order_filename);
+                util::input_filename(m_input_dir, ord - 1, prv_order_filename);
+                util::input_filename(m_input_dir, ord, cur_order_filename);
 
                 grams_gzparser gp_prv_order(prv_order_filename.c_str());
                 grams_gzparser gp_cur_order(cur_order_filename.c_str());
@@ -59,9 +58,9 @@ struct trie_count_lm {
 
                 typename sorted_array_type::builder sa_builder(
                     n,
-                    m_vocab.size(),                  // max_gram_id
-                    counts_builder.size(order - 1),  // max_count_rank
-                    0);  // quantization_bits not used
+                    m_vocab.size(),                // max_gram_id
+                    counts_builder.size(ord - 1),  // max_count_rank
+                    0);                            // quantization_bits not used
 
                 uint64_t num_pointers = gp_prv_order.num_lines() + 1;
 
@@ -72,15 +71,15 @@ struct trie_count_lm {
                 pointers.reserve(num_pointers);
 
                 essentials::logger("Building " + order_grams);
-                build_ngrams(order, pointers, gp_cur_order, gp_prv_order,
+                build_ngrams(ord, pointers, gp_cur_order, gp_prv_order,
                              counts_builder, sa_builder);
                 assert(pointers.back() == n);
                 assert(pointers.size() == num_pointers);
                 essentials::logger("Writing " + order_grams);
-                sa_builder.build(m_arrays[order - 1], pointers, order,
+                sa_builder.build(m_arrays[ord - 1], pointers, ord,
                                  value_type::count);
                 essentials::logger("Writing pointers");
-                sorted_array_type::builder::build_pointers(m_arrays[order - 2],
+                sorted_array_type::builder::build_pointers(m_arrays[ord - 2],
                                                            pointers);
             }
 
