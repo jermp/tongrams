@@ -69,15 +69,17 @@ private:
     template <typename Iterator>
     void flush(Iterator begin, Iterator end,
                std::string const& output_filename) {
-        std::ofstream os(output_filename.c_str());
-        std::string line_to_write;
-        uint64_t n = uint64_t(end - begin);
+        std::ofstream os;
+        os.open(output_filename.c_str(),
+                std::ofstream::ate | std::ofstream::app);
 
         if (LineHandler::value_t == value_type::count) {
+            uint64_t n = uint64_t(end - begin);
             building_util::write(os, std::to_string(n));
             os << '\n';
         }
 
+        std::string line_to_write;
         for (auto it = begin; it != end; ++it) {
             LineHandler::format_line(*it, line_to_write);
             building_util::write(os, line_to_write);
