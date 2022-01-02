@@ -3,7 +3,9 @@
 Tongrams - Tons of *N*-Grams
 ==============================
 
-**NEWS: check the language model estimation library [here](https://github.com/jermp/tongrams_estimation)!**
+#### NEWS
++ The **language model estimation** library is available [here](https://github.com/jermp/tongrams_estimation)!
++ A **Rust implementation** by [kampersanda](https://github.com/kampersanda) is available [here](https://github.com/kampersanda/tongrams-rs)!
 
 Tongrams is a C++ library to index and query large language models
 in compressed space. It is the result of some research papers [1,2] by Giulio Ermanno Pibiri
