@@ -3,13 +3,20 @@
 Tongrams - Tons of *N*-Grams
 ==============================
 
-#### NEWS
-+ The **language model estimation** library is available [here](https://github.com/jermp/tongrams_estimation)!
-+ A **Rust implementation** by [kampersanda](https://github.com/kampersanda) is available [here](https://github.com/kampersanda/tongrams-rs)!
-
 Tongrams is a C++ library to index and query large language models
-in compressed space. It is the result of some research papers [1,2] by Giulio Ermanno Pibiri
-and Rossano Venturini.
+in compressed space, as described in the following papers
+
+- [*Efficient Data Structures for Massive N-Gram Datasets*](https://dl.acm.org/doi/10.1145/3077136.3080798) [1]
+- [*Handling Massive N-Gram Datasets Efficiently*](https://dl.acm.org/doi/10.1145/3302913) [2]
+
+by Giulio Ermanno Pibiri and Rossano Venturini. Please, cite these papers if you use Tongrams.
+
+#### NEWS!
++ The **language model estimation** library is available [here](https://github.com/jermp/tongrams_estimation).
++ A **Rust implementation** by [kampersanda](https://github.com/kampersanda) is available [here](https://github.com/kampersanda/tongrams-rs).
+
+Introduction
+------------
 
 More specifically, the implemented data structures can be used to map *N*-grams to their corresponding (integer) frequency counts or to (floating point) probabilities and backoffs for backoff-interpolated [Knenser-Ney](https://en.wikipedia.org/wiki/Kneser%E2%80%93Ney_smoothing) models.
 
