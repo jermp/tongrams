@@ -18,7 +18,7 @@ by Giulio Ermanno Pibiri and Rossano Venturini. Please, cite these papers if you
 Introduction
 ------------
 
-More specifically, the implemented data structures can be used to map *N*-grams to their corresponding (integer) frequency counts or to (floating point) probabilities and backoffs for backoff-interpolated [Knenser-Ney](https://en.wikipedia.org/wiki/Kneser%E2%80%93Ney_smoothing) models.
+More specifically, the implemented data structures can be used to map *N*-grams to their corresponding (integer) frequency counts or to (floating point) probabilities and backoffs for backoff-interpolated [Kneser-Ney](https://en.wikipedia.org/wiki/Kneser%E2%80%93Ney_smoothing) models.
 
 The library features a compressed trie data structure in which *N*-grams are assigned integer identifiers (IDs) and compressed with *Elias-Fano* as to support efficient searches within compressed space. The *context-based remapping* of such identifiers permits to encode a word following a context of fixed length _k_, i.e., its preceding _k_ words, with an integer whose value is bounded by the number of words that follow such context and _not_ by the size of the whole vocabulary (number of uni-grams).
 Additionally to the trie data structure, the library allows to build models based on *minimal perfect hashing* (MPH), for constant-time retrieval.
