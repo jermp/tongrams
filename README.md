@@ -1,5 +1,3 @@
-[![Language grade: C/C++](https://img.shields.io/lgtm/grade/cpp/g/jermp/tongrams.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/jermp/tongrams/context:cpp)
-
 Tongrams - Tons of *N*-Grams
 ==============================
 
@@ -245,4 +243,4 @@ Authors
 Bibliography
 ------------
 * [1] Giulio Ermanno Pibiri and Rossano Venturini *Efficient Data Structures for Massive N-Gram Datasets*. In the Proceedings of the 40-th ACM Conference on Research and Development in Information Retrieval (SIGIR 2017): 615-624.
-* [2] Giulio Ermanno Pibiri and Rossano Venturini. *Handling Massive N-Gram Datasets Efficiently.* ACM Transactions on Information Systems (TOIS) 37.2 (2019): 1-41. 
+* [2] Giulio Ermanno Pibiri and Rossano Venturini. *Handling Massive N-Gram Datasets Efficiently.* ACM Transactions on Information Systems (TOIS) 37.2 (2019): 1-41.
